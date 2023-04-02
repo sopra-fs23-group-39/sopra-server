@@ -4,3 +4,8 @@ Shakirova Natalia:
 Create Profile page: https://github.com/sopra-fs23-group-39/sopra-client/issues/34
 Display information from user database: https://github.com/sopra-fs23-group-39/sopra-client/issues/35
 Add "Change Credentials" and "Back" buttons: https://github.com/sopra-fs23-group-39/sopra-client/issues/36
+
+Hügi Florence:
+As a previously registered but logged-out user, I want to be able to log in into the system with my chosen credentials (username and password) to use services and information that are available only to logged-in users: https://github.com/sopra-fs23-group-39/sopra-server/issues/4
+Create log in functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/5
+Create Log in page: https://github.com/sopra-fs23-group-39/sopra-client/issues/18
