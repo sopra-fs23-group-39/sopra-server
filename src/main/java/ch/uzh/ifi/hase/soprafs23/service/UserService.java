@@ -1,7 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,11 +32,15 @@ public class UserService {
   private final Logger log = LoggerFactory.getLogger(UserService.class);
 
   private final UserRepository userRepository;
+  private final GameRepository gameRepository;
 
   @Autowired
-  public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+  public UserService(@Qualifier("userRepository") UserRepository userRepository,
+                     @Qualifier("gameRepository") GameRepository gameRepository) {
     this.userRepository = userRepository;
+    this.gameRepository = gameRepository;
   }
+
 
   public List<User> getUsers() {
     return this.userRepository.findAll();
@@ -54,6 +60,15 @@ public class UserService {
 
     log.debug("Created Information for User: {}", newUser);
     return newUser;
+  }
+  public Game createGame(Long hostId, GameMode gameMode){
+      //TODO: might need to be rewritten, this is a first version to check whether game creation works
+      Game game = new Game();
+      game.setHostId(hostId);
+      game.setGameMode(gameMode);
+      game = gameRepository.save(game);
+      gameRepository.flush();
+      return game;
   }
 
   /**
