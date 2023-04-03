@@ -25,3 +25,9 @@ Generate Game code on game creation: https://github.com/sopra-fs23-group-39/sopr
 Implement Game mode selection: https://github.com/sopra-fs23-group-39/sopra-server/issues/11
 Add Create Game button (leads to game selection): https://github.com/sopra-fs23-group-39/sopra-client/issues/13
 Add game mode menu: https://github.com/sopra-fs23-group-39/sopra-client/issues/7
+
+Yannick Salzmann:
+Creation of the main page: Added a main view, MainGuard, and MainRouter https://github.com/sopra-fs23-group-39/sopra-client/issues/39
+Adding different buttons to the main page: Create Game, Join Game, Leaderboard, Profile, Logout 
+Log out Button: https://github.com/sopra-fs23-group-39/sopra-client/issues/38
+Routing to profile page: https://github.com/sopra-fs23-group-39/sopra-client/issues/12
