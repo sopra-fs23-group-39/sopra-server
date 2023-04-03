@@ -96,4 +96,24 @@ public class UserService {
         return userRepository.findById(id).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, id)));
     }
+
+    public User logIn(User userLogin) {
+
+        String userInputUsername = userLogin.getUsername();
+        String userInputPassword = userLogin.getPassword();
+
+
+
+        User userByUsername = userRepository.findByUsername(userInputUsername);
+        String existingPassword = userByUsername.getPassword();
+
+        if (userByUsername.getUsername() == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username is wrong or does not exist");
+        }
+        else if (!(existingPassword.equals(userInputPassword))){throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong password");
+        }
+
+        userByUsername.setStatus(UserStatus.ONLINE);
+
+        return userByUsername;
+    }
 }

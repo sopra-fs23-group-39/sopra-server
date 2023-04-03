@@ -65,4 +65,16 @@ public class UserController {
         User userById = userService.getUserProfile(id);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userById);
     }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO logInUser(@RequestBody UserPostDTO userPostDTO) {
+
+        User userCredentials = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+
+        User user = userService.logIn(userCredentials);
+
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+    }
 }
