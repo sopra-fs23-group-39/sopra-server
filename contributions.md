@@ -35,3 +35,12 @@ Adding different buttons to the main page: Create Game, Join Game, Leaderboard, 
 Log out Button: https://github.com/sopra-fs23-group-39/sopra-client/issues/38
 
 Routing to profile page: https://github.com/sopra-fs23-group-39/sopra-client/issues/12
+
+Damjan Kuzmanovic:
+    
+-As an unregistered user, I want to be able to register as a user to use services available only to registered and logged-in users: https://github.com/sopra-fs23-group-39/sopra-server/issues/1
+-Create registration functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/2
+-Create Register Page: https://github.com/sopra-fs23-group-39/sopra-client/issues/17
+-Route registered user to main lobby page: https://github.com/sopra-fs23-group-39/sopra-client/issues/4
+
+    
