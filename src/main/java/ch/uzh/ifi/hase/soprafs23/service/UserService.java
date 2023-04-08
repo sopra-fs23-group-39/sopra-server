@@ -61,6 +61,17 @@ public class UserService {
     log.debug("Created Information for User: {}", newUser);
     return newUser;
   }
+
+    public void logoutUser(long userID) {
+        User newLoggedinUser = userRepository.findById(userID);
+        if (newLoggedinUser == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Can't find user to log out");
+        }
+        userRepository.save(newLoggedinUser);
+        userRepository.flush();
+    }
+
   public Game createGame(Long hostId, GameMode gameMode){
       //TODO: might need to be rewritten, this is a first version to check whether game creation works
       Game game = new Game();
@@ -93,8 +104,11 @@ public class UserService {
 
     public User getUserProfile(long id) {
         String message = "User with id %d was not found!";
-        return userRepository.findById(id).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, id)));
+        try {
+            return userRepository.findById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, id));
+        }
     }
 
     public User logIn(User userLogin) {
@@ -106,6 +120,9 @@ public class UserService {
 
         User userByUsername = userRepository.findByUsername(userInputUsername);
         String existingPassword = userByUsername.getPassword();
+
+        userRepository.save(userByUsername);
+        userRepository.flush();
 
         if (userByUsername.getUsername() == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username is wrong or does not exist");
         }

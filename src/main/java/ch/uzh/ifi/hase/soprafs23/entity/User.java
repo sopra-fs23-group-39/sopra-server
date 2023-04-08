@@ -109,4 +109,7 @@ public class User implements Serializable {
     public void setNumberGames(Long numberGames) {
         this.numberGames = numberGames;
     }
+
+
+
 }
