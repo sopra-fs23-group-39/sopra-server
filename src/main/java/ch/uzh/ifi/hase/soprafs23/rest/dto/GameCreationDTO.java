@@ -9,6 +9,15 @@ public class GameCreationDTO {
     private GameMode gameMode;
     private Long hostId;
     private List<Long> userIds;
+    private int questionAmount;
+
+    public int getQuestionAmount() {
+        return questionAmount;
+    }
+
+    public void setQuestionAmount(int questionAmount) {
+        this.questionAmount = questionAmount;
+    }
 
     public long getGameId() {
         return gameId;

@@ -40,7 +40,7 @@ public class GameService {
 
 
 
-  public Game createGame(Long hostId, GameMode gameMode){
+  public Game createGame(Long hostId, GameMode gameMode, int questionAmount){
       //TODO: might need to be rewritten, this is a first version to check whether game creation works
       Game game = new Game();
       game.setHostId(hostId);

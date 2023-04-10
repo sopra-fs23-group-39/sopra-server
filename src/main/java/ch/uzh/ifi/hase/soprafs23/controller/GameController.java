@@ -34,8 +34,8 @@ public class GameController {
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameCreationDTO createGame(Long hostId, GameMode gameMode){
-        Game game = gameService.createGame(hostId, gameMode);
+    public GameCreationDTO createGame(@RequestBody GameCreationDTO gameCreationDTO){
+        Game game = gameService.createGame(gameCreationDTO.getHostId(), gameCreationDTO.getGameMode(), gameCreationDTO.getQuestionAmount());
         return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(game);
     }
 }

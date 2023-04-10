@@ -35,7 +35,18 @@ public class Game implements Serializable {
     @Column(nullable = true)
     private Long hostId;
 
-//not sure if this works yet..
+    @Column
+    private int questionAmount;
+
+    public int getQuestionAmount() {
+        return questionAmount;
+    }
+
+    public void setQuestionAmount(int questionAmount) {
+        this.questionAmount = questionAmount;
+    }
+
+    //not sure if this works yet..
     @ElementCollection
     @CollectionTable(name = "GAME_USER", joinColumns = @JoinColumn(name = "GAME_ID"))
     @Column(name = "USER_ID")
