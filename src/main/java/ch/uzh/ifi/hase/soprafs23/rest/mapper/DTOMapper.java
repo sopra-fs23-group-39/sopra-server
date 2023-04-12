@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameCreationDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -42,6 +43,16 @@ public interface DTOMapper {
   @Mapping(source = "totalPoints", target = "totalPoints")
   @Mapping(source = "rank", target = "rank")
   UserGetDTO convertEntityToUserGetDTO(User user);
+
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "status", target = "status")
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "password", source = "password")
+    @Mapping(target = "rank", ignore = true)
+    @Mapping(target = "totalPoints", ignore = true)
+    @Mapping(target = "numberGames", ignore = true)
+    User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
 
     @Mapping(source = "gameId", target = "gameId")

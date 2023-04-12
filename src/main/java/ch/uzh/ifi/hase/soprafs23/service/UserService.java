@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,4 +134,26 @@ public class UserService {
 
         return userByUsername;
     }
+
+    public void updateUserProfile(UserPutDTO userPutDTO, long id) {
+        String messageId = "User with id %d was not found!";
+        User userToUpdate = userRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(messageId, id)));
+
+        if (userPutDTO.getUsername() != null) {
+            userToUpdate.setUsername(userPutDTO.getUsername());
+        }
+
+        if (userPutDTO.getPassword() != null) {
+            userToUpdate.setPassword(userPutDTO.getPassword());
+        }
+
+//        if (userPutDTO.getStatus() != null && !userPutDTO.getStatus().isEmpty()) {
+//            userToUpdate.setStatus(UserStatus.valueOf(userPutDTO.getStatus()));
+//        }
+
+        userRepository.save(userToUpdate);
+        userRepository.flush();
+    }
+
 }
