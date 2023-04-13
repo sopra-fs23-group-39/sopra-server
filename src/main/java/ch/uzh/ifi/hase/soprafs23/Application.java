@@ -21,6 +21,7 @@ public class Application {
       SpringApplication.run(Application.class, args);
 
       // The following code is to check if a random question is correctly chosen from the external API
+      // Later, this will be deleted
       QuestionController qc = new QuestionController();
       Question question = qc.getMovieQuestion();
       System.out.println(question.getQuestionText());

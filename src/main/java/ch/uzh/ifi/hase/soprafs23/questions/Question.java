@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.questions;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Question {
 
@@ -10,9 +10,9 @@ public class Question {
 
     private String correctAnswer;
 
-    private ArrayList<String> wrongAnswers;
+    private List<String> wrongAnswers;
 
-    public Question(String questionText, String questionLink, String correctAnswer, ArrayList<String> wrongAnswers) {
+    public Question(String questionText, String questionLink, String correctAnswer, List<String> wrongAnswers) {
         this.questionText = questionText;
         this.questionLink = questionLink;
         this.correctAnswer = correctAnswer;
@@ -43,11 +43,11 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
-    public ArrayList<String> getWrongAnswers() {
+    public List<String> getWrongAnswers() {
         return wrongAnswers;
     }
 
-    public void setWrongAnswers(ArrayList<String> getWrongAnswers) {
+    public void setWrongAnswers(List<String> wrongAnswers) {
         this.wrongAnswers = wrongAnswers;
     }
 }
