@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23;
 
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
-import ch.uzh.ifi.hase.soprafs23.questions.QuestionController;
+import ch.uzh.ifi.hase.soprafs23.questions.QuestionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,12 +22,23 @@ public class Application {
 
       // The following code is to check if a random question is correctly chosen from the external API
       // Later, this will be deleted
-      QuestionController qc = new QuestionController();
-      Question question = qc.getMovieQuestion();
-      System.out.println(question.getQuestionText());
-      System.out.println(question.getQuestionLink());
-      System.out.println(question.getCorrectAnswer());
-      System.out.println(question.getWrongAnswers());
+
+//      QuestionService qs = new QuestionService();
+//
+//      Question movieQuestion = qs.getMovieQuestion();
+//      System.out.println();
+//      System.out.println(movieQuestion.getQuestionText());
+//      System.out.println(movieQuestion.getQuestionLink());
+//      System.out.println(movieQuestion.getCorrectAnswer());
+//      System.out.println(movieQuestion.getWrongAnswers());
+//
+//      Question actorQuestion = qs.getActorQuestion();
+//      System.out.println();
+//      System.out.println(actorQuestion.getQuestionText());
+//      System.out.println(actorQuestion.getQuestionLink());
+//      System.out.println(actorQuestion.getCorrectAnswer());
+//      System.out.println(actorQuestion.getWrongAnswers());
+
   }
 
   @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
