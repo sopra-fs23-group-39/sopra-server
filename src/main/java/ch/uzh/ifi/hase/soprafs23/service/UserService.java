@@ -158,4 +158,24 @@ public class UserService {
         userRepository.save(userToUpdate);
         userRepository.flush();
     }
+
+    public User getUserById(long userId) {
+        User userById = userRepository.findById(userId);
+        if (userById == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "User not found");
+        }
+        return userById;
+    }
+    public void readyUser(long userId) {
+        User newReadyUser = userRepository.findById(userId);
+        if (newReadyUser == null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Can't find user to ready");
+        }
+
+        newReadyUser.setIsReady(true);
+        userRepository.save(newReadyUser);
+        userRepository.flush();
+    }
 }

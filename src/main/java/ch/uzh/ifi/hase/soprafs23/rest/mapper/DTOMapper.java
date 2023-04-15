@@ -23,26 +23,28 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "username", target = "username")
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "token", ignore = true)
-  @Mapping(target = "status", ignore = true)
-  @Mapping(target = "rank", ignore = true)
-  @Mapping(target = "numberGames", ignore = true)
-  @Mapping(target = "totalPoints", ignore = true)
-  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "username", target = "username")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "rank", ignore = true)
+    @Mapping(target = "numberGames", ignore = true)
+    @Mapping(target = "totalPoints", ignore = true)
+    @Mapping(target = "isReady", ignore = true)
+    User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "status", target = "status")
-  @Mapping(source = "numberGames", target = "numberGames")
-  @Mapping(source = "totalPoints", target = "totalPoints")
-  @Mapping(source = "rank", target = "rank")
-  UserGetDTO convertEntityToUserGetDTO(User user);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "numberGames", target = "numberGames")
+    @Mapping(source = "totalPoints", target = "totalPoints")
+    @Mapping(source = "rank", target = "rank")
+    @Mapping(source = "isReady", target = "isReady")
+    UserGetDTO convertEntityToUserGetDTO(User user);
 
     @Mapping(source = "username", target = "username")
     @Mapping(source = "id", target = "id")
@@ -52,7 +54,9 @@ public interface DTOMapper {
     @Mapping(target = "rank", ignore = true)
     @Mapping(target = "totalPoints", ignore = true)
     @Mapping(target = "numberGames", ignore = true)
+    @Mapping(source = "isReady", target = "isReady")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
+
 
 
     @Mapping(source = "gameId", target = "gameId")

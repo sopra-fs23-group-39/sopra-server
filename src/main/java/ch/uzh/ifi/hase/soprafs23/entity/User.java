@@ -46,6 +46,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long totalPoints;
 
+    @Column(nullable = false)
+    private boolean isReady;
+
     public Long getId() {
         return id;
     }
@@ -110,4 +113,11 @@ public class User implements Serializable {
         this.numberGames = numberGames;
     }
 
+    public boolean getIsReady() {
+        return isReady;
+    }
+
+    public void setIsReady(boolean isReady) {
+         this.isReady = isReady;
+    }
 }

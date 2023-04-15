@@ -17,6 +17,8 @@ public class UserGetDTO {
 
     private Long totalPoints;
 
+    private boolean isReady;
+
   public Long getId() {
     return id;
   }
@@ -73,4 +75,11 @@ public class UserGetDTO {
         this.username = username;
     }
 
+    public boolean getIsReady() {
+        return isReady;
+    }
+
+    public void setIsReady(boolean isReady) {
+        this.isReady = isReady;
+    }
 }
