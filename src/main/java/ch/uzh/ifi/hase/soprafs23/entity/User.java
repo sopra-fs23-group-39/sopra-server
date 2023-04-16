@@ -1,6 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -48,6 +51,31 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private boolean isReady;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "game_id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gameId")
+    private Game game;
+
+    @OneToOne
+    @JoinColumn(name = "hosted_game_id", referencedColumnName = "gameId", nullable = true)
+    private Game hostedGame;
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getHostedGame() {
+        return hostedGame;
+    }
+
+    public void setHostedGame(Game hostedGame) {
+        this.hostedGame = hostedGame;
+    }
 
     public Long getId() {
         return id;
@@ -120,4 +148,5 @@ public class User implements Serializable {
     public void setIsReady(boolean isReady) {
          this.isReady = isReady;
     }
+
 }

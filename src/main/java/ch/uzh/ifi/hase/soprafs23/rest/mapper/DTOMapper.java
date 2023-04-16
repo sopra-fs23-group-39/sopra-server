@@ -44,6 +44,8 @@ public interface DTOMapper {
     @Mapping(source = "totalPoints", target = "totalPoints")
     @Mapping(source = "rank", target = "rank")
     @Mapping(source = "isReady", target = "isReady")
+    @Mapping(source = "game", target = "game")
+    @Mapping(source = "hostedGame", target = "hostedGame")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     @Mapping(source = "username", target = "username")
@@ -61,8 +63,9 @@ public interface DTOMapper {
 
     @Mapping(source = "gameId", target = "gameId")
     @Mapping(source = "gameMode", target = "gameMode")
+    @Mapping(source = "host", target = "host")
     @Mapping(source = "hostId", target = "hostId")
-    @Mapping(source = "userIds", target = "userIds")
+    @Mapping(source = "players", target = "players")
     @Mapping(source = "questionAmount", target = "questionAmount")
     GameCreationDTO convertEntityToGameCreationDTO(Game game);
 }

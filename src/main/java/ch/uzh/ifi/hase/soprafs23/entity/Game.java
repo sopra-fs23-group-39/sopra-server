@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -38,22 +40,41 @@ public class Game implements Serializable {
     @Column
     private int questionAmount;
 
-    public int getQuestionAmount() {
-        return questionAmount;
+    @OneToOne
+    @JoinColumn(name = "gameHost_id", referencedColumnName = "id")
+    private User host;
+
+
+    //not sure if this works yet..
+    @ElementCollection
+    @CollectionTable(name = "test", joinColumns = @JoinColumn(name = "test2"))
+    @Column(name = "tes3")
+    private List<Long> userIds = new ArrayList<>();
+
+    @OneToMany(mappedBy = "game", orphanRemoval = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    private List<User> players = new ArrayList<>();
+
+    public List<User> getPlayers() {
+        return players;
     }
+
+    public User getHost() {
+        return host;
+    }
+
+    public void setHost(User host) {
+        this.host = host;
+    }
+
+    //TODO: add more values here later, this is just for opening a game page with an ID so far..
+    public int getQuestionAmount() {
+    return questionAmount;
+}
 
     public void setQuestionAmount(int questionAmount) {
         this.questionAmount = questionAmount;
     }
-
-    //not sure if this works yet..
-    @ElementCollection
-    @CollectionTable(name = "GAME_USER", joinColumns = @JoinColumn(name = "GAME_ID"))
-    @Column(name = "USER_ID")
-    private List<Long> userIds = new ArrayList<>();
-
-    //TODO: add more values here later, this is just for opening a game page with an ID so far..
-
     public Long getGameId() {
         return gameId;
     }

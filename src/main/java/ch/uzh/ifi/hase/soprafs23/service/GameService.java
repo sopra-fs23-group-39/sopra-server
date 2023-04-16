@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import java.util.UUID;
  * (e.g., it creates, modifies, deletes, finds). The result will be passed back
  * to the caller.
  */
+/*TODO maybe it makes sense to merge the two services to one "entityService", as I need to couple
+   them anyway.. */
 @Service
 @Transactional
 public class GameService {
@@ -32,10 +35,12 @@ public class GameService {
   private final Logger log = LoggerFactory.getLogger(GameService.class);
 
   private final GameRepository gameRepository;
+  private final UserService userService;
 
   @Autowired
-  public GameService(@Qualifier("gameRepository") GameRepository gameRepository) {
+  public GameService(@Qualifier("gameRepository") GameRepository gameRepository, UserService userService) {
     this.gameRepository = gameRepository;
+    this.userService = userService;
   }
 
 
@@ -45,8 +50,33 @@ public class GameService {
       Game game = new Game();
       game.setHostId(hostId);
       game.setGameMode(gameMode);
+      game.setQuestionAmount(questionAmount);
+      game.setHost(userService.getUserById(hostId));
+      userService.getUserById(hostId).setGame(game);
       game = gameRepository.save(game);
       gameRepository.flush();
       return game;
+  }
+
+  public void findAndJoinGame(Long gameId, Long userId, User user){
+      Game game = gameRepository.findByGameId(gameId);
+      String message = String.format("No games with id %d was found", gameId);
+      if (game == null){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
+      }
+      game.getUserIds().add(userId);
+      game.getPlayers().add(user);
+      user.setGame(game);
+  }
+  public List<User> getHostAndPlayers(long gameId){
+      //System.out.println(gameId);
+      Game game = gameRepository.findByGameId(gameId);
+      if (game == null) {
+          System.out.println("game is null");
+      }
+      User host = userService.getUserById(game.getHostId());
+      List<User> players = game.getPlayers();
+      //players.add(0, host);
+      return players;
   }
 }

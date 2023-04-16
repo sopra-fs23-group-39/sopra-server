@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 
 import javax.persistence.Column;
 
@@ -18,8 +19,26 @@ public class UserGetDTO {
     private Long totalPoints;
 
     private boolean isReady;
+    private Game game;
+    private Game hostedGame;
 
-  public Long getId() {
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getHostedGame() {
+        return hostedGame;
+    }
+
+    public void setHostedGame(Game hostedGame) {
+        this.hostedGame = hostedGame;
+    }
+
+    public Long getId() {
     return id;
   }
 

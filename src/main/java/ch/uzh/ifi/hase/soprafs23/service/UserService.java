@@ -26,6 +26,8 @@ import java.util.UUID;
  * (e.g., it creates, modifies, deletes, finds). The result will be passed back
  * to the caller.
  */
+/*TODO maybe it makes sense to merge the two services to one "entityService", as I need to couple
+   them anyway.. */
 @Service
 @Transactional
 public class UserService {
@@ -72,16 +74,6 @@ public class UserService {
         userRepository.save(newLoggedinUser);
         userRepository.flush();
     }
-
-  public Game createGame(Long hostId, GameMode gameMode){
-      //TODO: might need to be rewritten, this is a first version to check whether game creation works
-      Game game = new Game();
-      game.setHostId(hostId);
-      game.setGameMode(gameMode);
-      game = gameRepository.save(game);
-      gameRepository.flush();
-      return game;
-  }
 
   /**
    * This is a helper method that will check the uniqueness criteria of the
