@@ -47,3 +47,10 @@ Damjan Kuzmanovic:
 -Route registered user to main lobby page: https://github.com/sopra-fs23-group-39/sopra-client/issues/4
 
     
+Week 2/3:
+
+Niemack Markus: 
+
+Create Game Database https://github.com/sopra-fs23-group-39/sopra-server/issues/54
+Create User Database https://github.com/sopra-fs23-group-39/sopra-server/issues/43
+Add join game functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/28
