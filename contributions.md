@@ -82,3 +82,22 @@ As a result of tasks #55-56, we can create random questions using our external A
 
 When getting a question, calls are sent directly to the API and their results are then processed. To prevent exhaustion of API calls limit while developing (when running an application multiple times to test functionality), an additional class ApiServiceSubstitute was created, it mocks our real API (a list of all movies (their ids) and a list of all actors (their ids) are stores in variables, instead of accessing them each time directly from the API).
 
+
+Yannick Salzmann:
+
+creating the log out functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/52
+
+routing to the global leaderboard: https://github.com/sopra-fs23-group-39/sopra-client/issues/1
+
+routing to the join game page: https://github.com/sopra-fs23-group-39/sopra-client/issues/2
+
+routing to the new game page: https://github.com/sopra-fs23-group-39/sopra-client/issues/3
+
+completion of the user story respective to the main page: https://github.com/sopra-fs23-group-39/sopra-server/issues/6  
+
+adding a working exit button in the waiting room: https://github.com/sopra-fs23-group-39/sopra-client/issues/10
+
+added the "isReady" property for players: https://github.com/sopra-fs23-group-39/sopra-server/issues/33
+
+every player in the waiting room can press the ready button, such that the property is successfully changed: https://github.com/sopra-fs23-group-39/sopra-server/issues/32
+
