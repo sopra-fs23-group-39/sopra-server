@@ -54,6 +54,9 @@ Niemack Markus:
 Create Game Database https://github.com/sopra-fs23-group-39/sopra-server/issues/54
 Create User Database https://github.com/sopra-fs23-group-39/sopra-server/issues/43
 Add join game functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/28
+Create Websocket Interface (read: config file and controller skeleton): https://github.com/sopra-fs23-group-39/sopra-server/issues/58
+Add dynamically updated list of players to waiting room (this is currently in Game.JS): https://github.com/sopra-fs23-group-39/sopra-server/issues/22 
+
 
 Shakirova Natalia:
 
