@@ -109,3 +109,11 @@ Create join lobby page: https://github.com/sopra-fs23-group-39/sopra-client/issu
 Add "Enter lobby code field" and properly route it: https://github.com/sopra-fs23-group-39/sopra-client/issues/15
 
 Add "Join" and "Back" Buttons: https://github.com/sopra-fs23-group-39/sopra-client/issues/16
+
+Damjan Kuzmanovic:
+
+Added timer to GameSelection page: https://github.com/sopra-fs23-group-39/sopra-client/issues/5
+
+Added timer selection to functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/15
+
+Fixed the registration page
