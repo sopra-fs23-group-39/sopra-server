@@ -9,8 +9,12 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
+import org.springframework.web.socket.sockjs.transport.handler.SockJsWebSocketHandler;
+import org.springframework.web.socket.sockjs.transport.handler.WebSocketTransportHandler;
 
-@Configuration
+/*@Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
     private final GameService gameService;
@@ -33,6 +37,22 @@ public class WebSocketConfig implements WebSocketConfigurer {
         return new WaitingRoomHandler(gameService);
     }
 
-}
+}*/
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic");
+        config.setApplicationDestinationPrefixes("/app");
+    }
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/game/{gameId}")
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
+    }
+}
 
