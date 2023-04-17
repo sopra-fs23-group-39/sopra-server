@@ -145,33 +145,33 @@ public class ActorApiService extends ApiService {
     }
 
     public String getItemGender(String itemId, String key) throws JsonProcessingException {
+        String actor = "Actor";
+        String actress = "Actress";
         String response = getJSONItemById(itemId, key);
         JsonNode rootNode = objectMapper.readTree(response);
         JsonNode itemsNode = rootNode.path("castMovies");
 
-        String role;
         String gender = null;
-        for (JsonNode itemNode : itemsNode) {
-            role = itemNode.path("role").asText();
-            if (role.contains("Actor")) {
-                gender = "Actor";
+        JsonNode itemNode = itemsNode.get(0);
+
+        String role = itemNode.path("role").asText();
+        if (role.contains(actor)) {
+            gender = actor;
+        }
+        else if (role.contains(actress)) {
+            gender = actress;
+        }
+        else {
+            String roleNode = rootNode.path("role").asText();
+            if (roleNode != null && roleNode.contains(actor)) {
+                gender = actor;
             }
-            else if (role.contains("Actress")) {
-                gender = "Actress";
+            else if (roleNode != null && roleNode.contains(actress)) {
+                gender = actress;
             }
             else {
-                String roleNode = rootNode.path("role").asText();
-                if (roleNode != null && roleNode.contains("Actor")) {
-                    gender = "Actor";
-                }
-                else if (roleNode != null && roleNode.contains("Actress")) {
-                    gender = "Actress";
-                }
-                else {
-                    gender = "Other";
-                }
+                gender = "Other";
             }
-            break;
         }
 
         return gender;

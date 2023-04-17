@@ -23,15 +23,24 @@ public class Application {
       // The following code is to check if a random question is correctly chosen from the external API
       // Later, this will be deleted
 
-//      QuestionService qs = new QuestionService();
-//
+      QuestionService qs = new QuestionService();
+
+      for (int i = 0; i < 10; i++) {
+          Question movieQuestion = qs.getMovieQuestion();
+          System.out.println();
+          System.out.println(movieQuestion.getQuestionText());
+          System.out.println(movieQuestion.getQuestionLink());
+          System.out.println(movieQuestion.getCorrectAnswer());
+          System.out.println(movieQuestion.getWrongAnswers());
+      }
+
 //      Question movieQuestion = qs.getMovieQuestion();
 //      System.out.println();
 //      System.out.println(movieQuestion.getQuestionText());
 //      System.out.println(movieQuestion.getQuestionLink());
 //      System.out.println(movieQuestion.getCorrectAnswer());
 //      System.out.println(movieQuestion.getWrongAnswers());
-//
+
 //      Question actorQuestion = qs.getActorQuestion();
 //      System.out.println();
 //      System.out.println(actorQuestion.getQuestionText());

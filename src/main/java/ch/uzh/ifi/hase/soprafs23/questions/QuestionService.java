@@ -10,7 +10,7 @@ public class QuestionService {
 
     private final MovieApiService movieApiService = new MovieApiService();
     private final ActorApiService actorApiService = new ActorApiService();
-    private final String key = "k_3zhp2s2n";
+    private final static String key = "k_3zhp2s2n";
 //    private List<String> listOfMovieIds;
 //
 //    {
