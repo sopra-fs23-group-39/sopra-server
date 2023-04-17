@@ -67,5 +67,6 @@ public interface DTOMapper {
     @Mapping(source = "hostId", target = "hostId")
     @Mapping(source = "players", target = "players")
     @Mapping(source = "questionAmount", target = "questionAmount")
+    @Mapping(source = "timer", target = "timer")
     GameCreationDTO convertEntityToGameCreationDTO(Game game);
 }
