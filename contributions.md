@@ -101,3 +101,11 @@ added the "isReady" property for players: https://github.com/sopra-fs23-group-39
 
 every player in the waiting room can press the ready button, such that the property is successfully changed: https://github.com/sopra-fs23-group-39/sopra-server/issues/32
 
+
+Florence Hügi:
+
+Create join lobby page: https://github.com/sopra-fs23-group-39/sopra-client/issues/14
+
+Add "Enter lobby code field" and properly route it: https://github.com/sopra-fs23-group-39/sopra-client/issues/15
+
+Add "Join" and "Back" Buttons: https://github.com/sopra-fs23-group-39/sopra-client/issues/16
