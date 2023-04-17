@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         System.out.println("trying to register");
-        registry.addHandler(waitingRoomHandler(), "/game/{gameId}").setAllowedOrigins("*").addInterceptors(waitingRoomHandshakeInterceptor);;
+        registry.addHandler(waitingRoomHandler(), "/game/{gameId}").setAllowedOrigins("*").addInterceptors(waitingRoomHandshakeInterceptor);
     }
 
     @Bean
