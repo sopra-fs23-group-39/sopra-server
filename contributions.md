@@ -47,10 +47,29 @@ Damjan Kuzmanovic:
 -Route registered user to main lobby page: https://github.com/sopra-fs23-group-39/sopra-client/issues/4
 
     
-Week 2/3:
+Weeks 2-3 (03.04.2023-16.04.2023)
 
 Niemack Markus: 
 
 Create Game Database https://github.com/sopra-fs23-group-39/sopra-server/issues/54
 Create User Database https://github.com/sopra-fs23-group-39/sopra-server/issues/43
 Add join game functionality: https://github.com/sopra-fs23-group-39/sopra-server/issues/28
+
+Shakirova Natalia:
+
+Task #37 Create "Change credentials" fields to profile page of user (https://github.com/sopra-fs23-group-39/sopra-client/issues/37): commit d185205
+
+Task #49 Add Change credentials functionality (https://github.com/sopra-fs23-group-39/sopra-server/issues/49): commit 2a4a25d
+
+Task #55 Create back-end classes to randomly get questions "Guess movie by image" from external API (https://github.com/sopra-fs23-group-39/sopra-server/issues/55): commit 6d1843c 
+
+Task #56 Create back-end classes to randomly get questions "Guess actor by image" from external API (https://github.com/sopra-fs23-group-39/sopra-server/issues/56): commit fa1fe4e
+
+As a result of tasks #55-56, we can create random questions using our external API. Each Question object has 4 attributes:
+- questionText;
+- questionLink (a link to an image of an actor/movie randomly taken from the API);
+- correctAnswer (movie title/actor name);
+- wrongAnswers (list of 3 answers; in case of a movie question, 3 titles of similar movies are shown, in case of an actor question, 3 names of other actors/actresses (depending on the gender of an actor in question) are displayed. 
+
+When getting a question, calls are sent directly to the API and their results are then processed. To prevent exhaustion of API calls limit while developing (when running an application multiple times to test functionality), an additional class ApiServiceSubstitute was created, it mocks our real API (a list of all movies (their ids) and a list of all actors (their ids) are stores in variables, instead of accessing them each time directly from the API).
+
