@@ -44,15 +44,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        // topic - front-end address starts with it
         config.enableSimpleBroker("/topic");
+        // app - back-end address starts with it
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/game/{gameId}")
-                .setAllowedOriginPatterns("*")
-                .withSockJS();
+        // end point in the back end (app/game/{gameId}
+        registry.addEndpoint("/game/{gameId}").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/game/{gameId}/question").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/game/{gameId}/answer").setAllowedOriginPatterns("*").withSockJS();
     }
 }
 

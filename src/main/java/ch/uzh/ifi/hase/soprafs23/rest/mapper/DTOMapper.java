@@ -2,10 +2,9 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.GameCreationDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs23.questions.Answer;
+import ch.uzh.ifi.hase.soprafs23.questions.Question;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -59,8 +58,6 @@ public interface DTOMapper {
     @Mapping(source = "isReady", target = "isReady")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
-
-
     @Mapping(source = "gameId", target = "gameId")
     @Mapping(source = "gameMode", target = "gameMode")
     @Mapping(source = "host", target = "host")
@@ -68,4 +65,20 @@ public interface DTOMapper {
     @Mapping(source = "players", target = "players")
     @Mapping(source = "questionAmount", target = "questionAmount")
     GameCreationDTO convertEntityToGameCreationDTO(Game game);
+
+    @Mapping(source = "questionText", target = "questionText")
+    @Mapping(source = "questionLink", target = "questionLink")
+    @Mapping(source = "correctAnswer", target = "correctAnswer")
+    @Mapping(source = "answer1", target = "answer1")
+    @Mapping(source = "answer2", target = "answer2")
+    @Mapping(source = "answer3", target = "answer3")
+    @Mapping(source = "answer4", target = "answer4")
+    QuestionGetDTO convertEntityToQuestionGetDTO(Question question);
+
+    @Mapping(source = "userId", target = "userId")
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "correctAnswer", target = "correctAnswer")
+    @Mapping(source = "answer", target = "answer")
+    @Mapping(source = "time", target = "time")
+    Answer convertAnswerPostDTOToEntity(AnswerPostDTO answerPostDTO);
 }

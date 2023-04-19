@@ -4,6 +4,9 @@ import ch.uzh.ifi.hase.soprafs23.api.ApiServiceSubstitute;
 import ch.uzh.ifi.hase.soprafs23.api.ActorApiService;
 import ch.uzh.ifi.hase.soprafs23.api.MovieApiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuestionService {
@@ -35,8 +38,12 @@ public class QuestionService {
         String questionLink = movieApiService.getImageLink(movieId, key);
         String correctAnswer = movieApiService.getItemName(movieId, key);
         List<String> wrongAnswers = movieApiService.getSimilarItems(movieId, key);
+        List<String> answers = new ArrayList<>();
+        answers.addAll(wrongAnswers);
+        answers.add(correctAnswer);
+        Collections.shuffle(answers);
 
-        return new Question(questionText, questionLink, correctAnswer, wrongAnswers);
+        return new Question(questionText, questionLink, correctAnswer, answers.get(0), answers.get(1), answers.get(2),answers.get(3));
     }
 
     public Question getActorQuestion() throws JsonProcessingException {
@@ -53,7 +60,11 @@ public class QuestionService {
         String questionLink = actorApiService.getImageLink(actorId, key);
         String correctAnswer = actorApiService.getItemName(actorId, key);
         List<String> wrongAnswers = actorApiService.getSimilarItems(actorId, key, listOfActors, listOfActresses);
+        List<String> answers = new ArrayList<>();
+        answers.addAll(wrongAnswers);
+        answers.add(correctAnswer);
+        Collections.shuffle(answers);
 
-        return new Question(questionText, questionLink, correctAnswer, wrongAnswers);
+        return new Question(questionText, questionLink, correctAnswer, answers.get(0), answers.get(1), answers.get(2),answers.get(3));
     }
 }

@@ -1,8 +1,6 @@
-package ch.uzh.ifi.hase.soprafs23.questions;
+package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import java.util.List;
-
-public class Question {
+public class QuestionGetDTO {
 
     private String questionText;
 
@@ -18,22 +16,11 @@ public class Question {
 
     private String answer4;
 
-
-    public Question(String questionText, String questionLink, String correctAnswer, String answer1, String answer2, String answer3, String answer4) {
-        this.questionText = questionText;
-        this.questionLink = questionLink;
-        this.correctAnswer = correctAnswer;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-    }
-
     public String getQuestionText() {
         return questionText;
     }
 
-    public void setId(String questionText) {
+    public void setQuestionText(String questionText) {
         this.questionText = questionText;
     }
 
@@ -76,6 +63,4 @@ public class Question {
     }
 
     public void setAnswer4(String answer4) { this.answer4 = answer4; }
-
-
 }
