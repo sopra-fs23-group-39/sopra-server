@@ -10,7 +10,7 @@ public class Answer {
 
     private String correctAnswer;
 
-    private String answer;
+    private String usersAnswer;
 
     private Date time;
 
@@ -38,11 +38,11 @@ public class Answer {
         this.correctAnswer = correctAnswer;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getUsersAnswer() {
+        return usersAnswer;
     }
 
-    public void setAnswer(String answer) { this.answer = answer; }
+    public void setUsersAnswer(String usersAnswer) { this.usersAnswer = usersAnswer; }
 
     public Date getTime() {
         return time;

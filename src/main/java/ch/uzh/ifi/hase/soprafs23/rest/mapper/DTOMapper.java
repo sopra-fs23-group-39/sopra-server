@@ -78,7 +78,7 @@ public interface DTOMapper {
     @Mapping(source = "userId", target = "userId")
     @Mapping(source = "gameId", target = "gameId")
     @Mapping(source = "correctAnswer", target = "correctAnswer")
-    @Mapping(source = "answer", target = "answer")
+    @Mapping(source = "usersAnswer", target = "usersAnswer")
     @Mapping(source = "time", target = "time")
     Answer convertAnswerPostDTOToEntity(AnswerPostDTO answerPostDTO);
 }

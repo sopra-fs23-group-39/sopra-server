@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.questions;
 
-import java.util.List;
+import javax.persistence.Embeddable;
+import java.util.Objects;
 
+@Embeddable
 public class Question {
 
     private String questionText;
@@ -18,7 +20,6 @@ public class Question {
 
     private String answer4;
 
-
     public Question(String questionText, String questionLink, String correctAnswer, String answer1, String answer2, String answer3, String answer4) {
         this.questionText = questionText;
         this.questionLink = questionLink;
@@ -29,11 +30,15 @@ public class Question {
         this.answer4 = answer4;
     }
 
+    public Question() {
+
+    }
+
     public String getQuestionText() {
         return questionText;
     }
 
-    public void setId(String questionText) {
+    public void setQuestionText(String questionText) {
         this.questionText = questionText;
     }
 
@@ -77,5 +82,16 @@ public class Question {
 
     public void setAnswer4(String answer4) { this.answer4 = answer4; }
 
+    @Override
+    public boolean equals(Object questionToCompare) {
+        if (this == questionToCompare) {
+            return true;
+        }
+        if (questionToCompare == null || getClass() != questionToCompare.getClass()) {
+            return false;
+        }
+        Question other = (Question) questionToCompare;
+        return Objects.equals(questionLink, other.getQuestionLink())|| Objects.equals(correctAnswer, other.getCorrectAnswer());
+    }
 
 }

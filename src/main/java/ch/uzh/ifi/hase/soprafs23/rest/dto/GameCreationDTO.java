@@ -45,7 +45,6 @@ public class GameCreationDTO {
         this.hostId = hostId;
     }
 
-
     public User getHost() {
         return host;
     }

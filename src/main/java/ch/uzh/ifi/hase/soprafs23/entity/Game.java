@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs23.questions.Question;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -44,7 +45,6 @@ public class Game implements Serializable {
     @JoinColumn(name = "gameHost_id", referencedColumnName = "id")
     private User host;
 
-
     //not sure if this works yet..
     @ElementCollection
     @CollectionTable(name = "test", joinColumns = @JoinColumn(name = "test2"))
@@ -54,6 +54,12 @@ public class Game implements Serializable {
     @OneToMany(mappedBy = "game", orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<User> players = new ArrayList<>();
+
+    @ElementCollection
+    private List<Question> questions = new ArrayList<>();
+
+    @Column
+    private int currentRound;
 
     public List<User> getPlayers() {
         return players;
@@ -105,5 +111,21 @@ public class Game implements Serializable {
 
     public void setParticipants(List<Long> userIds) {
         this.userIds = userIds;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
     }
 }
