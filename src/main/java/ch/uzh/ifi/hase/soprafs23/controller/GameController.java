@@ -57,4 +57,12 @@ public class GameController {
         }
         return playerDTOs;
     }
+
+    @GetMapping("/game/{gameId}/settings")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameCreationDTO retrieveGameSettings (@PathVariable long gameId){
+        Game findByGameId = gameService.getGameSettings(gameId);
+        return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(findByGameId);
+    }
 }
