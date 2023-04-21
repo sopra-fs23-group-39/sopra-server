@@ -132,11 +132,11 @@ Week 4 (17.04.2023-23.04.2023)
 
 Shakirova Natalia:
 
-Tasks #20 Create GameQuestion Page, #21 Add snippet display, #22 Add Answer Buttons & Question, #24 After Timer runs out route to game result page: commits:  95a90c6 (client), 3620d95 (server)
+Tasks #20 Create GameQuestion Page (https://github.com/sopra-fs23-group-39/sopra-client/issues/20), #21 Add snippet display (https://github.com/sopra-fs23-group-39/sopra-client/issues/21), #22 Add Answer Buttons & Question (https://github.com/sopra-fs23-group-39/sopra-client/issues/22), #24 After Timer runs out route to game result page (https://github.com/sopra-fs23-group-39/sopra-client/issues/24): commits:  95a90c6 (client), 3620d95 (server)
 
 Result: Question page displays a quiz question with answers (1 correct and 3 wrong). After a user clicks on one of the answers (he can click only once), a corresponding JSON object is sent to the back-end for evaluation. After a fixed amount of time, a user is routed to Standings page (intermediate results).
 
-Task #60 Add functionality to connect a concrete game and questions taken from the API, commit: 2c4a8b6 (server)
+Task https://github.com/sopra-fs23-group-39/sopra-server/issues/60 Add functionality to connect a concrete game and questions taken from the API, commit: 2c4a8b6 (server)
 
 Result: when a Game object is created, a list of questions is added to it, according to the chosen game mode and number of questions (equality of questions is prevented by overridden equals method). Number of questions sent to the front-end is controlled by the back-end that counts game rounds.  
 
