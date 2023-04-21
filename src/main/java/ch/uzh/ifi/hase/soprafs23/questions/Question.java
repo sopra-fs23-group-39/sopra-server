@@ -91,7 +91,13 @@ public class Question {
             return false;
         }
         Question other = (Question) questionToCompare;
-        return Objects.equals(questionLink, other.getQuestionLink())|| Objects.equals(correctAnswer, other.getCorrectAnswer());
+        return Objects.equals(correctAnswer, other.getCorrectAnswer());
     }
 
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + correctAnswer.hashCode();
+        return result;
+    }
 }
