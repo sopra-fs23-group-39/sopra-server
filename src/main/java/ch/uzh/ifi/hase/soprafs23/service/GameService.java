@@ -47,12 +47,13 @@ public class GameService {
         this.userService = userService;
     }
 
-    public Game createGame(Long hostId, GameMode gameMode, int questionAmount) {
+    public Game createGame(Long hostId, GameMode gameMode, int questionAmount, int timer) {
         //TODO: might need to be rewritten, this is a first version to check whether game creation works
         Game game = new Game();
         game.setHostId(hostId);
         game.setGameMode(gameMode);
         game.setQuestionAmount(questionAmount);
+        game.setTimer(timer);
         game.setHost(userService.getUserById(hostId));
       try {
           game.setQuestions(questionService.getListOfQuestions(gameMode, questionAmount));
