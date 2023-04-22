@@ -26,7 +26,7 @@ public class Application {
       String filePath = "testdb";
       BlobId blobId = BlobId.of(bucketName, filePath);
       BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-      if(!storage.get(blobId.getBucket(), blobId.getName()).exists()){
+      if(!storage.get(blobId).exists()){
           storage.create(blobInfo, new byte[0]);
       }
       SpringApplication.run(Application.class, args);
