@@ -25,11 +25,26 @@ public class Application {
       String bucketName = "sopra-fs23-group-39-server_testdb";
       String filePath = "testdb";
       BlobId blobId = BlobId.of(bucketName, filePath);
-      Blob blob = storage.get(blobId);
-      if(blob == null){
+      if(blobId == null){
+          Blob blob = storage.get(blobId);
           BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
           storage.create(blobInfo, new byte[0]);
       }
+
+
+      /*String dbName = "testdb";
+      String dbUser = "sa";
+      String dbPass = "";
+      Storage storage2 = StorageOptions.getDefaultInstance().getService();
+      Bucket bucket = storage.get(bucketName);
+      if(bucket == null){
+          storage2.create(BucketInfo.of(bucketName));
+      }
+
+      String jdbcUrl = String.format("jdbc:j2:gs://%s/%s", bucketName, dbName);
+      String dbUrl = String.format("gs://%s/%s", bucketName, dbName);*/
+
+
       SpringApplication.run(Application.class, args);
 
       // The following code is to check if a random question is correctly chosen from the external API
