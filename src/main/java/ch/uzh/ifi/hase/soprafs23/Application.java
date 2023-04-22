@@ -20,7 +20,7 @@ import java.io.FileInputStream;
 public class Application {
 
   public static void main(String[] args) throws JsonProcessingException {
-      String projectId = "sopra-fs23-group-39-server";
+      /*String projectId = "sopra-fs23-group-39-server";
       Storage storage = StorageOptions.getDefaultInstance().getService();
       String bucketName = "sopra-fs23-group-39-server_testdb";
       String filePath = "testdb.mv.db";
@@ -29,7 +29,7 @@ public class Application {
       if(blob == null || blob.exists()){
           BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
           storage.create(blobInfo, new byte[0]);
-      }
+      }*/
 
 
       /*String dbName = "testdb";
