@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
 import ch.uzh.ifi.hase.soprafs23.questions.QuestionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.cloud.storage.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +13,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.FileInputStream;
+
 @RestController
 @SpringBootApplication
 public class Application {
 
   public static void main(String[] args) throws JsonProcessingException {
-
+      String projectId = "sopra-fs23-group-39-server";
+      Storage storage = StorageOptions.getDefaultInstance().getService();
+      String bucketName = "sopra-fs23-group-39-server_testdb";
+      String filePath = "testdb";
+      BlobId blobId = BlobId.of(bucketName, filePath);
+      BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+      if(!storage.get(blobId.getBucket(), blobId.getName()).exists()){
+          storage.create(blobInfo, new byte[0]);
+      }
       SpringApplication.run(Application.class, args);
 
       // The following code is to check if a random question is correctly chosen from the external API
