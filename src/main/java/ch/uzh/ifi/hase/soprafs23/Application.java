@@ -25,8 +25,9 @@ public class Application {
       String bucketName = "sopra-fs23-group-39-server_testdb";
       String filePath = "testdb";
       BlobId blobId = BlobId.of(bucketName, filePath);
-      BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-      if(!storage.get(blobId).exists()){
+      Blob blob = storage.get(blobId);
+      if(blob == null){
+          BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
           storage.create(blobInfo, new byte[0]);
       }
       SpringApplication.run(Application.class, args);
