@@ -30,8 +30,7 @@ public class MovieApiService extends ApiService {
             listOfImageLinks.add(imageLink);
         }
 
-        Collections.shuffle(listOfImageLinks);
-
+        Collections.shuffle(listOfImageLinks.subList(0, 5));
         return listOfImageLinks.get(0);
     }
 

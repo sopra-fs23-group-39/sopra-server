@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 
 import javax.persistence.Column;
 
@@ -21,6 +22,30 @@ public class UserGetDTO {
     private boolean isReady;
     private Game game;
     private Game hostedGame;
+
+    private Long gameId;
+
+    private Long hostedGameId;
+
+    public UserGetDTO() {}
+
+    public UserGetDTO(User user) {
+        this.id = user.getId();
+        this.password = user.getPassword();
+        this.username = user.getUsername();
+        this.status = user.getStatus();
+        this.rank = user.getRank();
+        this.numberGames = user.getNumberGames();
+        this.totalPoints = user.getTotalPoints();
+        this.isReady = user.getIsReady();
+        if (user.getGame() != null) {
+            this.gameId = user.getGame().getGameId();
+        }
+        if (user.getHostedGame() != null) {
+            this.hostedGameId = user.getHostedGame().getGameId();
+        }
+    }
+
 
     public Game getGame() {
         return game;

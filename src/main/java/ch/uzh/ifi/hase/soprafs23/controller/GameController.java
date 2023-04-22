@@ -24,26 +24,26 @@ import java.util.List;
 @RestController
 public class GameController {
 
-  private final GameService gameService;
-  private final UserService userService;
+    private final GameService gameService;
+    private final UserService userService;
 
-  GameController(GameService gameService, UserService userService) {
-    this.gameService = gameService;
-    this.userService = userService;
-  }
+    GameController(GameService gameService, UserService userService) {
+        this.gameService = gameService;
+        this.userService = userService;
+    }
 
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameCreationDTO createGame(@RequestBody GameCreationDTO gameCreationDTO){
-        Game game = gameService.createGame(gameCreationDTO.getHostId(), gameCreationDTO.getGameMode(), gameCreationDTO.getQuestionAmount());
+        Game game = gameService.createGame(gameCreationDTO.getHostId(), gameCreationDTO.getGameMode(), gameCreationDTO.getQuestionAmount(),gameCreationDTO.getTimer());
         return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(game);
     }
     @PutMapping("/game/{gameId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void joinGame(@PathVariable long gameId, @RequestBody long userId){
-      gameService.findAndJoinGame(gameId, userId, userService.getUserById(userId));
+        gameService.findAndJoinGame(gameId, userId, userService.getUserById(userId));
     }
 
     @GetMapping("/game/{gameId}")
@@ -56,5 +56,13 @@ public class GameController {
             playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
         }
         return playerDTOs;
+    }
+
+    @GetMapping("/game/{gameId}/settings")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameCreationDTO retrieveGameSettings (@PathVariable long gameId){
+        Game findByGameId = gameService.getGameSettings(gameId);
+        return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(findByGameId);
     }
 }

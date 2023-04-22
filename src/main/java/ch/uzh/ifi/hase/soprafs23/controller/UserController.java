@@ -102,4 +102,16 @@ public class UserController {
         userService.readyUser(userId);
     }
 
+    @GetMapping("/lobby/{lobbyId}/ranking")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getByLobbyId(@PathVariable Long lobbyId) {
+        List<User> users = userService.retrieveRanking(lobbyId);
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        for (User user : users) {
+            userGetDTOs.add(new UserGetDTO(user));
+        }
+        return userGetDTOs;
+    }
+
 }

@@ -1,10 +1,6 @@
-package ch.uzh.ifi.hase.soprafs23.questions;
+package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import javax.persistence.Embeddable;
-import java.util.Objects;
-
-@Embeddable
-public class Question {
+public class QuestionGetDTO {
 
     private String questionText;
 
@@ -19,20 +15,6 @@ public class Question {
     private String answer3;
 
     private String answer4;
-
-    public Question(String questionText, String questionLink, String correctAnswer, String answer1, String answer2, String answer3, String answer4) {
-        this.questionText = questionText;
-        this.questionLink = questionLink;
-        this.correctAnswer = correctAnswer;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-    }
-
-    public Question() {
-
-    }
 
     public String getQuestionText() {
         return questionText;
@@ -81,23 +63,4 @@ public class Question {
     }
 
     public void setAnswer4(String answer4) { this.answer4 = answer4; }
-
-    @Override
-    public boolean equals(Object questionToCompare) {
-        if (this == questionToCompare) {
-            return true;
-        }
-        if (questionToCompare == null || getClass() != questionToCompare.getClass()) {
-            return false;
-        }
-        Question other = (Question) questionToCompare;
-        return Objects.equals(correctAnswer, other.getCorrectAnswer());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + correctAnswer.hashCode();
-        return result;
-    }
 }
