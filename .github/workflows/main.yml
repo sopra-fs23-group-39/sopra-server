@@ -43,7 +43,8 @@ jobs:
         uses: google-github-actions/deploy-appengine@v0.2.0
         with:
           deliverables: app.yaml
-          version: v1
+          #needed updated version to deploy to app engine flex
+          version: v2
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
 
       - name: Test
