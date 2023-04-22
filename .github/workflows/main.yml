@@ -46,6 +46,7 @@ jobs:
           #needed updated version to deploy to app engine flex
           version: v2
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
+          debug: true
 
       - name: Test
         run: curl "${{ steps.deploy.outputs.url }}"
