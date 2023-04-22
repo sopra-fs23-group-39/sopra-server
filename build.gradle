@@ -32,6 +32,8 @@ springBoot {
 }
 
 dependencies {
+    implementation 'com.google.cloud.storage.contrib:h2-gcs:1.4.200'
+    implementation 'com.google.cloud:google-cloud-storage:2.2.2'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:webjars-locator-core'
     implementation 'org.webjars:sockjs-client:1.1.2'
