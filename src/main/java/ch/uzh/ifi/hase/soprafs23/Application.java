@@ -23,7 +23,7 @@ public class Application {
       String projectId = "sopra-fs23-group-39-server";
       Storage storage = StorageOptions.getDefaultInstance().getService();
       String bucketName = "sopra-fs23-group-39-server_testdb";
-      String filePath = "testdb";
+      String filePath = "testdb.mv.db";
       BlobId blobId = BlobId.of(bucketName, filePath);
       Blob blob = storage.get(blobId);
       if(blob == null || blob.exists()){
