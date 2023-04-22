@@ -25,8 +25,8 @@ public class Application {
       String bucketName = "sopra-fs23-group-39-server_testdb";
       String filePath = "testdb";
       BlobId blobId = BlobId.of(bucketName, filePath);
-      if(blobId == null){
-          Blob blob = storage.get(blobId);
+      Blob blob = storage.get(blobId);
+      if(blob == null || blob.exists()){
           BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
           storage.create(blobInfo, new byte[0]);
       }
