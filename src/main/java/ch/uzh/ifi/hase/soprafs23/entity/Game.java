@@ -24,12 +24,13 @@ import java.util.List;
 @Entity
 @Table(name = "GAME")
 public class Game implements Serializable {
-
+    public Game() {}
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "gameId")
     private Long gameId;
 
     @Column(nullable = true)

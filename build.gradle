@@ -32,6 +32,8 @@ springBoot {
 }
 
 dependencies {
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.16.1'
+    implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.11.1'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:webjars-locator-core'
     implementation 'org.webjars:sockjs-client:1.1.2'

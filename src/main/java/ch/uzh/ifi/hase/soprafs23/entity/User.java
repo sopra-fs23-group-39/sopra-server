@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -21,11 +20,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
-
+    public User() {}
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -41,7 +40,7 @@ public class User implements Serializable {
     private UserStatus status;
 
     @Column(nullable = false)
-    private Long rank;
+    private Long userRank;
 
     @Column(nullable = false)
     private Long numberGames;
@@ -117,12 +116,12 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public Long getRank() {
-        return rank;
+    public Long getUserRank() {
+        return userRank;
     }
 
-    public void setRank(Long rank) {
-        this.rank = rank;
+    public void setUserRank(Long rank) {
+        this.userRank = rank;
     }
 
     public Long getTotalPoints() {

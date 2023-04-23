@@ -12,7 +12,7 @@ public class UserGetDTO {
   private String username;
   private UserStatus status;
 
-    private Long rank;
+    private Long userRank;
 
     private Long numberGames;
 
@@ -54,12 +54,12 @@ public class UserGetDTO {
     this.password = password;
   }
 
-  public Long getRank() {
-    return rank;
+  public Long getUserRank() {
+    return userRank;
   }
 
-  public void setRank(Long rank) {
-    this.rank = rank;
+  public void setUserRank(Long rank) {
+    this.userRank = rank;
   }
 
     public Long getNumberGames() {
