@@ -141,4 +141,28 @@ Task https://github.com/sopra-fs23-group-39/sopra-server/issues/60 Add functiona
 Result: when a Game object is created, a list of questions is added to it, according to the chosen game mode and number of questions (equality of questions is prevented by overridden equals method). Number of questions sent to the front-end is controlled by the back-end that counts game rounds.  
 
 
+Yannick Salzmann
 
+
+https://github.com/sopra-fs23-group-39/sopra-client/issues/41
+storing game mode property when clicking on a game setting 
+
+only open the lobby when clicking on create game (only one lobby that is either accessed through creating a game or join game)
+
+created a method in the back end to retrieve the game settings
+
+display the game settings properly in the waiting room
+
+creating the leaderboard page https://github.com/sopra-fs23-group-39/sopra-client/issues/30
+
+having a back button and route it accordingly https://github.com/sopra-fs23-group-39/sopra-client/issues/32
+
+display a list of all registered players https://github.com/sopra-fs23-group-39/sopra-client/issues/31
+
+order them on their rank
+
+route to a user profile when clicking on its name https://github.com/sopra-fs23-group-39/sopra-client/issues/33
+
+disable the change credentials button in the profile page, when its not the own profile
+
+working on the start game functionality (so far no simultanous start for all players)
