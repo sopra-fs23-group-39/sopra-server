@@ -26,6 +26,7 @@ public class Application {
       String filePath = "testdb.mv.db";
       BlobId blobId = BlobId.of(bucketName, filePath);
       Blob blob = storage.get(blobId);
+      if (blob == null){
           BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
           storage.create(blobInfo, new byte[0]);
       }*/
