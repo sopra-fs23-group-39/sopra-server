@@ -20,29 +20,7 @@ import java.io.FileInputStream;
 public class Application {
 
   public static void main(String[] args) throws JsonProcessingException {
-      /*String projectId = "sopra-fs23-group-39-server";
-      Storage storage = StorageOptions.getDefaultInstance().getService();
-      String bucketName = "sopra-fs23-group-39-server_testdb";
-      String filePath = "testdb.mv.db";
-      BlobId blobId = BlobId.of(bucketName, filePath);
-      Blob blob = storage.get(blobId);
-      if (blob == null){
-          BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-          storage.create(blobInfo, new byte[0]);
-      }*/
-
-
-      /*String dbName = "testdb";
-      String dbUser = "sa";
-      String dbPass = "";
-      Storage storage2 = StorageOptions.getDefaultInstance().getService();
-      Bucket bucket = storage.get(bucketName);
-      if(bucket == null){
-          storage2.create(BucketInfo.of(bucketName));
-      }
-
-      String jdbcUrl = String.format("jdbc:j2:gs://%s/%s", bucketName, dbName);
-      String dbUrl = String.format("gs://%s/%s", bucketName, dbName);*/
+      
 
 
       SpringApplication.run(Application.class, args);
