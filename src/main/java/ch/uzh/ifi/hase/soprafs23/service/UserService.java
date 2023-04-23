@@ -172,7 +172,17 @@ public class UserService {
         userRepository.flush();
     }
 
-    public List<User> retrieveRanking(Long lobbyId) {
+    public List<User> retrieveCurrentRanking(Long lobbyId) {
+        List<User> users = userRepository.findByLobbyId(lobbyId);
+        users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
+        long rank = 1;
+        for (User user : users) {
+            user.setRank(rank++);
+        }
+        return users;
+    }
+
+    public List<User> retrieveTotalRanking(Long lobbyId) {
         List<User> users = userRepository.findByLobbyId(lobbyId);
         users.sort(Comparator.comparing(User::getTotalPoints).reversed());
         long rank = 1;
@@ -181,5 +191,6 @@ public class UserService {
         }
         return users;
     }
+
 
 }

@@ -102,11 +102,23 @@ public class UserController {
         userService.readyUser(userId);
     }
 
-    @GetMapping("/lobby/{lobbyId}/ranking")
+    @GetMapping("/lobby/{lobbyId}/currentRanking")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getByLobbyId(@PathVariable Long lobbyId) {
-        List<User> users = userService.retrieveRanking(lobbyId);
+        List<User> users = userService.retrieveCurrentRanking(lobbyId);
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        for (User user : users) {
+            userGetDTOs.add(new UserGetDTO(user));
+        }
+        return userGetDTOs;
+    }
+
+    @GetMapping("/lobby/{lobbyId}/totalRanking")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getRankingByLobbyId(@PathVariable Long lobbyId) {
+        List<User> users = userService.retrieveTotalRanking(lobbyId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
         for (User user : users) {
             userGetDTOs.add(new UserGetDTO(user));

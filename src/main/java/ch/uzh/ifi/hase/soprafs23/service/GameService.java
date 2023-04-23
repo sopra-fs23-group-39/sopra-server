@@ -91,7 +91,7 @@ public class GameService {
     }
 
     public Game getGameSettings(long gameId) {
-        String message = "User with id %d was not found!";
+        String message = "Game with id %d was not found!";
         try {
             return gameRepository.findByGameId(gameId);
         } catch (Exception e) {
