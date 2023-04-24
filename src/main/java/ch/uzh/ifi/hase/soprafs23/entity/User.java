@@ -56,8 +56,9 @@ public class User implements Serializable {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gameId")
     private Game game;
 
-    @OneToOne
-    @JoinColumn(name = "hosted_game_id", referencedColumnName = "gameId", nullable = true)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hosted_game_id", referencedColumnName = "game_id", nullable = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gameId")
     private Game hostedGame;
 
     public Game getGame() {
