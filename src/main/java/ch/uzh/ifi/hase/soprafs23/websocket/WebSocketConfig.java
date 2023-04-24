@@ -14,30 +14,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 import org.springframework.web.socket.sockjs.transport.handler.SockJsWebSocketHandler;
 import org.springframework.web.socket.sockjs.transport.handler.WebSocketTransportHandler;
 
-/*@Configuration
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
-    private final GameService gameService;
-    private final WaitingRoomHandshakeInterceptor waitingRoomHandshakeInterceptor;
-    @Autowired
-    public WebSocketConfig(GameService gameService, WaitingRoomHandshakeInterceptor waitingRoomHandshakeInterceptor){
-        this.gameService = gameService;
-        this.waitingRoomHandshakeInterceptor = waitingRoomHandshakeInterceptor;
-    }
 
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        System.out.println("trying to register");
-        registry.addHandler(waitingRoomHandler(), "/game/{gameId}").setAllowedOrigins("*").addInterceptors(waitingRoomHandshakeInterceptor);
-    }
-
-    @Bean
-    public WebSocketHandler waitingRoomHandler() {
-        System.out.println("are we making new?");
-        return new WaitingRoomHandler(gameService);
-    }
-
-}*/
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
