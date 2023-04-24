@@ -140,6 +140,8 @@ Task https://github.com/sopra-fs23-group-39/sopra-server/issues/60 Add functiona
 
 Result: when a Game object is created, a list of questions is added to it, according to the chosen game mode and number of questions (equality of questions is prevented by overridden equals method). Number of questions sent to the front-end is controlled by the back-end that counts game rounds.  
 
+Task #45 Create a Question route protection (QuestionGuard), commit: 3eb54cc (client)
+
 
 Yannick Salzmann
 
@@ -191,3 +193,11 @@ Display current player standings: https://github.com/sopra-fs23-group-39/sopra-c
 check if the last question of the game and route accordingly: https://github.com/sopra-fs23-group-39/sopra-client/issues/28
 
 As a logged-in user participating in a game and having answered a question, I want to see the right answer to the question and the scores of all the users playing this game (including my score): https://github.com/sopra-fs23-group-39/sopra-server/issues/40
+
+
+
+Weeks 5 (24.04.2023-30.04.2023)
+
+Shakirova Natalia:
+
+Task #11 (client) Redirect users to Game after the game starts
