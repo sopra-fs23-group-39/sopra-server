@@ -178,4 +178,12 @@ Migrated entire server side of project to google app engine flexible, which caus
 https://github.com/sopra-fs23-group-39/sopra-server/issues/57  
   
 migrated entire database to MySQL, set up a schema, deployed to google SQL, set up connection with credentials etc. Had to rewrite some entity code due to hard to find errors.
+
+Damjan Kuzmanovic
+
+- Crated the Validation Function https://github.com/sopra-fs23-group-39/sopra-server/issues/64
+
+- Created the Evaluation Formula https://github.com/sopra-fs23-group-39/sopra-server/issues/65
+
+-Added answer validation function https://github.com/sopra-fs23-group-39/sopra-server/issues/38
   
