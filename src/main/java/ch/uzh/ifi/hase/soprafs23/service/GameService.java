@@ -55,6 +55,7 @@ public class GameService {
         game.setQuestionAmount(questionAmount);
         game.setTimer(timer);
         game.setHost(userService.getUserById(hostId));
+
       try {
           game.setQuestions(questionService.getListOfQuestions(gameMode, questionAmount));
       }
@@ -73,7 +74,6 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
-        game.getUserIds().add(userId);
         game.getPlayers().add(user);
         user.setGame(game);
     }

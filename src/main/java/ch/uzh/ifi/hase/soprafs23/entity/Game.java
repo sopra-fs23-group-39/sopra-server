@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,13 +25,15 @@ import java.util.List;
 @Entity
 @Table(name = "GAME")
 public class Game implements Serializable {
-
+    public Game() {}
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "game_id")
     private Long gameId;
+
 
     @Column(nullable = true)
     private GameMode gameMode;
@@ -44,21 +47,17 @@ public class Game implements Serializable {
     @Column
     private int timer;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JoinColumn(name = "gameHost_id", referencedColumnName = "id")
     private User host;
 
-    //not sure if this works yet..
-    @ElementCollection
-    @CollectionTable(name = "test", joinColumns = @JoinColumn(name = "test2"))
-    @Column(name = "tes3")
-    private List<Long> userIds = new ArrayList<>();
 
-    @OneToMany(mappedBy = "game", orphanRemoval = true)
+    @OneToMany(mappedBy = "game", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<User> players = new ArrayList<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Question> questions = new ArrayList<>();
 
     @Column
@@ -113,18 +112,11 @@ public class Game implements Serializable {
         this.hostId = hostId;
     }
 
-    public List<Long> getUserIds() {
-        return userIds;
-    }
-
-    public void setParticipants(List<Long> userIds) {
-        this.userIds = userIds;
-    }
-
+    @Transactional
     public List<Question> getQuestions() {
         return questions;
     }
-
+    @Transactional
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
