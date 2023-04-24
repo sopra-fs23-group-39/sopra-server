@@ -196,7 +196,7 @@ As a logged-in user participating in a game and having answered a question, I wa
 
 
 
-Weeks 5 (24.04.2023-30.04.2023)
+Week 5 (24.04.2023-30.04.2023)
 
 Shakirova Natalia:
 
@@ -221,7 +221,7 @@ Correctly handle exceptions for invalid user input (f. e. invalid username != nu
 
 Currently a user is locked on the Registration page if a user wants to login https://github.com/sopra-fs23-group-39/sopra-client/issues/49
 
-CSS for the Game: Assuring that the buttons for answering a question are not invisible (pushed to the bottem) in the quiz. https://github.com/sopra-fs23-group-39/sopra-client/issues/47 
+CSS for the Game: Assuring that the buttons for answering a question are not invisible (pushed to the bottom) in the quiz. https://github.com/sopra-fs23-group-39/sopra-client/issues/47 
 
 
 Florence Hügi:
