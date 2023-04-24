@@ -200,4 +200,9 @@ Weeks 5 (24.04.2023-30.04.2023)
 
 Shakirova Natalia:
 
-Task #11 (client) Redirect users to Game after the game starts
+Task #11 (client) Redirect users to Game after the game starts  
+  
+Markus Niemack:  
+  
+https://github.com/sopra-fs23-group-39/sopra-server/issues/66
+Rewrite Websocket with different library, both in back- and frontend since they are currently timing out.
