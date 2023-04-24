@@ -14,7 +14,7 @@ public class AnswerPostDTO {
 
     private Date time;
 
-    public String getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 

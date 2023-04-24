@@ -48,8 +48,9 @@ public class WebSocketController {
     }
 
     @MessageMapping("/game/{gameId}/answer")
-    public Answer getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) throws JsonProcessingException {
-        return DTOMapper.INSTANCE.convertAnswerPostDTOToEntity(answerPostDTO);
+    public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) throws JsonProcessingException {
+        Answer answer = DTOMapper.INSTANCE.convertAnswerPostDTOToEntity(answerPostDTO);
+
     }
 
 }

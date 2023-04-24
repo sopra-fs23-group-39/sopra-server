@@ -49,6 +49,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long totalPoints;
 
+    @Column
+    private Long gamescore;
+
     @Column(nullable = false)
     private boolean isReady;
 
@@ -148,5 +151,11 @@ public class User implements Serializable {
     public void setIsReady(boolean isReady) {
          this.isReady = isReady;
     }
+
+    public Long GetGameScore(){
+        return gamescore;
+    }
+
+    public void SetGameScore()
 
 }

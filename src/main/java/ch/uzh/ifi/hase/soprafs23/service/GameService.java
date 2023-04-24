@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
 import ch.uzh.ifi.hase.soprafs23.questions.QuestionService;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,6 +111,27 @@ public class GameService {
           gameById.setCurrentRound(++currentRound);
       }
       return question;
+  }
+
+  public void Score(Answer answer){
+        long score = ReturnScore(answer);
+        Long gameId = answer.getGameId();
+        Game gameById = gameRepository.findByGameId(gameId);
+        gameById.scoreUser(score);
+  }
+
+  public long ReturnScore(Answer answer){
+      long score;
+      String CorrectAnswer = answer.getCorrectAnswer();
+      String UserAnswer = answer.getUsersAnswer();
+      Date time = answer.getTime();
+      if(UserAnswer.equals(CorrectAnswer)){
+          score = 500;
+      }
+      else{
+          score = 0;
+      }
+      return score;
   }
 
 }

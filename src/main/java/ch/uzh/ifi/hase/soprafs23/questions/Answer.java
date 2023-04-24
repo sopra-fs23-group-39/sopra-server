@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Answer {
 
-    private String gameId;
+    private Long gameId;
 
     private String userId;
 
@@ -14,11 +14,11 @@ public class Answer {
 
     private Date time;
 
-    public String getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 
-    public void setGameId(String gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 
