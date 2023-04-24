@@ -206,3 +206,8 @@ Markus Niemack:
   
 https://github.com/sopra-fs23-group-39/sopra-server/issues/66
 Rewrite Websocket with different library, both in back- and frontend since they are currently timing out.
+
+Yannick Salzmann:
+Login/Registration issues: Correctly handle exceptions for invalid user input (f. e. invalid username != null). Currently a user is locked on the Registration page if a user wants to login.
+
+CSS for the Game: Assuring that the buttons for answering a question are not invisible (pushed to the bottem) in the quiz.
