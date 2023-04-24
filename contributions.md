@@ -222,3 +222,10 @@ Correctly handle exceptions for invalid user input (f. e. invalid username != nu
 Currently a user is locked on the Registration page if a user wants to login https://github.com/sopra-fs23-group-39/sopra-client/issues/49
 
 CSS for the Game: Assuring that the buttons for answering a question are not invisible (pushed to the bottem) in the quiz. https://github.com/sopra-fs23-group-39/sopra-client/issues/47 
+
+
+Florence Hügi:
+
+display winner if the game is over https://github.com/sopra-fs23-group-39/sopra-client/issues/29
+
+create server functions corresponding to winnerpage https://github.com/sopra-fs23-group-39/sopra-server/issues/69
