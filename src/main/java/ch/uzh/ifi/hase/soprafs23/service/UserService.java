@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -173,7 +174,8 @@ public class UserService {
     }
 
     public List<User> retrieveCurrentRanking(Long lobbyId) {
-        List<User> users = userRepository.findByLobbyId(lobbyId);
+        Game game = gameRepository.findByGameId(lobbyId);
+        List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
         long rank = 1;
         for (User user : users) {
@@ -183,7 +185,8 @@ public class UserService {
     }
 
     public List<User> retrieveTotalRanking(Long lobbyId) {
-        List<User> users = userRepository.findByLobbyId(lobbyId);
+        Game game = gameRepository.findByGameId(lobbyId);
+        List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getTotalPoints).reversed());
         long rank = 1;
         for (User user : users) {
