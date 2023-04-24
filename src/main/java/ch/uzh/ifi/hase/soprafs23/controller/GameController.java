@@ -43,7 +43,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void joinGame(@PathVariable long gameId, @RequestBody long userId){
-      gameService.findAndJoinGame(gameId, userId, userService.getUserById(userId));
+        gameService.findAndJoinGame(gameId, userId, userService.getUserById(userId));
     }
 
     @GetMapping("/game/{gameId}")
@@ -64,5 +64,29 @@ public class GameController {
     public GameCreationDTO retrieveGameSettings (@PathVariable long gameId){
         Game findByGameId = gameService.getGameSettings(gameId);
         return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(findByGameId);
+    }
+
+    @GetMapping("/game/{lobbyId}/currentRanking")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getByLobbyId(@PathVariable Long lobbyId) {
+        List<User> users = userService.retrieveCurrentRanking(lobbyId);
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        for (User user : users) {
+            userGetDTOs.add(new UserGetDTO(user));
+        }
+        return userGetDTOs;
+    }
+
+    @GetMapping("/game/{lobbyId}/totalRanking")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getRankingByLobbyId(@PathVariable Long lobbyId) {
+        List<User> users = userService.retrieveTotalRanking(lobbyId);
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        for (User user : users) {
+            userGetDTOs.add(new UserGetDTO(user));
+        }
+        return userGetDTOs;
     }
 }

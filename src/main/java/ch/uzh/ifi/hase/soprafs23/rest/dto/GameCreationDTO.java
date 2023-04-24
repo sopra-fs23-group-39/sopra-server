@@ -62,7 +62,8 @@ public class GameCreationDTO {
         this.players = players;
     }
 
-    public void setTimer(int timer){this.timer=timer;}
+    public void setTimer(int timer){this.timer = timer;}
 
     public int getTimer(){return timer;}
+
 }
