@@ -200,7 +200,13 @@ Weeks 5 (24.04.2023-30.04.2023)
 
 Shakirova Natalia:
 
-Task #11 (client) Redirect users to Game after the game starts  
+Task 48 (client): Make the correct answer turn "green" on Question page: https://github.com/sopra-fs23-group-39/sopra-client/issues/48
+
+Task 46 (client): Make a button "Select mode" on GameSelection page "chosen" when pressed, disable other buttons: https://github.com/sopra-fs23-group-39/sopra-client/issues/46
+
+Task 68 (server): Connect Time (from GameSelection page) and time to answer a question (on Question page): https://github.com/sopra-fs23-group-39/sopra-server/issues/68
+
+Task 11 (client), task 35 (server): Simultaneously redirect users to Game after the game starts (incl. back-end) - I'm not sure I can do it before Thursday, I already spent several hours (and Yannick as well) on it and it didn't work. (For one-player game, this button (Start game) works.)
   
 Markus Niemack:  
   
