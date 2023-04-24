@@ -165,4 +165,17 @@ route to a user profile when clicking on its name https://github.com/sopra-fs23-
 
 disable the change credentials button in the profile page, when its not the own profile
 
-working on the start game functionality (so far no simultanous start for all players)
+working on the start game functionality (so far no simultaneous start for all players)  
+  
+  
+  
+Markus Niemack  
+  
+https://github.com/sopra-fs23-group-39/sopra-server/issues/62  
+
+Migrated entire server side of project to google app engine flexible, which caused the database to break completely, therefore I pulled this forward:  
+  
+https://github.com/sopra-fs23-group-39/sopra-server/issues/57  
+  
+migrated entire database to MySQL, set up a schema, deployed to google SQL, set up connection with credentials etc. Had to rewrite some entity code due to hard to find errors.
+  
