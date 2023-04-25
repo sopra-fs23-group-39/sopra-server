@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -169,5 +171,31 @@ public class UserService {
         newReadyUser.setIsReady(true);
         userRepository.save(newReadyUser);
         userRepository.flush();
+    }
+
+    public void Score(Answer answer){
+        long score = ReturnScore(answer);
+        Long UserId = answer.getUserId();
+        User userById = getUserById(UserId);
+        Long prev_score = userById.getGameScore();
+        Long new_score = score + prev_score;
+        userById.setGameScore(new_score);
+        userById.setQuestionScore(score);
+    }
+
+    public long ReturnScore(Answer answer){
+        long score;
+        String CorrectAnswer = answer.getCorrectAnswer();
+        String UserAnswer = answer.getUsersAnswer();
+        Date time = answer.getTime();
+        Date qTime = answer.getQuestionTime();
+        long diff = Math.abs(time.getTime() -qTime.getTime());
+        if(UserAnswer.equals(CorrectAnswer)){
+            score = (long) (500/Math.pow((diff/1000),2));
+        }
+        else{
+            score = 0;
+        }
+        return score;
     }
 }

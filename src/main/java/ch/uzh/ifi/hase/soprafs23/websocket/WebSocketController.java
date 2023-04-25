@@ -14,6 +14,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.QuestionGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -27,10 +28,12 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final GameService gameService;
+    private final UserService userService;
 
-    public WebSocketController(SimpMessagingTemplate messagingTemplate, GameService gameService) {
+    public WebSocketController(SimpMessagingTemplate messagingTemplate, GameService gameService, UserService userService) {
         this.messagingTemplate = messagingTemplate;
         this.gameService = gameService;
+        this.userService = userService;
     }
 
     @MessageMapping("/game/{gameId}")
@@ -56,7 +59,7 @@ public class WebSocketController {
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) throws JsonProcessingException {
         Answer answer = DTOMapper.INSTANCE.convertAnswerPostDTOToEntity(answerPostDTO);
-        gameService.Score(answer);
+        userService.Score(answer);
     }
 
 }
