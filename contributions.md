@@ -246,4 +246,6 @@ Damjan Kuzmanovic:
 
 -Ensure that the application always starts from the login page https://github.com/sopra-fs23-group-39/sopra-client/issues/52
 
+-Add Game Counter functionality https://github.com/sopra-fs23-group-39/sopra-server/issues/74
+
 
