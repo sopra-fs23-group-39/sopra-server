@@ -16,7 +16,7 @@ public class ActorApiService extends ApiService {
     public List<String> getListOfActorIds(String key, List<String> listOfMovieIds) throws JsonProcessingException {
         List<String> listOfActorIds = new ArrayList<>();
         for (String movieId : listOfMovieIds) {
-        String response = getJSONString(String.format("https://imdb-api.com/API/Title/%s/%s", key, movieId));
+            String response = getJSONString(String.format("https://imdb-api.com/API/Title/%s/%s", key, movieId));
 
             JsonNode rootNode = objectMapper.readTree(response);
             JsonNode itemsNode = rootNode.path("starList");
