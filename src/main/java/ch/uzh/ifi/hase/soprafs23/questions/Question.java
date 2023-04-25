@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.questions;
 
 import javax.persistence.Embeddable;
+import java.util.Date;
 import java.util.Objects;
 
 @Embeddable
@@ -19,6 +20,8 @@ public class Question {
     private String answer3;
 
     private String answer4;
+
+    private Date creationTime;
 
     public Question(String questionText, String questionLink, String correctAnswer, String answer1, String answer2, String answer3, String answer4) {
         this.questionText = questionText;
@@ -81,6 +84,10 @@ public class Question {
     }
 
     public void setAnswer4(String answer4) { this.answer4 = answer4; }
+
+    public Date getCreationTime(){return creationTime;}
+
+    public void setCreationTime(Date date){this.creationTime = date;}
 
     @Override
     public boolean equals(Object questionToCompare) {

@@ -14,6 +14,8 @@ public class AnswerPostDTO {
 
     private Date time;
 
+    private Date questionTime;
+
     public Long getGameId() {
         return gameId;
     }
@@ -49,4 +51,8 @@ public class AnswerPostDTO {
     }
 
     public void setTime(Date time) { this.time = time; }
+
+    public Date getQuestionTime(){return questionTime;}
+
+    public void setQuestionTime(Date questionTime){this.questionTime=questionTime;}
 }

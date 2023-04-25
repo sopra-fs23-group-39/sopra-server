@@ -116,7 +116,11 @@ public class GameService {
   public void Score(Answer answer){
         long score = ReturnScore(answer);
         Long UserId = answer.getUserId();
-        User userById = UserRepository.findByID
+        User userById = UserRepository.findById(UserId);
+        Long prev_score = userById.getGameScore();
+        Long new_score = score + prev_score;
+        userById.setGameScore(new_score);
+        userById.setQuestionScore(score);
   }
 
   public long ReturnScore(Answer answer){
@@ -124,8 +128,10 @@ public class GameService {
       String CorrectAnswer = answer.getCorrectAnswer();
       String UserAnswer = answer.getUsersAnswer();
       Date time = answer.getTime();
+      Date qTime = answer.getQuestionTime();
+      long diff = Math.abs(time.getTime() -qTime.getTime());
       if(UserAnswer.equals(CorrectAnswer)){
-          score = 500;
+          score = (long) (500/Math.pow((diff/1000),2));
       }
       else{
           score = 0;

@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
+import java.util.Date;
+
 public class QuestionGetDTO {
 
     private String questionText;
@@ -15,6 +17,8 @@ public class QuestionGetDTO {
     private String answer3;
 
     private String answer4;
+
+    private Date creationTime;
 
     public String getQuestionText() {
         return questionText;
@@ -63,4 +67,8 @@ public class QuestionGetDTO {
     }
 
     public void setAnswer4(String answer4) { this.answer4 = answer4; }
+
+    public Date getCreationTime(){return creationTime;}
+
+    public void setCreationTime(Date creationTime){this.creationTime=creationTime;}
 }

@@ -74,6 +74,7 @@ public interface DTOMapper {
     @Mapping(source = "answer2", target = "answer2")
     @Mapping(source = "answer3", target = "answer3")
     @Mapping(source = "answer4", target = "answer4")
+    @Mapping(source= "creationTime", target = "creationTime")
     QuestionGetDTO convertEntityToQuestionGetDTO(Question question);
 
     @Mapping(source = "userId", target = "userId")
@@ -81,5 +82,6 @@ public interface DTOMapper {
     @Mapping(source = "correctAnswer", target = "correctAnswer")
     @Mapping(source = "usersAnswer", target = "usersAnswer")
     @Mapping(source = "time", target = "time")
+    @Mapping(source = "questionTime", target = "questionTime")
     Answer convertAnswerPostDTOToEntity(AnswerPostDTO answerPostDTO);
 }

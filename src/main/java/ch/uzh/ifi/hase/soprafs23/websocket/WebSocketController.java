@@ -1,10 +1,14 @@
 package ch.uzh.ifi.hase.soprafs23.websocket;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.QuestionGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
@@ -44,13 +48,15 @@ public class WebSocketController {
     @SendTo("/topic/game/{gameId}/question")
     public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId) throws JsonProcessingException {
         Question question = gameService.getQuestionToSend(gameId);
+        Date creation_time = new Date();
+        question.setCreationTime(creation_time);
         return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
     }
 
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) throws JsonProcessingException {
         Answer answer = DTOMapper.INSTANCE.convertAnswerPostDTOToEntity(answerPostDTO);
-
+        gameService.Score(answer);
     }
 
 }

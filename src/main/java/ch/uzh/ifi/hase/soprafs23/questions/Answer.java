@@ -14,6 +14,8 @@ public class Answer {
 
     private Date time;
 
+    private Date questionTime;
+
     public Long getGameId() {
         return gameId;
     }
@@ -47,4 +49,8 @@ public class Answer {
     }
 
     public void setTime(Date time) { this.time = time; }
+
+    public Date getQuestionTime(){return questionTime;}
+
+    public void setQuestionTime(Date qTime){this.questionTime = qTime;}
 }
