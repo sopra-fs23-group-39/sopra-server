@@ -33,7 +33,6 @@ public interface DTOMapper {
     @Mapping(target = "numberGames", ignore = true)
     @Mapping(target = "totalPoints", ignore = true)
     @Mapping(target = "isReady", ignore = true)
-    @Mapping(target = "currentPoints", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -58,7 +57,6 @@ public interface DTOMapper {
     @Mapping(target = "totalPoints", ignore = true)
     @Mapping(target = "numberGames", ignore = true)
     @Mapping(source = "isReady", target = "isReady")
-    @Mapping(source = "currentPoints", target = "currentPoints")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(source = "gameId", target = "gameId")
