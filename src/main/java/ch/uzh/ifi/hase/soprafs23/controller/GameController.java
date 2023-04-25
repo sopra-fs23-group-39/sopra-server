@@ -89,4 +89,13 @@ public class GameController {
         }
         return userGetDTOs;
     }
+
+    @GetMapping("/game/{lobbyId}/winner")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO winner(@PathVariable long lobbyId){
+        User user = gameService.getWinner(lobbyId);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+    }
+
 }
