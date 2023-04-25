@@ -77,8 +77,8 @@ public class Game implements Serializable {
 
     //TODO: add more values here later, this is just for opening a game page with an ID so far..
     public int getQuestionAmount() {
-    return questionAmount;
-}
+        return questionAmount;
+    }
 
     public void setQuestionAmount(int questionAmount) {
         this.questionAmount = questionAmount;

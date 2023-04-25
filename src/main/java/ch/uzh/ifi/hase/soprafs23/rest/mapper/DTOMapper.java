@@ -42,6 +42,7 @@ public interface DTOMapper {
     @Mapping(source = "numberGames", target = "numberGames")
     @Mapping(source = "totalPoints", target = "totalPoints")
     @Mapping(source = "userRank", target = "userRank")
+    @Mapping(source = "currentPoints", target = "currentPoints")
     @Mapping(source = "isReady", target = "isReady")
     @Mapping(source = "game", target = "game")
     @Mapping(source = "hostedGame", target = "hostedGame")
@@ -65,6 +66,7 @@ public interface DTOMapper {
     @Mapping(source = "players", target = "players")
     @Mapping(source = "questionAmount", target = "questionAmount")
     @Mapping(source = "timer", target = "timer")
+    @Mapping(source = "currentRound", target = "currentRound")
     GameCreationDTO convertEntityToGameCreationDTO(Game game);
 
     @Mapping(source = "questionText", target = "questionText")
