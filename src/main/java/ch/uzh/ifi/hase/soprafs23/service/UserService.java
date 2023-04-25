@@ -177,10 +177,10 @@ public class UserService {
         long score = ReturnScore(answer);
         Long UserId = answer.getUserId();
         User userById = getUserById(UserId);
-        Long prev_score = userById.getTotalPoints();
+        Long prev_score = userById.getGameScore();
         Long new_score = score + prev_score;
-        userById.setCurrentPoints(new_score);
-        userById.setTotalPoints(score);
+        userById.setGameScore(new_score);
+        userById.setQuestionScore(score);
     }
 
     public long ReturnScore(Answer answer){
