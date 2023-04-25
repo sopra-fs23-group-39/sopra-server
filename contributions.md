@@ -229,3 +229,11 @@ Florence Hügi:
 display winner if the game is over https://github.com/sopra-fs23-group-39/sopra-client/issues/29
 
 create server functions corresponding to winnerpage https://github.com/sopra-fs23-group-39/sopra-server/issues/69
+
+Damjan Kuzmanovic:
+
+-Prvent the Start game button being pressed multiple times https://github.com/sopra-fs23-group-39/sopra-client/issues/51
+
+-Ensure that the application always starts from the login page https://github.com/sopra-fs23-group-39/sopra-client/issues/52
+
+
