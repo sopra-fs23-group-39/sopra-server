@@ -113,4 +113,19 @@ public class GameService {
         return question;
     }
 
+    public User getWinner(long gameId) {
+        List<User> users = getHostAndPlayers(gameId);
+
+        User winner = null;
+        Long maxPoints = Long.MIN_VALUE;
+
+        for (User user : users) {
+            Long totalPoints = user.getTotalPointsCurrentGame();
+            if (totalPoints > maxPoints) {
+                maxPoints = totalPoints;
+                winner = user;
+            }
+        }
+        return winner;
+    }
 }
