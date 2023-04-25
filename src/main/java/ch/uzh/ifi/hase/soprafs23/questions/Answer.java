@@ -6,7 +6,7 @@ public class Answer {
 
     private Long gameId;
 
-    private String userId;
+    private Long userId;
 
     private String correctAnswer;
 
@@ -22,13 +22,11 @@ public class Answer {
         this.gameId = gameId;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public void setUserId(Long userId) {this.userId = userId;}
 
     public String getCorrectAnswer() {
         return correctAnswer;

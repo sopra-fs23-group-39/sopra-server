@@ -156,6 +156,8 @@ public class User implements Serializable {
         return gamescore;
     }
 
-    public void SetGameScore()
+    public void SetGameScore(Long score){
+        this.gamescore = score;
+    }
 
 }

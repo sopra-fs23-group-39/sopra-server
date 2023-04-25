@@ -115,9 +115,8 @@ public class GameService {
 
   public void Score(Answer answer){
         long score = ReturnScore(answer);
-        Long gameId = answer.getGameId();
-        Game gameById = gameRepository.findByGameId(gameId);
-        gameById.scoreUser(score);
+        Long UserId = answer.getUserId();
+        User userById = UserRepository.findByID
   }
 
   public long ReturnScore(Answer answer){
