@@ -19,6 +19,8 @@ public class UserGetDTO {
 
     private Long totalPoints;
 
+    private Long currentPoints;
+
     private boolean isReady;
     private Game game;
     private Game hostedGame;
@@ -27,25 +29,24 @@ public class UserGetDTO {
 
     private Long hostedGameId;
 
-    public UserGetDTO() {}
+//    public UserGetDTO() {}
 
-    public UserGetDTO(User user) {
-        this.id = user.getId();
-        this.password = user.getPassword();
-        this.username = user.getUsername();
-        this.status = user.getStatus();
-        this.rank = user.getRank();
-        this.numberGames = user.getNumberGames();
-        this.totalPoints = user.getTotalPoints();
-        this.isReady = user.getIsReady();
-        if (user.getGame() != null) {
-            this.gameId = user.getGame().getGameId();
-        }
-        if (user.getHostedGame() != null) {
-            this.hostedGameId = user.getHostedGame().getGameId();
-        }
-    }
-
+//    public UserGetDTO(User user) {
+//        this.id = user.getId();
+//        this.password = user.getPassword();
+//        this.username = user.getUsername();
+//        this.status = user.getStatus();
+//        this.rank = user.getRank();
+//        this.numberGames = user.getNumberGames();
+//        this.totalPoints = user.getTotalPoints();
+//        this.isReady = user.getIsReady();
+//        if (user.getGame() != null) {
+//            this.gameId = user.getGame().getGameId();
+//        }
+//        if (user.getHostedGame() != null) {
+//            this.hostedGameId = user.getHostedGame().getGameId();
+//        }
+//    }
 
     public Game getGame() {
         return game;
@@ -125,5 +126,13 @@ public class UserGetDTO {
 
     public void setIsReady(boolean isReady) {
         this.isReady = isReady;
+    }
+
+    public long getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public void setCurrentPoints(Long currentPoints) {
+        this.currentPoints = currentPoints;
     }
 }

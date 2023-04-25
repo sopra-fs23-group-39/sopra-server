@@ -73,7 +73,7 @@ public class GameController {
         List<User> users = userService.retrieveCurrentRanking(lobbyId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
         for (User user : users) {
-            userGetDTOs.add(new UserGetDTO(user));
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
         return userGetDTOs;
     }
@@ -85,7 +85,7 @@ public class GameController {
         List<User> users = userService.retrieveTotalRanking(lobbyId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
         for (User user : users) {
-            userGetDTOs.add(new UserGetDTO(user));
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
         return userGetDTOs;
     }

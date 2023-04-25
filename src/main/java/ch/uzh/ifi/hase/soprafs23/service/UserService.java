@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -54,6 +55,7 @@ public class UserService {
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.ONLINE);
         newUser.setTotalPoints(0L);
+        newUser.setCurrentPoints(0L);
         newUser.setNumberGames(0L);
         newUser.setRank(1000L);
         checkIfUserExists(newUser);
@@ -172,25 +174,25 @@ public class UserService {
         userRepository.flush();
     }
 
-    public List<User> retrieveCurrentRanking(Long lobbyId) {
+    public List<User> retrieveCurrentRanking(long lobbyId) {
         Game game = gameRepository.findByGameId(lobbyId);
         List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
-        long rank = 1;
-        for (User user : users) {
-            user.setRank(rank++);
-        }
+//        long rank = 1;
+//        for (User user : users) {
+//            user.setRank(rank++);
+//        }
         return users;
     }
 
-    public List<User> retrieveTotalRanking(Long lobbyId) {
+    public List<User> retrieveTotalRanking(long lobbyId) {
         Game game = gameRepository.findByGameId(lobbyId);
         List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getTotalPoints).reversed());
-        long rank = 1;
-        for (User user : users) {
-            user.setRank(rank++);
-        }
+//        long rank = 1;
+//        for (User user : users) {
+//            user.setRank(rank++);
+//        }
         return users;
     }
 }

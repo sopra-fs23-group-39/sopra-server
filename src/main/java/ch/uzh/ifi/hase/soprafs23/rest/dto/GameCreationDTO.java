@@ -14,6 +14,8 @@ public class GameCreationDTO {
     private List<User> players;
     private int timer;
 
+    private int currentRound;
+
     public int getQuestionAmount() {
         return questionAmount;
     }
@@ -61,9 +63,11 @@ public class GameCreationDTO {
     public void setPlayers(List<User> players) {
         this.players = players;
     }
-
+    public int getTimer(){return timer;}
     public void setTimer(int timer){this.timer = timer;}
 
-    public int getTimer(){return timer;}
+    public int getCurrentRound(){return currentRound;}
+
+    public void setCurrentRound(int currentRound){this.currentRound = currentRound;}
 
 }
