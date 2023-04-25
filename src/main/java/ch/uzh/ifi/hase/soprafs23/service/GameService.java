@@ -67,6 +67,9 @@ public class GameService {
         userService.getUserById(hostId).setGame(game);
         game = gameRepository.save(game);
         gameRepository.flush();
+        //Host number of games increased
+        userService.getUserById(hostId).setNumberGames(userService.getUserById(hostId).getNumberGames()+1);
+        userService.getUserById(hostId).setTotalPointsCurrentGame((long)0);
         return game;
     }
 
@@ -78,6 +81,9 @@ public class GameService {
         }
         game.getPlayers().add(user);
         user.setGame(game);
+        //Player number of games increased
+        userService.getUserById(userId).setNumberGames(userService.getUserById(userId).getNumberGames()+1);
+        userService.getUserById(userId).setTotalPointsCurrentGame((long)0);
     }
 
     public List<User> getHostAndPlayers(long gameId) {

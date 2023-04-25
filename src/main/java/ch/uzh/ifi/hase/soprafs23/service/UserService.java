@@ -191,18 +191,19 @@ public class UserService {
     }
 
     public long ReturnScore(AnswerPostDTO answer){
-        System.out.println("in return score");
+        //System.out.println("in return score");
         long score;
         String CorrectAnswer = answer.getCorrectAnswer();
-        System.out.println(CorrectAnswer);
+        //System.out.println(CorrectAnswer);
         String UserAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
         Date qTime = answer.getQuestionTime();
         long diff = Math.abs(time.getTime() - qTime.getTime());
-        System.out.println(diff);
+        //System.out.println(diff);
         if(UserAnswer.equals(CorrectAnswer)){
-            System.out.println("answer was good");
-            score = (long) (500/Math.pow((diff/1000),2));
+            //System.out.println("answer was good");
+            //Scoring function
+            score = (long) (500/(Math.log((diff/1000))*(diff/1000)+1));
         }
         else{
             System.out.println("assigning");
