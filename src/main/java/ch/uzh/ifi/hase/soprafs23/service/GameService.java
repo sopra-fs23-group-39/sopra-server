@@ -55,6 +55,7 @@ public class GameService {
         game.setQuestionAmount(questionAmount);
         game.setTimer(timer);
         game.setHost(userService.getUserById(hostId));
+
       try {
           game.setQuestions(questionService.getListOfQuestions(gameMode, questionAmount));
       }
@@ -73,7 +74,6 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
-        game.getUserIds().add(userId);
         game.getPlayers().add(user);
         user.setGame(game);
     }
@@ -91,7 +91,7 @@ public class GameService {
     }
 
     public Game getGameSettings(long gameId) {
-        String message = "User with id %d was not found!";
+        String message = "Game with id %d was not found!";
         try {
             return gameRepository.findByGameId(gameId);
         } catch (Exception e) {
@@ -99,16 +99,16 @@ public class GameService {
         }
     }
 
-  public Question getQuestionToSend(long gameId) {
-      Game gameById = gameRepository.findByGameId(gameId);
-      Question question = null;
-      int currentRound = gameById.getCurrentRound();
-      int numberOfQuestions = gameById.getQuestionAmount();
-      if (currentRound < numberOfQuestions) {
-          question = gameById.getQuestions().get(currentRound);
-          gameById.setCurrentRound(++currentRound);
-      }
-      return question;
-  }
+    public Question getQuestionToSend(long gameId) {
+        Game gameById = gameRepository.findByGameId(gameId);
+        Question question = null;
+        int currentRound = gameById.getCurrentRound();
+        int numberOfQuestions = gameById.getQuestionAmount();
+        if (currentRound < numberOfQuestions) {
+            question = gameById.getQuestions().get(currentRound);
+            gameById.setCurrentRound(++currentRound);
+        }
+        return question;
+    }
 
 }

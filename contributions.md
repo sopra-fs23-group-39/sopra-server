@@ -140,5 +140,100 @@ Task https://github.com/sopra-fs23-group-39/sopra-server/issues/60 Add functiona
 
 Result: when a Game object is created, a list of questions is added to it, according to the chosen game mode and number of questions (equality of questions is prevented by overridden equals method). Number of questions sent to the front-end is controlled by the back-end that counts game rounds.  
 
+Task #45 Create a Question route protection (QuestionGuard), commit: 3eb54cc (client)
+
+
+Yannick Salzmann
+
+
+https://github.com/sopra-fs23-group-39/sopra-client/issues/41
+storing game mode property when clicking on a game setting 
+
+only open the lobby when clicking on create game (only one lobby that is either accessed through creating a game or join game)
+
+created a method in the back end to retrieve the game settings
+
+display the game settings properly in the waiting room
+
+creating the leaderboard page https://github.com/sopra-fs23-group-39/sopra-client/issues/30
+
+having a back button and route it accordingly https://github.com/sopra-fs23-group-39/sopra-client/issues/32
+
+display a list of all registered players https://github.com/sopra-fs23-group-39/sopra-client/issues/31
+
+order them on their rank
+
+route to a user profile when clicking on its name https://github.com/sopra-fs23-group-39/sopra-client/issues/33
+
+disable the change credentials button in the profile page, when its not the own profile
+
+working on the start game functionality (so far no simultaneous start for all players)  
+  
+  
+  
+Markus Niemack  
+  
+https://github.com/sopra-fs23-group-39/sopra-server/issues/62  
+
+Migrated entire server side of project to google app engine flexible, which caused the database to break completely, therefore I pulled this forward:  
+  
+https://github.com/sopra-fs23-group-39/sopra-server/issues/57  
+  
+migrated entire database to MySQL, set up a schema, deployed to google SQL, set up connection with credentials etc. Had to rewrite some entity code due to hard to find errors.
+  
+
+Florence Hügi:
+
+Create Game results page: https://github.com/sopra-fs23-group-39/sopra-client/issues/25
+
+Display the correct answer: https://github.com/sopra-fs23-group-39/sopra-client/issues/26
+
+Display current player standings: https://github.com/sopra-fs23-group-39/sopra-client/issues/27
+
+check if the last question of the game and route accordingly: https://github.com/sopra-fs23-group-39/sopra-client/issues/28
+
+As a logged-in user participating in a game and having answered a question, I want to see the right answer to the question and the scores of all the users playing this game (including my score): https://github.com/sopra-fs23-group-39/sopra-server/issues/40
+
+
+
+Week 5 (24.04.2023-30.04.2023)
+
+Shakirova Natalia:
+
+Task 48 (client): Make the correct answer turn "green" on Question page: https://github.com/sopra-fs23-group-39/sopra-client/issues/48
+
+Task 46 (client): Make a button "Select mode" on GameSelection page "chosen" when pressed, disable other buttons: https://github.com/sopra-fs23-group-39/sopra-client/issues/46
+
+Task 68 (server): Connect Time (from GameSelection page) and time to answer a question (on Question page): https://github.com/sopra-fs23-group-39/sopra-server/issues/68
+
+Task 11 (client), task 35 (server): Simultaneously redirect users to Game after the game starts (incl. back-end) - I'm not sure I can do it before Thursday, I already spent several hours (and Yannick as well) on it and it didn't work. (For one-player game, this button (Start game) works.)
+  
+Markus Niemack:  
+  
+https://github.com/sopra-fs23-group-39/sopra-server/issues/66
+Rewrite Websocket with different library, both in back- and frontend since they are currently timing out.
+
+Yannick Salzmann:
+
+Login/Registration issues:
+
+Correctly handle exceptions for invalid user input (f. e. invalid username != null) https://github.com/sopra-fs23-group-39/sopra-server/issues/67
+
+Currently a user is locked on the Registration page if a user wants to login https://github.com/sopra-fs23-group-39/sopra-client/issues/49
+
+CSS for the Game: Assuring that the buttons for answering a question are not invisible (pushed to the bottom) in the quiz. https://github.com/sopra-fs23-group-39/sopra-client/issues/47 
+
+
+Florence Hügi:
+
+display winner if the game is over https://github.com/sopra-fs23-group-39/sopra-client/issues/29
+
+create server functions corresponding to winnerpage https://github.com/sopra-fs23-group-39/sopra-server/issues/69
+
+Damjan Kuzmanovic:
+
+-Prvent the Start game button being pressed multiple times https://github.com/sopra-fs23-group-39/sopra-client/issues/51
+
+-Ensure that the application always starts from the login page https://github.com/sopra-fs23-group-39/sopra-client/issues/52
 
 
