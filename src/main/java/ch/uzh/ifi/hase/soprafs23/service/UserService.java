@@ -189,7 +189,7 @@ public class UserService {
         String UserAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
         Date qTime = answer.getQuestionTime();
-        long diff = Math.abs(time.getTime() -qTime.getTime());
+        long diff = Math.abs(time.getTime() - qTime.getTime());
         if(UserAnswer.equals(CorrectAnswer)){
             score = (long) (500/Math.pow((diff/1000),2));
         }
