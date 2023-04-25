@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,29 +174,41 @@ public class UserService {
         userRepository.save(newReadyUser);
         userRepository.flush();
     }
-    public void Score(Answer answer){
+    public void Score(AnswerPostDTO answer){
+        System.out.println("in score");
         long score = ReturnScore(answer);
         Long UserId = answer.getUserId();
         User userById = getUserById(UserId);
-        Long prev_score = userById.getGameScore();
-        Long new_score = score + prev_score;
-        userById.setGameScore(new_score);
-        userById.setQuestionScore(score);
+        Long prev_score = userById.getTotalPointsCurrentGame();
+        Long new_score;
+        if(prev_score == null){
+            new_score = score + 0;
+        } else {
+            new_score = score + prev_score;
+        }
+        userById.setTotalPointsCurrentGame(new_score);
+        userById.setCurrentPoints(score);
     }
 
-    public long ReturnScore(Answer answer){
+    public long ReturnScore(AnswerPostDTO answer){
+        System.out.println("in return score");
         long score;
         String CorrectAnswer = answer.getCorrectAnswer();
+        System.out.println(CorrectAnswer);
         String UserAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
         Date qTime = answer.getQuestionTime();
         long diff = Math.abs(time.getTime() - qTime.getTime());
+        System.out.println(diff);
         if(UserAnswer.equals(CorrectAnswer)){
+            System.out.println("answer was good");
             score = (long) (500/Math.pow((diff/1000),2));
         }
         else{
+            System.out.println("assigning");
             score = 0;
         }
+        System.out.println(score);
         return score;
     }
     public List<User> retrieveCurrentRanking(long lobbyId) {
