@@ -54,7 +54,7 @@ public class UserService {
     public User createUser(User newUser) {
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.ONLINE);
-        newUser.setTotalPoints(0L);
+        newUser.setTotalPointsCurrentGame(0L);
         newUser.setCurrentPoints(0L);
         newUser.setNumberGames(0L);
         newUser.setUserRank(1000L);
@@ -212,7 +212,7 @@ public class UserService {
     public List<User> retrieveTotalRanking(long lobbyId) {
         Game game = gameRepository.findByGameId(lobbyId);
         List<User> users = game.getPlayers();
-        users.sort(Comparator.comparing(User::getTotalPoints).reversed());
+        users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
 //        long rank = 1;
 //        for (User user : users) {
 //            user.setRank(rank++);

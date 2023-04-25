@@ -86,7 +86,7 @@ public class GameService {
         if (game == null) {
             System.out.println("game is null");
         }
-        User host = userService.getUserById(game.getHostId());
+        //User host = userService.getUserById(game.getHostId());
         List<User> players = game.getPlayers();
         //players.add(0, host);
         return players;
