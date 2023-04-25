@@ -48,12 +48,6 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long totalPoints;
 
-    @Column
-    private Long gameScore;
-
-    @Column
-    private Long questionScore;
-
     @Column(nullable = false)
     private Long currentPoints;
 
@@ -141,6 +135,7 @@ public class User implements Serializable {
     public void setTotalPoints(Long totalPoints) {
         this.totalPoints = totalPoints;
     }
+
     public Long getCurrentPoints() {
         return currentPoints;
     }
@@ -165,14 +160,5 @@ public class User implements Serializable {
         this.isReady = isReady;
     }
 
-    public Long getGameScore(){
-        return gameScore;
-    }
-
-    public void setGameScore(Long score){ this.gameScore = score; }
-
-    public Long getQuestionScore(){return questionScore;}
-
-    public void setQuestionScore(Long score){this.questionScore=score;}
 
 }
