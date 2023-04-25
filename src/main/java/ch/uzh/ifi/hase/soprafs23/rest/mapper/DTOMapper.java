@@ -62,7 +62,7 @@ public interface DTOMapper {
     @Mapping(source = "isReady", target = "isReady")
     @Mapping(target = "game", ignore = true)
     @Mapping(target = "hostedGame", ignore = true)
-    @Mapping(source = "currentPoints", target = "currentPoints")
+    @Mapping(target = "currentPoints", target = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(source = "gameId", target = "gameId")
