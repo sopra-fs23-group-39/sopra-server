@@ -200,9 +200,19 @@ Week 5 (24.04.2023-30.04.2023)
 
 Shakirova Natalia:
 
-Task 48 (client): Make the correct answer turn "green" on Question page: https://github.com/sopra-fs23-group-39/sopra-client/issues/48
+Task #46 (client) Make a button "Select mode" on GameSelection page "chosen" when pressed, disable other buttons (https://github.com/sopra-fs23-group-39/sopra-client/issues/46):
+- commit: https://github.com/sopra-fs23-group-39/sopra-client/commit/8f2e22b8062309617188a3a5fae7040b5d428f89;
+- commit (merged to main, together with task #53): https://github.com/sopra-fs23-group-39/sopra-client/commit/8a0d80b6b4baeb8a5c1759390157425db06d76a4
 
-Task 46 (client): Make a button "Select mode" on GameSelection page "chosen" when pressed, disable other buttons: https://github.com/sopra-fs23-group-39/sopra-client/issues/46
+Task #53 (client) Fix bugs in Standings.js (https://github.com/sopra-fs23-group-39/sopra-client/issues/53):
+- commit: https://github.com/sopra-fs23-group-39/sopra-client/commit/6b170ee2e72574c45f467b3f521bfad5cac1e35a;
+- commit (merged to main, together with task #46): https://github.com/sopra-fs23-group-39/sopra-client/commit/8a0d80b6b4baeb8a5c1759390157425db06d76a4
+
+Task #70 (server) Fix bugs in the server part connected to displaying current standings (https://github.com/sopra-fs23-group-39/sopra-server/issues/70):
+- commit: https://github.com/sopra-fs23-group-39/sopra-server/commit/23c64b7ee4cc83cf9c321ed6d5640a298f532739;
+- commit (merged to main): https://github.com/sopra-fs23-group-39/sopra-server/commit/5c5bef0ad863081c5a65cf5061c3fe1973bfee52
+
+Task 48 (client): Make the correct answer turn "green" on Question page: https://github.com/sopra-fs23-group-39/sopra-client/issues/48
 
 Task 68 (server): Connect Time (from GameSelection page) and time to answer a question (on Question page): https://github.com/sopra-fs23-group-39/sopra-server/issues/68
 
