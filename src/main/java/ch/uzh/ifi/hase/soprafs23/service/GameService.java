@@ -64,6 +64,7 @@ public class GameService {
       catch (JsonProcessingException e) {
           throw new RuntimeException(e);
       }
+        game.getPlayers().add(userService.getUserById(hostId));
         userService.getUserById(hostId).setGame(game);
         game = gameRepository.save(game);
         gameRepository.flush();
@@ -76,8 +77,17 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
+        for(User player: game.getPlayers()){
+            System.out.println("preadd " + player.getUsername());
+        }
         game.getPlayers().add(user);
+        for(User player: game.getPlayers()){
+            System.out.println("postadd " + player.getUsername());
+        }
         user.setGame(game);
+        for(User player: game.getPlayers()){
+            System.out.println("postSet " + player.getUsername());
+        }
     }
 
     public List<User> getHostAndPlayers(long gameId) {

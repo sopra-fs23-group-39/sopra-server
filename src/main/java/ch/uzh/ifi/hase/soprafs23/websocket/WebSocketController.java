@@ -37,14 +37,22 @@ public class WebSocketController {
     }
 
     @MessageMapping("/game/{gameId}")
-    public void handleGameConnect(@DestinationVariable long gameId) {
-        List<User> players = gameService.getHostAndPlayers(gameId);
-        List<UserGetDTO> playerDTOs = new ArrayList<>();
-        for (User player: players){
-            playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
+    public void handleGameConnect(@DestinationVariable long gameId, @Payload String message) {
+        System.out.println("received message: " + message);
+        if (message.equals("idkman")){
+            System.out.println("ye me neither");
+            List<User> players = gameService.getHostAndPlayers(gameId);
+            List<UserGetDTO> playerDTOs = new ArrayList<>();
+            for (User player: players){
+                playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
+            }
+            // topic/game/{gameId} - front-end
+            this.messagingTemplate.convertAndSend("/topic/game/" + gameId, playerDTOs);
         }
-        // topic/game/{gameId} - front-end
-        this.messagingTemplate.convertAndSend("/topic/game/" + gameId, playerDTOs);
+        if(message.equals("START")){
+            String someString = "game started.";
+            this.messagingTemplate.convertAndSend("/topic/game/" + gameId, someString);
+        }
     }
 
     @MessageMapping("/game/{gameId}/question")
