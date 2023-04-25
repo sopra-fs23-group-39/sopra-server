@@ -51,8 +51,8 @@ public class WebSocketController {
     @SendTo("/topic/game/{gameId}/question")
     public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId) throws JsonProcessingException {
         Question question = gameService.getQuestionToSend(gameId);
-        Date creation_time = new Date();
-        question.setCreationTime(creation_time);
+        Date creationTime = new Date();
+        question.setCreationTime(creationTime);
         return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
     }
 
