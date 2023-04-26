@@ -5,11 +5,8 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.QuestionGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
@@ -21,6 +18,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.WebSocketSession;
@@ -85,7 +86,7 @@ public class WebSocketController {
 
     @MessageMapping("/game/{gameId}/question")
     @SendTo("/topic/game/{gameId}/question")
-    public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId) throws JsonProcessingException {
+    public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId) {
         Question question = gameService.getQuestionToSend(gameId);
         Date creationTime = new Date();
         question.setCreationTime(creationTime);
@@ -93,9 +94,7 @@ public class WebSocketController {
     }
 
     @MessageMapping("/game/{gameId}/answer")
-    public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) throws JsonProcessingException {
-        //Answer answer = DTOMapper.INSTANCE.convertAnswerPostDTOToEntity(answerPostDTO);
-        //answer.setUsersAnswer(answerPostDTO.getUsersAnswer());
+    public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
         userService.Score(answerPostDTO);
     }
 

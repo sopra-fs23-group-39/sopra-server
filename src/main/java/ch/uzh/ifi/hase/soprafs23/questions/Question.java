@@ -6,21 +6,13 @@ import java.util.Objects;
 
 @Embeddable
 public class Question {
-
     private String questionText;
-
     private String questionLink;
-
     private String correctAnswer;
-
     private String answer1;
-
     private String answer2;
-
     private String answer3;
-
     private String answer4;
-
     private Date creationTime;
 
     public Question(String questionText, String questionLink, String correctAnswer, String answer1, String answer2, String answer3, String answer4) {

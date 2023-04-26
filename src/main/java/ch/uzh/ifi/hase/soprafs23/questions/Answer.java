@@ -3,17 +3,11 @@ package ch.uzh.ifi.hase.soprafs23.questions;
 import java.util.Date;
 
 public class Answer {
-
     private Long gameId;
-
     private Long userId;
-
     private String correctAnswer;
-
     private String usersAnswer;
-
     private Date time;
-
     private Date questionTime;
 
     public Long getGameId() {

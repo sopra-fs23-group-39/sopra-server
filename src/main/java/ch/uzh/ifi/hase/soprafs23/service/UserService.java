@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
@@ -33,10 +32,7 @@ import java.util.UUID;
 @Service
 @Transactional
 public class UserService {
-
-   // To log for debugging
     private final Logger log = LoggerFactory.getLogger(UserService.class);
-
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
 
@@ -46,7 +42,6 @@ public class UserService {
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
     }
-
 
     public List<User> getUsers() {
         return this.userRepository.findAll();
@@ -89,7 +84,7 @@ public class UserService {
      * @throws org.springframework.web.server.ResponseStatusException
      * @see User
      */
-    private void checkIfUserExists(User userToBeCreated) {
+    public void checkIfUserExists(User userToBeCreated) {
         User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
 
         String message = "The provided username is not unique. Therefore, the user could not be registered!";
@@ -101,11 +96,13 @@ public class UserService {
 
     public User getUserProfile(long id) {
         String message = "User with id %d was not found!";
-        try {
-            return userRepository.findById(id);
-        } catch (Exception e) {
+        User userToReturn = userRepository.findById(id);
+
+        if (userToReturn == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, id));
         }
+
+        return userToReturn;
     }
 
     public User logIn(User userLogin) {
@@ -114,6 +111,11 @@ public class UserService {
         String userInputPassword = userLogin.getPassword();
 
         User userByUsername = userRepository.findByUsername(userInputUsername);
+
+        if (userByUsername == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You have to enter a username");
+        }
+
         String existingPassword = userByUsername.getPassword();
 
         userRepository.save(userByUsername);
@@ -146,10 +148,6 @@ public class UserService {
         if (userPutDTO.getPassword() != null) {
             userToUpdate.setPassword(userPutDTO.getPassword());
         }
-
-//        if (userPutDTO.getStatus() != null && !userPutDTO.getStatus().isEmpty()) {
-//            userToUpdate.setStatus(UserStatus.valueOf(userPutDTO.getStatus()));
-//        }
 
         userRepository.save(userToUpdate);
         userRepository.flush();
@@ -216,10 +214,6 @@ public class UserService {
         Game game = gameRepository.findByGameId(lobbyId);
         List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
-//        long rank = 1;
-//        for (User user : users) {
-//            user.setRank(rank++);
-//        }
         return users;
     }
 
@@ -227,10 +221,6 @@ public class UserService {
         Game game = gameRepository.findByGameId(lobbyId);
         List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
-//        long rank = 1;
-//        for (User user : users) {
-//            user.setRank(rank++);
-//        }
         return users;
     }
 }

@@ -25,13 +25,13 @@ import java.util.List;
 @RestController
 public class GameController {
 
-  private final GameService gameService;
-  private final UserService userService;
+    private final GameService gameService;
+    private final UserService userService;
 
-  GameController(GameService gameService, UserService userService) {
+    GameController(GameService gameService, UserService userService) {
     this.gameService = gameService;
     this.userService = userService;
-  }
+    }
 
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)

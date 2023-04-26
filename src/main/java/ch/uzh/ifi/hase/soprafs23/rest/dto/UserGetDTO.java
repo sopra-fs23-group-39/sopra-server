@@ -2,25 +2,16 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
-
-import javax.persistence.Column;
 
 public class UserGetDTO {
-
-  private Long id;
-  private String password;
-  private String username;
-  private UserStatus status;
-
+    private Long id;
+    private String password;
+    private String username;
+    private UserStatus status;
     private Long userRank;
-
     private Long numberGames;
-
     private Long totalPointsCurrentGame;
-
     private Long currentPoints;
-
     private boolean isReady;
     private Game game;
     private Game hostedGame;
@@ -28,25 +19,6 @@ public class UserGetDTO {
     private Long gameId;
 
     private Long hostedGameId;
-
-//    public UserGetDTO() {}
-
-//    public UserGetDTO(User user) {
-//        this.id = user.getId();
-//        this.password = user.getPassword();
-//        this.username = user.getUsername();
-//        this.status = user.getStatus();
-//        this.rank = user.getRank();
-//        this.numberGames = user.getNumberGames();
-//        this.totalPoints = user.getTotalPoints();
-//        this.isReady = user.getIsReady();
-//        if (user.getGame() != null) {
-//            this.gameId = user.getGame().getGameId();
-//        }
-//        if (user.getHostedGame() != null) {
-//            this.hostedGameId = user.getHostedGame().getGameId();
-//        }
-//    }
 
     public Game getGame() {
         return game;
@@ -68,25 +40,25 @@ public class UserGetDTO {
     return id;
   }
 
-  public void setId(Long id) {
+    public void setId(Long id) {
     this.id = id;
-  }
+    }
 
-  public String getPassword() {
+    public String getPassword() {
     return password;
-  }
+    }
 
-  public void setPassword(String password) {
+    public void setPassword(String password) {
     this.password = password;
-  }
+    }
 
-  public Long getUserRank() {
+    public Long getUserRank() {
     return userRank;
-  }
+    }
 
-  public void setUserRank(Long rank) {
+    public void setUserRank(Long rank) {
     this.userRank = rank;
-  }
+    }
 
     public Long getNumberGames() {
         return numberGames;
@@ -104,13 +76,13 @@ public class UserGetDTO {
         this.totalPointsCurrentGame = totalPointsCurrentGame;
     }
 
-  public UserStatus getStatus() {
+    public UserStatus getStatus() {
     return status;
-  }
+    }
 
-  public void setStatus(UserStatus status) {
+    public void setStatus(UserStatus status) {
     this.status = status;
-  }
+    }
 
     public String getUsername() {
         return username;

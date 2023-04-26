@@ -1,8 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public class UserPutDTO {
 
     private long id;
