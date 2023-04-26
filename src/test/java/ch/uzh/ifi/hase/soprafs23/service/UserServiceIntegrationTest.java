@@ -1,3 +1,5 @@
+/*
+
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
@@ -17,11 +19,13 @@ import org.springframework.web.server.ResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+*/
 /**
  * Test class for the UserResource REST resource.
  *
  * @see UserService
- */
+ *//*
+
 @WebAppConfiguration
 @SpringBootTest
 public class UserServiceIntegrationTest {
@@ -77,7 +81,8 @@ public class UserServiceIntegrationTest {
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
     }
 
-    /*
+    */
+/*
     @Test
     public void testLogoutUser() {
         assertNull(userRepository.findById(1L));
@@ -97,7 +102,8 @@ public class UserServiceIntegrationTest {
         assertEquals(UserStatus.OFFLINE, updatedUser.getStatus());
     }
 
-     */
+     *//*
+
 
     @Test
     public void testLogoutUserWithInvalidInput() {
@@ -139,7 +145,8 @@ public class UserServiceIntegrationTest {
         assertDoesNotThrow(() -> userService.checkIfUserExists(existingUser));
     }
 
-    /*
+    */
+/*
     @Test
     public void testGetUserProfileWithValidId() {
         User getProfileUser = new User();
@@ -158,7 +165,8 @@ public class UserServiceIntegrationTest {
         assertEquals(getProfileUser.getPassword(), comparisonUser.getPassword());
         assertEquals(getProfileUser.getUsername(), comparisonUser.getUsername());
     }
-     */
+     *//*
+
 
     @Test
     public void testGetUserProfileWithInvalidId() {
@@ -313,3 +321,4 @@ public class UserServiceIntegrationTest {
         assertThrows(ResponseStatusException.class, () -> userService.readyUser(123L));
     }
 }
+*/

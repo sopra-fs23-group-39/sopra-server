@@ -118,7 +118,7 @@ public class UserService {
         User userByUsername = userRepository.findByUsername(userInputUsername);
 
         if (userByUsername == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username is wrong or does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You have to enter a username");
         }
 
         String existingPassword = userByUsername.getPassword();
