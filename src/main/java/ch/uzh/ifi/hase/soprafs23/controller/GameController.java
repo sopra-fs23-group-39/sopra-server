@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -56,6 +57,12 @@ public class GameController {
             playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
         }
         return playerDTOs;
+    }
+    @PutMapping("/game/resetIfBackOnMain")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> resetUserPointsAndGame(@RequestBody long playerId) {
+        gameService.removePlayer(playerId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/game/{gameId}/settings")

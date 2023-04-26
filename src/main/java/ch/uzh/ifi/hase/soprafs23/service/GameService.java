@@ -98,6 +98,17 @@ public class GameService {
         //players.add(0, host);
         return players;
     }
+    public void removeAllPlayers(Long gameId){
+        for(User player : gameRepository.findByGameId(gameId).getPlayers()){
+            player.setGame(null);
+            player.setTotalPointsCurrentGame((long) 0);
+        }
+    }
+
+    public void removePlayer(Long playerId){
+        userService.getUserById(playerId).setTotalPointsCurrentGame((long) 0);
+        userService.getUserById(playerId).setGame(null);
+    }
 
     public Game getGameSettings(long gameId) {
         String message = "Game with id %d was not found!";
@@ -134,5 +145,8 @@ public class GameService {
             }
         }
         return winner;
+    }
+    public Game getGameById(Long gameId){
+        return gameRepository.findByGameId(gameId);
     }
 }
