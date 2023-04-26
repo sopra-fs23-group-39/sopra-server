@@ -1,9 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.GameCreationDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
@@ -101,7 +98,5 @@ public class UserController {
     public void readyUser(@RequestBody int userId) {
         userService.readyUser(userId);
     }
-
-
 
 }

@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.QuestionGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -57,7 +53,7 @@ public class WebSocketController {
 
     @MessageMapping("/game/{gameId}/question")
     @SendTo("/topic/game/{gameId}/question")
-    public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId) throws JsonProcessingException {
+    public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId) {
         Question question = gameService.getQuestionToSend(gameId);
         Date creationTime = new Date();
         question.setCreationTime(creationTime);
@@ -65,9 +61,7 @@ public class WebSocketController {
     }
 
     @MessageMapping("/game/{gameId}/answer")
-    public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) throws JsonProcessingException {
-        //Answer answer = DTOMapper.INSTANCE.convertAnswerPostDTOToEntity(answerPostDTO);
-        //answer.setUsersAnswer(answerPostDTO.getUsersAnswer());
+    public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
         userService.Score(answerPostDTO);
     }
 

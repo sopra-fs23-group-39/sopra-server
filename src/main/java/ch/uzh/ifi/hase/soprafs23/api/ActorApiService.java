@@ -11,6 +11,8 @@ import java.util.List;
 public class ActorApiService extends ApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String actor = "Actor";
+    private final String actress = "Actress";
 
     // This list can contain actors without pictures and not really actors
     public List<String> getListOfActorIds(String key, List<String> listOfMovieIds) throws JsonProcessingException {
@@ -50,9 +52,9 @@ public class ActorApiService extends ApiService {
         for (String actorId : listOfActorIds) {
             String gender = getItemGender(actorId, key);
 
-            if (gender.equals("Actor")) {
+            if (gender.equals(actor)) {
                 listOfActors.add(actorId);
-            } else if (gender.equals("Actress")) {
+            } else if (gender.equals(actress)) {
                 listOfActresses.add(actorId);
             } else {
                 listOfOthers.add(actorId);
@@ -124,9 +126,9 @@ public class ActorApiService extends ApiService {
 
         String itemGender = getItemGender(itemId, key);
 
-        if (itemGender.equals("Actor")) {
+        if (itemGender.equals(actor)) {
             listToChooseFrom = listOfActors;
-        } else if (itemGender.equals("Actress")) {
+        } else if (itemGender.equals(actress)) {
             listToChooseFrom = listOfActresses;
         }
 
@@ -145,8 +147,6 @@ public class ActorApiService extends ApiService {
     }
 
     public String getItemGender(String itemId, String key) throws JsonProcessingException {
-        String actor = "Actor";
-        String actress = "Actress";
         String response = getJSONItemById(itemId, key);
         JsonNode rootNode = objectMapper.readTree(response);
         JsonNode itemsNode = rootNode.path("castMovies");

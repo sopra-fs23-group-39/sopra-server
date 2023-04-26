@@ -1,15 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Answer;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
 import ch.uzh.ifi.hase.soprafs23.questions.QuestionService;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * User Service
@@ -50,7 +44,6 @@ public class GameService {
     }
 
     public Game createGame(Long hostId, GameMode gameMode, int questionAmount, int timer) {
-        //TODO: might need to be rewritten, this is a first version to check whether game creation works
         Game game = new Game();
         game.setHostId(hostId);
         game.setGameMode(gameMode);
@@ -64,6 +57,7 @@ public class GameService {
       catch (JsonProcessingException e) {
           throw new RuntimeException(e);
       }
+
         game.getPlayers().add(userService.getUserById(hostId));
         userService.getUserById(hostId).setGame(game);
         game = gameRepository.save(game);
