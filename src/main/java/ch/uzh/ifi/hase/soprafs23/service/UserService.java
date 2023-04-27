@@ -15,10 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import java.util.Date;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+
+import java.util.*;
 
 /**
  * User Service
@@ -27,8 +25,7 @@ import java.util.UUID;
  * (e.g., it creates, modifies, deletes, finds). The result will be passed back
  * to the caller.
  */
-/*TODO maybe it makes sense to merge the two services to one "entityService", as I need to couple
-   them anyway.. */
+
 @Service
 @Transactional
 public class UserService {
@@ -52,6 +49,7 @@ public class UserService {
         newUser.setStatus(UserStatus.ONLINE);
         newUser.setTotalPointsCurrentGame(0L);
         newUser.setCurrentPoints(0L);
+        newUser.setTotalPointsAllGames(0L);
         newUser.setNumberGames(0L);
         newUser.setUserRank(1000L);
         checkIfUserExists(newUser);
@@ -59,6 +57,9 @@ public class UserService {
         // flush() is called
         newUser = userRepository.save(newUser);
         userRepository.flush();
+
+        List<User> allUsersInDB = getUsers();
+        updateAllUsersRank(allUsersInDB);
 
         log.debug("Created Information for User: {}", newUser);
         return newUser;
@@ -201,6 +202,21 @@ public class UserService {
         }
         return score;
     }
+
+    public void updateAllGamesScore(AnswerPostDTO answer){
+        long score = returnScore(answer);
+        Long userId = answer.getUserId();
+        User userById = getUserById(userId);
+        Long prevScoreAllGames = userById.getTotalPointsAllGames();
+        Long newScoreAllGames;
+        if (prevScoreAllGames == null){
+            newScoreAllGames = score + 0;
+        } else {
+            newScoreAllGames = score + prevScoreAllGames;
+        }
+        userById.setTotalPointsAllGames(newScoreAllGames);
+    }
+
     public List<User> retrieveCurrentRanking(long lobbyId) {
         Game game = gameRepository.findByGameId(lobbyId);
         List<User> users = game.getPlayers();
@@ -214,4 +230,18 @@ public class UserService {
         users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
         return users;
     }
+
+    public List<User> sortAllUsersDescOrder(List<User> allUsersInDB) {
+        List<User> sortedUsersDesc = new ArrayList<>(allUsersInDB);
+        sortedUsersDesc.sort(Comparator.comparing(User::getTotalPointsAllGames).reversed());
+        return sortedUsersDesc;
+    }
+
+    public void updateAllUsersRank(List<User> allUsersInDB) {
+        List<User> sortedUsersDesc = sortAllUsersDescOrder(allUsersInDB);
+        for (int i = 0; i < sortedUsersDesc.size(); i++) {
+            sortedUsersDesc.get(i).setUserRank((long) (i + 1));
+        }
+    }
+
 }

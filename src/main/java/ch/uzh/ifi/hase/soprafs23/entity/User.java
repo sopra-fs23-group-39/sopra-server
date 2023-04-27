@@ -57,6 +57,9 @@ public class User implements Serializable {
     private Long currentPoints;
 
     @Column(nullable = false)
+    private Long totalPointsAllGames;
+
+    @Column(nullable = false)
     private boolean isReady;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -146,6 +149,12 @@ public class User implements Serializable {
 
     public void setCurrentPoints(Long currentPoints) {
         this.currentPoints = currentPoints;
+    }
+
+    public Long getTotalPointsAllGames() { return totalPointsAllGames; }
+
+    public void setTotalPointsAllGames(Long totalPointsAllGames) {
+        this.totalPointsAllGames = totalPointsAllGames;
     }
 
     public Long getNumberGames() {

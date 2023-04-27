@@ -87,6 +87,9 @@ public class WebSocketController {
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
         userService.score(answerPostDTO);
+        userService.updateAllGamesScore(answerPostDTO);
+        List<User> allUsersInDB = userService.getUsers();
+        userService.updateAllUsersRank(allUsersInDB);
     }
 
 }

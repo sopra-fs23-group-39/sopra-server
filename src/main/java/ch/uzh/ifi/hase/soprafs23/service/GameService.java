@@ -19,14 +19,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 /**
- * User Service
+ * Game Service
  * This class is the "worker" and responsible for all functionality related to
- * the user
+ * the game
  * (e.g., it creates, modifies, deletes, finds). The result will be passed back
  * to the caller.
  */
-/*TODO maybe it makes sense to merge the two services to one "entityService", as I need to couple
-   them anyway.. */
 @Service
 @Transactional
 public class GameService {

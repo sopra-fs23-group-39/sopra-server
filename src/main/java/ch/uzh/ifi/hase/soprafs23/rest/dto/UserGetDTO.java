@@ -12,6 +12,7 @@ public class UserGetDTO {
     private Long numberGames;
     private Long totalPointsCurrentGame;
     private Long currentPoints;
+    private Long totalPointsAllGames;
     private boolean isReady;
     private Game game;
     private Game hostedGame;
@@ -76,6 +77,7 @@ public class UserGetDTO {
         this.totalPointsCurrentGame = totalPointsCurrentGame;
     }
 
+
     public UserStatus getStatus() {
     return status;
     }
@@ -107,4 +109,11 @@ public class UserGetDTO {
     public void setCurrentPoints(Long currentPoints) {
         this.currentPoints = currentPoints;
     }
+
+    public Long getTotalPointsAllGames() { return totalPointsAllGames; }
+
+    public void setTotalPointsAllGames(Long totalPointsAllGames) {
+        this.totalPointsAllGames = totalPointsAllGames;
+    }
+
 }
