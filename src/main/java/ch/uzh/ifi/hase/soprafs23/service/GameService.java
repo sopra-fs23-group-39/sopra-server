@@ -89,9 +89,8 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
         //User host = userService.getUserById(game.getHostId());
-        List<User> players = game.getPlayers();
         //players.add(0, host);
-        return players;
+        return game.getPlayers();
     }
     public void removeAllPlayers(Long gameId){
         for(User player : gameRepository.findByGameId(gameId).getPlayers()){

@@ -11,8 +11,8 @@ import java.util.List;
 public class ActorApiService extends ApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String actor = "Actor";
-    private static final String actress = "Actress";
+    private static final String ACTOR = "Actor";
+    private static final String ACTRESS = "Actress";
 
     // This list can contain actors without pictures and not really actors
     public List<String> getListOfActorIds(String key, List<String> listOfMovieIds) throws JsonProcessingException {
@@ -52,9 +52,9 @@ public class ActorApiService extends ApiService {
         for (String actorId : listOfActorIds) {
             String gender = getItemGender(actorId, key);
 
-            if (gender.equals(actor)) {
+            if (gender.equals(ACTOR)) {
                 listOfActors.add(actorId);
-            } else if (gender.equals(actress)) {
+            } else if (gender.equals(ACTRESS)) {
                 listOfActresses.add(actorId);
             } else {
                 listOfOthers.add(actorId);
@@ -126,9 +126,9 @@ public class ActorApiService extends ApiService {
 
         String itemGender = getItemGender(itemId, key);
 
-        if (itemGender.equals(actor)) {
+        if (itemGender.equals(ACTOR)) {
             listToChooseFrom = listOfActors;
-        } else if (itemGender.equals(actress)) {
+        } else if (itemGender.equals(ACTRESS)) {
             listToChooseFrom = listOfActresses;
         }
 
@@ -155,19 +155,19 @@ public class ActorApiService extends ApiService {
         JsonNode itemNode = itemsNode.get(0);
 
         String role = itemNode.path("role").asText();
-        if (role.contains(actor)) {
-            gender = actor;
+        if (role.contains(ACTOR)) {
+            gender = ACTOR;
         }
-        else if (role.contains(actress)) {
-            gender = actress;
+        else if (role.contains(ACTRESS)) {
+            gender = ACTRESS;
         }
         else {
             String roleNode = rootNode.path("role").asText();
-            if (roleNode != null && roleNode.contains(actor)) {
-                gender = actor;
+            if (roleNode != null && roleNode.contains(ACTOR)) {
+                gender = ACTOR;
             }
-            else if (roleNode != null && roleNode.contains(actress)) {
-                gender = actress;
+            else if (roleNode != null && roleNode.contains(ACTRESS)) {
+                gender = ACTRESS;
             }
             else {
                 gender = "Other";
