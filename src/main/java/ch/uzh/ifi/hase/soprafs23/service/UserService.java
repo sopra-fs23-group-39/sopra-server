@@ -138,11 +138,9 @@ public class UserService {
 
     public void updateUserProfile(UserPutDTO userPutDTO, long id) {
         String messageId = "User with id %d was not found!";
-        User userToUpdate;
+        User userToUpdate = userRepository.findById(id);
 
-        try {
-            userToUpdate = userRepository.findById(id);
-        } catch (Exception e) {
+        if (userToUpdate == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(messageId, id));
         }
 
@@ -153,10 +151,6 @@ public class UserService {
         if (userPutDTO.getPassword() != null) {
             userToUpdate.setPassword(userPutDTO.getPassword());
         }
-
-//        if (userPutDTO.getStatus() != null && !userPutDTO.getStatus().isEmpty()) {
-//            userToUpdate.setStatus(UserStatus.valueOf(userPutDTO.getStatus()));
-//        }
 
         userRepository.save(userToUpdate);
         userRepository.flush();
@@ -170,6 +164,7 @@ public class UserService {
         }
         return userById;
     }
+
     public void readyUser(long userId) {
         User newReadyUser = userRepository.findById(userId);
         if (newReadyUser == null) {
