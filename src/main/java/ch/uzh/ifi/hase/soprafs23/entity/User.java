@@ -20,7 +20,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
-    public User() {}
+    public User() {
+        /**
+         This no-argument constructor is required,
+         Hibernate use reflection on this constructor to instantiate objects
+         */
+    }
     private static final long serialVersionUID = 1L;
 
     @Id

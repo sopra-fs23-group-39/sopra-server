@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Internal User Representation
- * This class composes the internal representation of the user and defines how
- * the user is stored in the database.
+ * Internal Game Representation
+ * This class composes the internal representation of the game and defines how
+ * the game is stored in the database.
  * Every variable will be mapped into a database field with the @Column
  * annotation
  * - nullable = false -> this cannot be left empty
@@ -25,7 +25,12 @@ import java.util.List;
 @Entity
 @Table(name = "GAME")
 public class Game implements Serializable {
-    public Game() {}
+    public Game() {
+        /**
+        This no-argument constructor is required,
+        Hibernate use reflection on this constructor to instantiate objects
+         */
+    }
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +38,6 @@ public class Game implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_id")
     private Long gameId;
-
 
     @Column(nullable = true)
     private GameMode gameMode;
@@ -51,7 +55,6 @@ public class Game implements Serializable {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JoinColumn(name = "gameHost_id", referencedColumnName = "id")
     private User host;
-
 
     @OneToMany(mappedBy = "game", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -75,7 +78,6 @@ public class Game implements Serializable {
         this.host = host;
     }
 
-    //TODO: add more values here later, this is just for opening a game page with an ID so far..
     public int getQuestionAmount() {
         return questionAmount;
     }

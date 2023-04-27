@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,13 +25,13 @@ import java.util.List;
 @RestController
 public class GameController {
 
-  private final GameService gameService;
-  private final UserService userService;
+    private final GameService gameService;
+    private final UserService userService;
 
-  GameController(GameService gameService, UserService userService) {
+    GameController(GameService gameService, UserService userService) {
     this.gameService = gameService;
     this.userService = userService;
-  }
+    }
 
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)
@@ -56,6 +57,12 @@ public class GameController {
             playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
         }
         return playerDTOs;
+    }
+    @PutMapping("/game/resetIfBackOnMain")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> resetUserPointsAndGame(@RequestBody long playerId) {
+        gameService.removePlayer(playerId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/game/{gameId}/settings")

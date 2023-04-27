@@ -48,6 +48,7 @@ public class MovieApiService extends ApiService {
         String response = getJSONItemById(itemId, key);
 
         JsonNode rootNode = objectMapper.readTree(response);
+        // "similars" here - it's not a typo
         JsonNode itemsNode = rootNode.path("similars");
 
         for (JsonNode itemNode : itemsNode) {

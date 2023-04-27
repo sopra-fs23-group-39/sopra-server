@@ -5,8 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.api.ActorApiService;
 import ch.uzh.ifi.hase.soprafs23.api.MovieApiService;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,12 +14,13 @@ public class QuestionService {
 
     private final MovieApiService movieApiService = new MovieApiService();
     private final ActorApiService actorApiService = new ActorApiService();
-    private final static String key = "k_3zhp2s2n";
+    private final static String KEY = "k_3zhp2s2n";
+
 //    private List<String> listOfMovieIds;
 //
 //    {
 //        try {
-//            listOfMovieIds = movieApiService.getAllMovieIds(key);
+//            listOfMovieIds = movieApiService.getAllMovieIds(KEY);
 //        }
 //        catch (JsonProcessingException e) {
 //            throw new RuntimeException(e);
@@ -84,9 +83,9 @@ public class QuestionService {
     public Question getMovieQuestion() throws JsonProcessingException {
         String questionText = "What is the title of this movie?";
         String movieId = movieApiService.getRandomItem(listOfMovieIds);
-        String questionLink = movieApiService.getImageLink(movieId, key);
-        String correctAnswer = movieApiService.getItemName(movieId, key);
-        List<String> wrongAnswers = movieApiService.getSimilarItems(movieId, key);
+        String questionLink = movieApiService.getImageLink(movieId, KEY);
+        String correctAnswer = movieApiService.getItemName(movieId, KEY);
+        List<String> wrongAnswers = movieApiService.getSimilarItems(movieId, KEY);
         List<String> answers = new ArrayList<>(wrongAnswers);
         answers.add(correctAnswer);
         Collections.shuffle(answers);
@@ -97,17 +96,17 @@ public class QuestionService {
     public Question getActorQuestion() throws JsonProcessingException {
         String questionText = "What is the name of this actor/actress?";
 
-        //List<String> listOfActorIds = actorApiService.getListOfActorIds(key, listOfMovieIds);
-        //List<List<String>> sortedListOfAllActors = actorApiService.getSortedListOfAllActors(key, listOfActorIds);
+        //List<String> listOfActorIds = actorApiService.getListOfActorIds(KEY, listOfMovieIds);
+        //List<List<String>> sortedListOfAllActors = actorApiService.getSortedListOfAllActors(KEY, listOfActorIds);
         //List<String> listOfActors = actorApiService.getListOfActors(sortedListOfAllActors);
         //List<String> listOfActresses = actorApiService.getListOfActresses(sortedListOfAllActors);
         //List<String> listOfValidActorIds = actorApiService.getListOfValidActorIds(listOfActors, listOfActresses);
-
         //String actorId = actorApiService.getRandomItem(listOfValidActorIds);
+
         String actorId = actorApiService.getRandomItem(listOfUniqueActorIds);
-        String questionLink = actorApiService.getImageLink(actorId, key);
-        String correctAnswer = actorApiService.getItemName(actorId, key);
-        List<String> wrongAnswers = actorApiService.getSimilarItems(actorId, key, listOfActors, listOfActresses);
+        String questionLink = actorApiService.getImageLink(actorId, KEY);
+        String correctAnswer = actorApiService.getItemName(actorId, KEY);
+        List<String> wrongAnswers = actorApiService.getSimilarItems(actorId, KEY, listOfActors, listOfActresses);
         List<String> answers = new ArrayList<>(wrongAnswers);
         answers.add(correctAnswer);
         Collections.shuffle(answers);
