@@ -9,7 +9,6 @@ public class Question {
     private String questionText;
     private String questionLink;
     private String correctAnswer;
-    private String answer0 = "Default";
     private String answer1;
     private String answer2;
     private String answer3;
