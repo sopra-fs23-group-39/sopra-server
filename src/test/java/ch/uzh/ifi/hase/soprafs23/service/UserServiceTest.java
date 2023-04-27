@@ -81,5 +81,16 @@
 //    // is thrown
 //    assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
 //  }
+// @Test
+//    public void correctScoreCalculation_wrongAnswer(){
+//        AnswerPostDTO answerPostDTO = new AnswerPostDTO();
+//        answerPostDTO.setCorrectAnswer("A");
+//        answerPostDTO.setUsersAnswer("B");
+//        answerPostDTO.setQuestionTime(new Date());
+//        answerPostDTO.setTime(new Date());
+//
+//        assertEquals(userService.ReturnScore(answerPostDTO),0);
+//
+//    }
 //
 //}
