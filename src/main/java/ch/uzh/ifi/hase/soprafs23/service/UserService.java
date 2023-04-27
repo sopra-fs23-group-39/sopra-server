@@ -197,6 +197,8 @@ public class UserService {
         if (userAnswer.equals(correctAnswer)) {
             //Scoring function
             score = (long) (500 / (Math.log((diff/1000)) * ((double) diff/1000)+1));
+        } else if (answer.getUsersAnswer().equals("DEFAULT")){
+            score = 0;
         } else {
             score = 0;
         }
