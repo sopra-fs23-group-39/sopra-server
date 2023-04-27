@@ -99,5 +99,4 @@ public class UserController {
     public void readyUser(@RequestBody int userId) {
         userService.readyUser(userId);
     }
-
 }
