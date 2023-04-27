@@ -37,21 +37,6 @@ public class WebSocketController {
     @MessageMapping("/game/{gameId}")
     public void handleGameConnect(@DestinationVariable long gameId, @Headers Map<String, Object> headers, @Payload String message) {
         System.out.println("received message: " + message);
-        if(!hostSessions.containsKey(gameId)){
-            System.out.print("putting in gameId coll");
-            hostSessions.put(gameId, new ArrayList<>());
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    System.out.println("timer ran out");
-                    System.out.println("removing people from game now");
-                    hostSessions.remove(gameId);
-                    gameService.removeAllPlayers(gameId);
-                }
-            }, 15000);
-        }
-
         String[] messageParts = message.split(" ");
         if(messageParts.length == 2 && messageParts[0].equals("DISCONNECT") && !messageParts[1].isEmpty()){
             String playerId = messageParts[1];
