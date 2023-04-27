@@ -11,8 +11,8 @@ import java.util.List;
 public class ActorApiService extends ApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String actor = "Actor";
-    private final String actress = "Actress";
+    private static final String actor = "Actor";
+    private static final String actress = "Actress";
 
     // This list can contain actors without pictures and not really actors
     public List<String> getListOfActorIds(String key, List<String> listOfMovieIds) throws JsonProcessingException {

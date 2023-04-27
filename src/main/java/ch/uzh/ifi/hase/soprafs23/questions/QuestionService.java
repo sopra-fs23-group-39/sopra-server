@@ -14,7 +14,7 @@ public class QuestionService {
 
     private final MovieApiService movieApiService = new MovieApiService();
     private final ActorApiService actorApiService = new ActorApiService();
-    private final static String KEY = "k_3zhp2s2n";
+    private static final String KEY = "k_3zhp2s2n";
 
 //    private List<String> listOfMovieIds;
 //
@@ -64,8 +64,7 @@ public class QuestionService {
                     }
                 }
                 break;
-            case POSTER:
-            case TRAILER:
+            case POSTER, TRAILER:
                 while (count < numberOfQuestions) {
                     question = getMovieQuestion();
                     if (!questions.contains(question)) {

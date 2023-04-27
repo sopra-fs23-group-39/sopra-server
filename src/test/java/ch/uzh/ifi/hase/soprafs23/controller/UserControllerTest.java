@@ -15,19 +15,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,7 +37,7 @@ public class UserControllerTest {
     private UserService userService;
 
     @Test
-    public void usersPOST_addValidUser() throws Exception {
+     void usersPOST_addValidUser() throws Exception {
         User user = new User();
         user.setUsername("testUsername");
         user.setPassword("testPassword");
@@ -72,7 +65,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void usersPOST_addInvalidUser() throws Exception {
+    void usersPOST_addInvalidUser() throws Exception {
         User user = new User();
         user.setUsername("testUsername");
 
@@ -92,7 +85,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void usersGET_getValidUser() throws Exception {
+    void usersGET_getValidUser() throws Exception {
         User user = new User();
         user.setUsername("testUsername");
         user.setId(1L);
@@ -108,7 +101,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void usersGET_getInvalidUser() throws Exception {
+    void usersGET_getInvalidUser() throws Exception {
         // HttpStatus 404 Not Found
         when(userService.getUserProfile(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -120,7 +113,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void usersPUT_putValidUser() throws Exception {
+    void usersPUT_putValidUser() throws Exception {
         User user = new User();
         user.setId(1L);
 
@@ -139,7 +132,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void usersPUT_putInvalidUser() throws Exception {
+    void usersPUT_putInvalidUser() throws Exception {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setUsername("testUsername");
 

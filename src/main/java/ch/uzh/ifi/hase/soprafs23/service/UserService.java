@@ -171,42 +171,34 @@ public class UserService {
         userRepository.save(newReadyUser);
         userRepository.flush();
     }
-    public void Score(AnswerPostDTO answer){
-        System.out.println("in score");
-        long score = ReturnScore(answer);
-        Long UserId = answer.getUserId();
-        User userById = getUserById(UserId);
-        Long prev_score = userById.getTotalPointsCurrentGame();
-        Long new_score;
-        if(prev_score == null){
-            new_score = score + 0;
+    public void score(AnswerPostDTO answer) {
+        long score = returnScore(answer);
+        Long userId = answer.getUserId();
+        User userById = getUserById(userId);
+        Long prevScore = userById.getTotalPointsCurrentGame();
+        Long newScore;
+        if(prevScore == null){
+            newScore = score + 0;
         } else {
-            new_score = score + prev_score;
+            newScore = score + prevScore;
         }
-        userById.setTotalPointsCurrentGame(new_score);
+        userById.setTotalPointsCurrentGame(newScore);
         userById.setCurrentPoints(score);
     }
 
-    public long ReturnScore(AnswerPostDTO answer){
-        //System.out.println("in return score");
+    public long returnScore(AnswerPostDTO answer) {
         long score;
-        String CorrectAnswer = answer.getCorrectAnswer();
-        //System.out.println(CorrectAnswer);
-        String UserAnswer = answer.getUsersAnswer();
+        String correctAnswer = answer.getCorrectAnswer();
+        String userAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
         Date qTime = answer.getQuestionTime();
         long diff = Math.abs(time.getTime() - qTime.getTime());
-        //System.out.println(diff);
-        if(UserAnswer.equals(CorrectAnswer)){
-            //System.out.println("answer was good");
+        if (userAnswer.equals(correctAnswer)) {
             //Scoring function
-            score = (long) (500/(Math.log((diff/1000))*(diff/1000)+1));
-        }
-        else{
-            System.out.println("assigning");
+            score = (long) (500 / (Math.log((diff/1000)) * ((double) diff/1000)+1));
+        } else {
             score = 0;
         }
-        System.out.println(score);
         return score;
     }
     public List<User> retrieveCurrentRanking(long lobbyId) {

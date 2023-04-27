@@ -74,13 +74,8 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
-        for(User player: game.getPlayers()){
-            System.out.println("preadd " + player.getUsername());
-        }
+
         game.getPlayers().add(user);
-        for(User player: game.getPlayers()){
-            System.out.println("postadd " + player.getUsername());
-        }
         user.setGame(game);
         //Player number of games increased
         userService.getUserById(userId).setNumberGames(userService.getUserById(userId).getNumberGames()+1);
@@ -88,10 +83,10 @@ public class GameService {
     }
 
     public List<User> getHostAndPlayers(long gameId) {
-        //System.out.println(gameId);
         Game game = gameRepository.findByGameId(gameId);
+        String message = String.format("No games with id %d was found", gameId);
         if (game == null) {
-            System.out.println("game is null");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
         //User host = userService.getUserById(game.getHostId());
         List<User> players = game.getPlayers();

@@ -86,7 +86,7 @@ public class WebSocketController {
 
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
-        userService.Score(answerPostDTO);
+        userService.score(answerPostDTO);
     }
 
 }
