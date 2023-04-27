@@ -220,8 +220,24 @@ Task 11 (client), task 35 (server): Simultaneously redirect users to Game after 
   
 Markus Niemack:  
   
-https://github.com/sopra-fs23-group-39/sopra-server/issues/66
+https://github.com/sopra-fs23-group-39/sopra-server/issues/66  
+
 Rewrite Websocket with different library, both in back- and frontend since they are currently timing out.
+
+https://github.com/sopra-fs23-group-39/sopra-server/issues/35  
+
+Synchronized start, host now clicks start game and everyone else is pulled with. includes https://github.com/sopra-fs23-group-39/sopra-client/issues/11
+
+https://github.com/sopra-fs23-group-39/sopra-server/issues/68  
+
+Set up timer slider to be connected to how long users have to answer a question
+
+https://github.com/sopra-fs23-group-39/sopra-server/issues/82  
+
+added to game settings
+
+
+
 
 Yannick Salzmann:
 
