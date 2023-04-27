@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.questions.Question;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class GameCreationDTO {
     private int timer;
 
     private int currentRound;
+
 
     public int getQuestionAmount() {
         return questionAmount;

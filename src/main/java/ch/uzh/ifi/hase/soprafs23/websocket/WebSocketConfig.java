@@ -27,6 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/game/{gameId}").setAllowedOriginPatterns("*").withSockJS();
         registry.addEndpoint("/game/{gameId}/question").setAllowedOriginPatterns("*").withSockJS();
         registry.addEndpoint("/game/{gameId}/answer").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/game/{gameId}/question/non-host").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
