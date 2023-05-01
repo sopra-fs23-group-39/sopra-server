@@ -309,4 +309,10 @@ Florence Hügi:
 
 Add scorllbar to the leaderboard page to better see all the players https://github.com/sopra-fs23-group-39/sopra-client/issues/69
 Add custom styling to Login page https://github.com/sopra-fs23-group-39/sopra-client/issues/71
-Add custom styling to Register page https://github.com/sopra-fs23-group-39/sopra-client/issues/72
+Add custom styling to Register page https://github.com/sopra-fs23-group-39/sopra-client/issues/72  
+  
+Markus Niemack:  
+Synchronize loading question page between participating players: https://github.com/sopra-fs23-group-39/sopra-server/issues/103  
+Adjust scoring to use dynamic time (more precise description in issue link)  https://github.com/sopra-fs23-group-39/sopra-server/issues/104
+
+
