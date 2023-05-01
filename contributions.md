@@ -303,3 +303,10 @@ Damjan Kuzmanovic
     - Create a separate evaluation function for rapid format https://github.com/sopra-fs23-group-39/sopra-server/issues/102
     - Create a global rank and global leaderboard for rapid format https://github.com/sopra-fs23-group-39/sopra-server/issues/101
 - Fix minor bugs
+
+
+Florence Hügi:
+
+Add scorllbar to the leaderboard page to better see all the players https://github.com/sopra-fs23-group-39/sopra-client/issues/69
+Add custom styling to Login page https://github.com/sopra-fs23-group-39/sopra-client/issues/71
+Add custom styling to Register page https://github.com/sopra-fs23-group-39/sopra-client/issues/72
