@@ -294,3 +294,12 @@ This consists of:
 1. setting up the back end: creating new global variables for the game mode, including a new ranking system that suits the game mode as well as adjusted points. https://github.com/sopra-fs23-group-39/sopra-server/issues/94, https://github.com/sopra-fs23-group-39/sopra-server/issues/93
 
 2. Display the new content/settings in the corresponding screens in the front end (profile, game_selection, game)
+
+
+Damjan Kuzmanovic
+
+- Implement Rapid game format
+    - Create a standardized Rapid game format https://github.com/sopra-fs23-group-39/sopra-server/issues/100
+    - Create a separate evaluation function for rapid format https://github.com/sopra-fs23-group-39/sopra-server/issues/102
+    - Create a global rank and global leaderboard for rapid format https://github.com/sopra-fs23-group-39/sopra-server/issues/101
+- Fix minor bugs
