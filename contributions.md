@@ -283,3 +283,14 @@ task (user story) #95: As a player I want to play a game where the prompt is fro
 - task #67 (client): Add tv show gamemode selection to gameSelection (https://github.com/sopra-fs23-group-39/sopra-client/issues/67).
 
 While working with our API, I also want to check what other types of questions we can ask (directors/posters/awards/plots/characters/soundtracks/trailers...). If I find useful information, I'll implement an API part (server part) to create these questions.
+
+
+Yannick Salzmann
+
+I will add a new game mode for blitz games. https://github.com/sopra-fs23-group-39/sopra-server/issues/92
+
+This consists of:
+
+1. setting up the back end: creating new global variables for the game mode, including a new ranking system that suits the game mode as well as adjusted points. https://github.com/sopra-fs23-group-39/sopra-server/issues/94, https://github.com/sopra-fs23-group-39/sopra-server/issues/93
+
+2. Display the new content/settings in the corresponding screens in the front end (profile, game_selection, game)
