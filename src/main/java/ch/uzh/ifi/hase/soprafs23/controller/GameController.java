@@ -37,7 +37,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameCreationDTO createGame(@RequestBody GameCreationDTO gameCreationDTO){
-        Game game = gameService.createGame(gameCreationDTO.getHostId(), gameCreationDTO.getGameMode(), gameCreationDTO.getQuestionAmount(),gameCreationDTO.getTimer());
+        Game game = gameService.createGame(gameCreationDTO.getHostId(), gameCreationDTO.getGameMode(), gameCreationDTO.getQuestionAmount(),gameCreationDTO.getTimer(), gameCreationDTO.getGameFormat());
         return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(game);
     }
     @PutMapping("/game/{gameId}")

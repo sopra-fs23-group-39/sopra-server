@@ -9,6 +9,8 @@ public class UserGetDTO {
     private String username;
     private UserStatus status;
     private Long userRank;
+
+    private Long blitzRank;
     private Long numberGames;
     private Long totalPointsCurrentGame;
     private Long currentPoints;
@@ -16,6 +18,8 @@ public class UserGetDTO {
     private boolean isReady;
     private Game game;
     private Game hostedGame;
+
+    private Long totalBlitzPointsAllGames;
 
     private Long gameId;
 
@@ -60,6 +64,10 @@ public class UserGetDTO {
     public void setUserRank(Long rank) {
     this.userRank = rank;
     }
+
+    public Long getBlitzRank(){return blitzRank;}
+
+    public void setBlitzRank(Long blitzRank){this.blitzRank = blitzRank;}
 
     public Long getNumberGames() {
         return numberGames;
@@ -114,6 +122,12 @@ public class UserGetDTO {
 
     public void setTotalPointsAllGames(Long totalPointsAllGames) {
         this.totalPointsAllGames = totalPointsAllGames;
+    }
+
+    public Long getTotalBlitzPointsAllGames(){return totalBlitzPointsAllGames;}
+
+    public void  setTotalBlitzPointsAllGames(Long totalBlitzPointsAllGames){
+        this.totalBlitzPointsAllGames = totalBlitzPointsAllGames;
     }
 
 }

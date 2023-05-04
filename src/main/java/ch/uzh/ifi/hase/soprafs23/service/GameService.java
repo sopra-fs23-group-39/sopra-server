@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -41,13 +42,14 @@ public class GameService {
         this.userService = userService;
     }
 
-    public Game createGame(Long hostId, GameMode gameMode, int questionAmount, int timer) {
+    public Game createGame(Long hostId, GameMode gameMode, int questionAmount, int timer, GameFormat gameFormat) {
         Game game = new Game();
         game.setHostId(hostId);
         game.setGameMode(gameMode);
         game.setQuestionAmount(questionAmount);
         game.setTimer(timer);
         game.setHost(userService.getUserById(hostId));
+        game.setGameFormat(gameFormat);
 
       try {
           game.setQuestions(questionService.getListOfQuestions(gameMode, questionAmount));

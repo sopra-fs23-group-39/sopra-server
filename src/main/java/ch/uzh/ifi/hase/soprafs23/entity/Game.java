@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -50,6 +51,9 @@ public class Game implements Serializable {
 
     @Column
     private int timer;
+
+    @Column(nullable = true)
+    private GameFormat gameFormat;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -106,6 +110,9 @@ public class Game implements Serializable {
         this.gameMode = mode;
     }
 
+    public GameFormat getGameFormat(){return gameFormat;}
+
+    public void setGameFormat(GameFormat format){this.gameFormat = format;}
     public Long getHostId() {
         return hostId;
     }

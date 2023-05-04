@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -52,6 +53,8 @@ public class UserService {
         newUser.setTotalPointsAllGames(0L);
         newUser.setNumberGames(0L);
         newUser.setUserRank(1000L);
+        newUser.setBlitzRank(1000L);
+        newUser.setTotalBlitzPointsAllGames(0L);
         checkIfUserExists(newUser);
         // saves the given entity but data is only persisted in the database once
         // flush() is called
@@ -60,6 +63,7 @@ public class UserService {
 
         List<User> allUsersInDB = getUsers();
         updateAllUsersRank(allUsersInDB);
+        updateAllBlitzRanks(allUsersInDB);
 
         log.debug("Created Information for User: {}", newUser);
         return newUser;
@@ -122,9 +126,11 @@ public class UserService {
         userRepository.save(userByUsername);
         userRepository.flush();
 
-        if (userByUsername.getUsername() == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username is wrong or does not exist");
+        if (userByUsername.getUsername() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username is wrong or does not exist");
         }
-        else if (!(existingPassword.equals(userInputPassword))){throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong password");
+        else if (!(existingPassword.equals(userInputPassword))) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong password");
         }
 
         userByUsername.setStatus(UserStatus.ONLINE);
@@ -172,15 +178,17 @@ public class UserService {
         userRepository.save(newReadyUser);
         userRepository.flush();
     }
+
     public void score(AnswerPostDTO answer) {
         long score = returnScore(answer);
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
         Long prevScore = userById.getTotalPointsCurrentGame();
         Long newScore;
-        if(prevScore == null){
+        if (prevScore == null) {
             newScore = score + 0;
-        } else {
+        }
+        else {
             newScore = score + prevScore;
         }
         userById.setTotalPointsCurrentGame(newScore);
@@ -196,27 +204,53 @@ public class UserService {
         long diff = Math.abs(time.getTime() - qTime.getTime());
         if (userAnswer.equals(correctAnswer)) {
             //Scoring function
-            score = (long) (500 / (Math.log((diff/1000)) * ((double) diff/1000)+1));
-        } else if (answer.getUsersAnswer().equals("DEFAULT")){
+            score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
+        }
+        else if (answer.getUsersAnswer().equals("DEFAULT")) {
             score = 0;
-        } else {
+        }
+        else {
             score = 0;
         }
         return score;
     }
 
-    public void updateAllGamesScore(AnswerPostDTO answer){
-        long score = returnScore(answer);
-        Long userId = answer.getUserId();
-        User userById = getUserById(userId);
-        Long prevScoreAllGames = userById.getTotalPointsAllGames();
-        Long newScoreAllGames;
-        if (prevScoreAllGames == null){
-            newScoreAllGames = score + 0;
-        } else {
-            newScoreAllGames = score + prevScoreAllGames;
+    public void updateAllGamesScore(AnswerPostDTO answer, long gameId) {
+        Game game = gameRepository.findByGameId(gameId);
+
+        if (game.getGameFormat().equals(GameFormat.CUSTOM)) {
+            long score = returnScore(answer);
+            Long userId = answer.getUserId();
+            User userById = getUserById(userId);
+            Long prevScoreAllGames = userById.getTotalPointsAllGames();
+            long newScoreAllGames;
+            if (prevScoreAllGames == null) {
+                newScoreAllGames = score;
+            }
+            else {
+                newScoreAllGames = score + prevScoreAllGames;
+            }
+            userById.setTotalPointsAllGames(newScoreAllGames);
         }
-        userById.setTotalPointsAllGames(newScoreAllGames);
+    }
+
+    public void updateAllBlitzGamesScore(AnswerPostDTO answer, long gameId) {
+        Game game = gameRepository.findByGameId(gameId);
+
+        if (game.getGameFormat().equals(GameFormat.BLITZ)) {
+            long score = returnScore(answer);
+            Long userId = answer.getUserId();
+            User userById = getUserById(userId);
+            Long prevScoreAllGames = userById.getTotalPointsAllGames();
+            long newScoreAllGames;
+            if (prevScoreAllGames == null) {
+                newScoreAllGames = score;
+            }
+            else {
+                newScoreAllGames = score + prevScoreAllGames;
+            }
+            userById.setTotalBlitzPointsAllGames(newScoreAllGames);
+        }
     }
 
     public List<User> retrieveCurrentRanking(long lobbyId) {
@@ -243,6 +277,19 @@ public class UserService {
         List<User> sortedUsersDesc = sortAllUsersDescOrder(allUsersInDB);
         for (int i = 0; i < sortedUsersDesc.size(); i++) {
             sortedUsersDesc.get(i).setUserRank((long) (i + 1));
+        }
+    }
+
+    public List<User> sortAllBlitzRanksDescOrder(List<User> allUsersInDB) {
+        List<User> sortedUsersDesc = new ArrayList<>(allUsersInDB);
+        sortedUsersDesc.sort(Comparator.comparing(User::getTotalPointsAllGames).reversed());
+        return sortedUsersDesc;
+    }
+
+    public void updateAllBlitzRanks(List<User> allUsersInDB) {
+        List<User> sortedUsersDesc = sortAllBlitzRanksDescOrder(allUsersInDB);
+        for (int i = 0; i < sortedUsersDesc.size(); i++) {
+            sortedUsersDesc.get(i).setBlitzRank((long) (i + 1));
         }
     }
 
