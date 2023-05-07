@@ -212,12 +212,18 @@ Task #70 (server) Fix bugs in the server part connected to displaying current st
 - commit: https://github.com/sopra-fs23-group-39/sopra-server/commit/23c64b7ee4cc83cf9c321ed6d5640a298f532739;
 - commit (merged to main): https://github.com/sopra-fs23-group-39/sopra-server/commit/5c5bef0ad863081c5a65cf5061c3fe1973bfee52
 
-Task 48 (client): Make the correct answer turn "green" on Question page: https://github.com/sopra-fs23-group-39/sopra-client/issues/48
+Task #48 (client): Make the correct answer turn "green" on Question page: https://github.com/sopra-fs23-group-39/sopra-client/issues/48,
+ commit: https://github.com/sopra-fs23-group-39/sopra-client/commit/c2de55620d0de3eca8c5d9493627a08ff32ab174
 
-Task 68 (server): Connect Time (from GameSelection page) and time to answer a question (on Question page): https://github.com/sopra-fs23-group-39/sopra-server/issues/68
+Task #79 Add functionality to compute global score for all games, to update ranks accordingly and to display it correctly on Profile and Leaderboard pages (https://github.com/sopra-fs23-group-39/sopra-server/issues/79):
 
-Task 11 (client), task 35 (server): Simultaneously redirect users to Game after the game starts (incl. back-end) - I'm not sure I can do it before Thursday, I already spent several hours (and Yannick as well) on it and it didn't work. (For one-player game, this button (Start game) works.)
+- commit (server): https://github.com/sopra-fs23-group-39/sopra-server/commit/e7a3436f85dbe4a8024b627dabf26ec4c6167d05; 
+
+- commit (client): https://github.com/sopra-fs23-group-39/sopra-client/commit/ae271276172e54ed88ab44d0e0dca2e54bb2a86e, https://github.com/sopra-fs23-group-39/sopra-client/commit/25e2201537352e743e8dae843da53fd0c3df5770, https://github.com/sopra-fs23-group-39/sopra-client/commit/290dfacfc9dbdedc41b6a4598189ab7fde77ddf7 
   
+Without a task: added some basic CSS to all the pages so that they look more or less fine for the presentation
+
+
 Markus Niemack:  
   
 https://github.com/sopra-fs23-group-39/sopra-server/issues/66  
@@ -237,15 +243,13 @@ https://github.com/sopra-fs23-group-39/sopra-server/issues/82
 added to game settings
 
 
-
-
 Yannick Salzmann:
 
 Login/Registration issues:
 
 Correctly handle exceptions for invalid user input (f. e. invalid username != null) https://github.com/sopra-fs23-group-39/sopra-server/issues/67
 
-Currently a user is locked on the Registration page if a user wants to login https://github.com/sopra-fs23-group-39/sopra-client/issues/49
+Currently, a user is locked on the Registration page if a user wants to login https://github.com/sopra-fs23-group-39/sopra-client/issues/49
 
 CSS for the Game: Assuring that the buttons for answering a question are not invisible (pushed to the bottom) in the quiz. https://github.com/sopra-fs23-group-39/sopra-client/issues/47 
 
@@ -256,6 +260,8 @@ display winner if the game is over https://github.com/sopra-fs23-group-39/sopra-
 
 create server functions corresponding to winnerpage https://github.com/sopra-fs23-group-39/sopra-server/issues/69
 
+
+
 Damjan Kuzmanovic:
 
 -Prvent the Start game button being pressed multiple times https://github.com/sopra-fs23-group-39/sopra-client/issues/51
@@ -263,5 +269,50 @@ Damjan Kuzmanovic:
 -Ensure that the application always starts from the login page https://github.com/sopra-fs23-group-39/sopra-client/issues/52
 
 -Add Game Counter functionality https://github.com/sopra-fs23-group-39/sopra-server/issues/74
+
+
+
+Week 6 (01.05.2023-07.05.2023)
+
+Shakirova Natalia:
+
+This week, I want to focus on our external API: optimize existing code (for now, it performs too many calls to get one "Actor" question, for example) and implement a TV shows game mode:
+task (user story) #95: As a player I want to play a game where the prompt is from a tv show (https://github.com/sopra-fs23-group-39/sopra-server/issues/95), including:
+- task #98 (server): Expand API calls to include tv show (https://github.com/sopra-fs23-group-39/sopra-server/issues/98);
+- task #97 (server): Implement tv shows gamemode (https://github.com/sopra-fs23-group-39/sopra-server/issues/97);
+- task #67 (client): Add tv show gamemode selection to gameSelection (https://github.com/sopra-fs23-group-39/sopra-client/issues/67).
+
+While working with our API, I also want to check what other types of questions we can ask (directors/posters/awards/plots/characters/soundtracks/trailers...). If I find useful information, I'll implement an API part (server part) to create these questions.
+
+
+Yannick Salzmann
+
+I will add a new game mode for blitz games. https://github.com/sopra-fs23-group-39/sopra-server/issues/92
+
+This consists of:
+
+1. setting up the back end: creating new global variables for the game mode, including a new ranking system that suits the game mode as well as adjusted points. https://github.com/sopra-fs23-group-39/sopra-server/issues/94, https://github.com/sopra-fs23-group-39/sopra-server/issues/93
+
+2. Display the new content/settings in the corresponding screens in the front end (profile, game_selection, game)
+
+
+Damjan Kuzmanovic
+
+- Implement Rapid game format
+    - Create a standardized Rapid game format https://github.com/sopra-fs23-group-39/sopra-server/issues/100
+    - Create a separate evaluation function for rapid format https://github.com/sopra-fs23-group-39/sopra-server/issues/102
+    - Create a global rank and global leaderboard for rapid format https://github.com/sopra-fs23-group-39/sopra-server/issues/101
+- Fix minor bugs
+
+
+Florence Hügi:
+
+Add scorllbar to the leaderboard page to better see all the players https://github.com/sopra-fs23-group-39/sopra-client/issues/69
+Add custom styling to Login page https://github.com/sopra-fs23-group-39/sopra-client/issues/71
+Add custom styling to Register page https://github.com/sopra-fs23-group-39/sopra-client/issues/72  
+  
+Markus Niemack:  
+Synchronize loading question page between participating players: https://github.com/sopra-fs23-group-39/sopra-server/issues/103  
+Adjust scoring to use dynamic time (more precise description in issue link)  https://github.com/sopra-fs23-group-39/sopra-server/issues/104
 
 

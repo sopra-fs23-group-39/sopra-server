@@ -72,7 +72,7 @@ public class WebSocketController {
     public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor) {
 
         String sessionId = headerAccessor.getSessionId();
-        synchronized (connectedClients) {
+        /*synchronized (connectedClients) {
             if(connectedClients.isEmpty()){
                 Question question = gameService.getQuestionToSend(gameId);
                 Date creationTime = new Date();
@@ -85,7 +85,27 @@ public class WebSocketController {
                 connectedClients.put(gameId, sessionId);
                 return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(currentGameQuestions.get(gameId));
             }
+        }*/
+        synchronized (connectedClients) {
+            if(connectedClients.size() != gameService.getHostAndPlayers(gameId).size()-1){
+                /*Question question = gameService.getQuestionToSend(gameId);
+                Date creationTime = new Date();
+                question.setCreationTime(creationTime);
+                currentGameQuestions.put(gameId, question);*/
+                this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question", "Waiting for players...");
+                connectedClients.put(gameId, sessionId);
+                //return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
+            }else{
+                Question question = gameService.getQuestionToSend(gameId);
+                Date creationTime = new Date();
+                question.setCreationTime(creationTime);
+                currentGameQuestions.put(gameId, question);
+                connectedClients.put(gameId, sessionId);
+                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(currentGameQuestions.get(gameId));
+            }
         }
+        //unhandled so far, but works since checks are done in the front end, will think about something for this.
+        return null;
     }
     @EventListener
     public void handleQuestionDisconnect(SessionDisconnectEvent event){
