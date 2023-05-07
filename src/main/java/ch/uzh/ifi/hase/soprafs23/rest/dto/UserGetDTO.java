@@ -11,6 +11,8 @@ public class UserGetDTO {
     private Long userRank;
 
     private Long blitzRank;
+
+    //private Long rapidRank;
     private Long numberGames;
     private Long totalPointsCurrentGame;
     private Long currentPoints;
@@ -20,6 +22,8 @@ public class UserGetDTO {
     private Game hostedGame;
 
     private Long totalBlitzPointsAllGames;
+
+    //private Long totalRapidPointsAllGames;
 
     private Long gameId;
 
@@ -130,4 +134,11 @@ public class UserGetDTO {
         this.totalBlitzPointsAllGames = totalBlitzPointsAllGames;
     }
 
+    /*public Long getRapidRank() { return rapidRank; }
+
+    public void setRapidRank(Long rapidRank) { this.rapidRank = rapidRank; }
+
+    public Long getTotalRapidPointsAllGames() { return totalRapidPointsAllGames; }
+
+    public void setTotalRapidPointsAllGames(Long totalRapidPointsAllGames) { this.totalRapidPointsAllGames = totalRapidPointsAllGames;}*/
 }
