@@ -287,11 +287,11 @@ While working with our API, I also want to check what other types of questions w
 
 Yannick Salzmann
 
-I will add a new game mode for blitz games. https://github.com/sopra-fs23-group-39/sopra-server/issues/92
+I will add a new game format for blitz games. https://github.com/sopra-fs23-group-39/sopra-server/issues/92
 
 This consists of:
 
-1. setting up the back end: creating new global variables for the game mode, including a new ranking system that suits the game mode as well as adjusted points. https://github.com/sopra-fs23-group-39/sopra-server/issues/94, https://github.com/sopra-fs23-group-39/sopra-server/issues/93
+1. setting up the back end: creating new game format specific global variables to each player. Adding new methods to determine how many points player receive by playing the game format. There is a seperate ranking for this game format.  https://github.com/sopra-fs23-group-39/sopra-server/issues/94
 
 2. Display the new content/settings in the corresponding screens in the front end (profile, game_selection, game)
 
@@ -315,4 +315,13 @@ Markus Niemack:
 Synchronize loading question page between participating players: https://github.com/sopra-fs23-group-39/sopra-server/issues/103  
 Adjust scoring to use dynamic time (more precise description in issue link)  https://github.com/sopra-fs23-group-39/sopra-server/issues/104
 
+
+Week 7 (08.05.23 - 14.05.23)
+
+Yannick Salzmann
+
+- Finishing points distribution for blitz games https://github.com/sopra-fs23-group-39/sopra-server/issues/93
+- Adding a scrollbar to the standings page https://github.com/sopra-fs23-group-39/sopra-client/issues/83
+- Fixing profile page, where currently an error is thrown when clicking on player stats, as well as improve the design https://github.com/sopra-fs23-group-39/sopra-client/issues/81
+- Improving the change profile page https://github.com/sopra-fs23-group-39/sopra-client/issues/82
 
