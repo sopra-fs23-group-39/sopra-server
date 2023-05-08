@@ -51,12 +51,12 @@ public class GameService {
         game.setHost(userService.getUserById(hostId));
         game.setGameFormat(gameFormat);
 
-      try {
+      /*try {
           game.setQuestions(questionService.getListOfQuestions(gameMode, questionAmount));
       }
       catch (JsonProcessingException e) {
           throw new RuntimeException(e);
-      }
+      }*/
 
         game.getPlayers().add(userService.getUserById(hostId));
         userService.getUserById(hostId).setGame(game);
@@ -119,8 +119,13 @@ public class GameService {
         int currentRound = gameById.getCurrentRound();
         int numberOfQuestions = gameById.getQuestionAmount();
         if (currentRound < numberOfQuestions) {
-            question = gameById.getQuestions().get(currentRound);
-            gameById.setCurrentRound(++currentRound);
+            try {
+                question = questionService.getAppropriateQuestion(gameById.getGameMode());
+                gameById.setCurrentRound(++currentRound);
+            }
+            catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
         return question;
     }

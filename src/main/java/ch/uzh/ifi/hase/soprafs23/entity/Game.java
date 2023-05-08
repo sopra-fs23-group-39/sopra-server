@@ -64,8 +64,8 @@ public class Game implements Serializable {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<User> players = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Question> questions = new ArrayList<>();
+    /*@ElementCollection(fetch = FetchType.EAGER)
+    private List<Question> questions = new ArrayList<>();*/
 
     @Column
     private int currentRound;
@@ -121,14 +121,14 @@ public class Game implements Serializable {
         this.hostId = hostId;
     }
 
-    @Transactional
+    /*@Transactional
     public List<Question> getQuestions() {
         return questions;
     }
     @Transactional
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
-    }
+    }*/
 
     public int getCurrentRound() {
         return currentRound;

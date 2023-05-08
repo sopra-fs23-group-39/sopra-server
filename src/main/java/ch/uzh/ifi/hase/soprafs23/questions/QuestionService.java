@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class QuestionService {
 
@@ -77,6 +78,32 @@ public class QuestionService {
         Collections.shuffle(questions);
         
         return questions;
+    }
+
+    public Question getAppropriateQuestion(GameMode gameMode) throws JsonProcessingException {
+        Question question;
+        int count = 0;
+        switch (gameMode) {
+            case ACTOR:
+                question = getActorQuestion();
+                break;
+            case MIXED:
+                Random random = new Random();
+                boolean coinFlip = random.nextBoolean();
+                if(coinFlip){
+                    question = getActorQuestion();
+                } else {
+                    question = getMovieQuestion();
+                }
+                break;
+            case POSTER, TRAILER:
+                question = getMovieQuestion();
+                break;
+            default:
+                question = getMovieQuestion();
+                break;
+        }
+        return question;
     }
 
     public Question getMovieQuestion() throws JsonProcessingException {
