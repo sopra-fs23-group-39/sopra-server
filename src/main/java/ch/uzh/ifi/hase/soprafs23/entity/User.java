@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Table(name = "USER")
 public class User implements Serializable {
     public User() {
-        /**
+        /*
          This no-argument constructor is required,
          Hibernate use reflection on this constructor to instantiate objects
          */

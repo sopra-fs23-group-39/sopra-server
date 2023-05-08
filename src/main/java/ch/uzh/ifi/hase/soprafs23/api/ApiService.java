@@ -16,19 +16,16 @@ public abstract class ApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<String> getAllMovieIds(String key) throws JsonProcessingException {
+    public List<String> getAllIds(String key, String listNumber) throws JsonProcessingException {
         List<String> listOfMovieIds = new ArrayList<>();
-        String response = getJSONString(String.format("https://imdb-api.com/en/API/Top250Movies/%s", key));
+        String response = getJSONString(String.format("https://imdb-api.com/API/IMDbList/%s/%s", key, listNumber));
 
         JsonNode rootNode = objectMapper.readTree(response);
         JsonNode itemsNode = rootNode.path("items");
 
-        int year = 1989;
         for (JsonNode itemNode : itemsNode) {
-            if (Integer.parseInt(itemNode.path("year").asText()) > year) {
-                String movieId = itemNode.path("id").asText();
-                listOfMovieIds.add(movieId);
-            }
+            String movieId = itemNode.path("id").asText();
+            listOfMovieIds.add(movieId);
         }
 
         return listOfMovieIds;
