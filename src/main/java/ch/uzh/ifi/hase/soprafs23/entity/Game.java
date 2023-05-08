@@ -2,12 +2,10 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs23.questions.Question;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;

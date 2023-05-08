@@ -1,8 +1,9 @@
-package ch.uzh.ifi.hase.soprafs23.questions;
+package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.api.ActorApiService;
 import ch.uzh.ifi.hase.soprafs23.api.MovieApiService;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
@@ -68,93 +69,26 @@ public class QuestionService {
         }
     }
 
-    public List<Question> getListOfQuestions(GameMode gameMode, int numberOfQuestions) throws JsonProcessingException {
-        List<Question> questions = new ArrayList<>();
-        Question question;
-        int count = 0;
-        int genderType;
-        switch (gameMode) {
-            case ACTOR:
-                while (count < numberOfQuestions) {
-                    genderType = (int)Math.floor(Math.random() * 2);
-                    question = getActorQuestion(genderType);
-                    if (!questions.contains(question)) {
-                        questions.add(question);
-                        count++;
-                    }
-                }
-                break;
-            case MIXED:
-                int partOfQuestions = numberOfQuestions / 3;
-                while (count < partOfQuestions) {
-                    genderType = (int)Math.floor(Math.random() * 2);
-                    question = getActorQuestion(genderType);
-                    if (!questions.contains(question)) {
-                        questions.add(question);
-                        count++;
-                    }
-                }
-                while (count < partOfQuestions * 2) {
-                    question = getMovieQuestion(0);
-                    if (!questions.contains(question)) {
-                        questions.add(question);
-                        count++;
-                    }
-                }
-                while (count < numberOfQuestions) {
-                    question = getMovieQuestion(1);
-                    if (!questions.contains(question)) {
-                        questions.add(question);
-                        count++;
-                    }
-                }
-                break;
-            case SHOWS:
-                while (count < numberOfQuestions) {
-                    question = getMovieQuestion(1);
-                    if (!questions.contains(question)) {
-                        questions.add(question);
-                        count++;
-                    }
-                }
-                break;
-            case POSTER, TRAILER:
-                while (count < numberOfQuestions) {
-                    question = getMovieQuestion(0);
-                    if (!questions.contains(question)) {
-                        questions.add(question);
-                        count++;
-                    }
-                }
-                break;
-        }
-        Collections.shuffle(questions);
-        
-        return questions;
-    }
-
     public Question getAppropriateQuestion(GameMode gameMode) throws JsonProcessingException {
         Question question;
+        int genderType;
         switch (gameMode) {
-            case ACTOR:
-                question = getActorQuestion();
-                break;
-            case MIXED:
+            case SHOW -> question = getMovieQuestion(1);
+            case ACTOR -> {
+                genderType = (int) Math.floor(Math.random() * 2);
+                question = getActorQuestion(genderType);
+            }
+            case MIXED -> {
                 Random random = new Random();
-                boolean coinFlip = random.nextBoolean();
-                if (coinFlip) {
-                    question = getActorQuestion();
+                int category = random.nextInt(3);
+                if (category == 0 || category == 1) {
+                    question = getMovieQuestion(category);
+                } else {
+                    genderType = (int) Math.floor(Math.random() * 2);
+                    question = getActorQuestion(genderType);
                 }
-                else {
-                    question = getMovieQuestion();
-                }
-                break;
-            case POSTER, TRAILER:
-                question = getMovieQuestion();
-                break;
-            default:
-                question = getMovieQuestion();
-                break;
+            }
+            default -> question = getMovieQuestion(0);
         }
         return question;
     }

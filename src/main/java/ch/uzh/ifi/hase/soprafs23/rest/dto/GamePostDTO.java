@@ -3,11 +3,10 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Question;
 
 import java.util.List;
 
-public class GameCreationDTO {
+public class GamePostDTO {
     private long gameId;
     private GameMode gameMode;
 
@@ -45,7 +44,7 @@ public class GameCreationDTO {
         this.gameMode = gameMode;
     }
 
-    public GameFormat getGameFormat(){return gameFormat;}
+    public GameFormat getGameFormat() {return gameFormat;}
 
     public void setGameFormat(GameFormat gameFormat) {this.gameFormat = gameFormat;}
 
@@ -72,11 +71,11 @@ public class GameCreationDTO {
     public void setPlayers(List<User> players) {
         this.players = players;
     }
-    public int getTimer(){return timer;}
-    public void setTimer(int timer){this.timer = timer;}
+    public int getTimer() {return timer;}
+    public void setTimer(int timer) {this.timer = timer;}
 
-    public int getCurrentRound(){return currentRound;}
+    public int getCurrentRound() {return currentRound;}
 
-    public void setCurrentRound(int currentRound){this.currentRound = currentRound;}
+    public void setCurrentRound(int currentRound) {this.currentRound = currentRound;}
 
 }

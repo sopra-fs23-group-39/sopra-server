@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs23.questions;
+package ch.uzh.ifi.hase.soprafs23.entity;
 
 import java.util.Date;
 

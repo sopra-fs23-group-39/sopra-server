@@ -148,9 +148,9 @@ public class User implements Serializable {
         this.userRank = rank;
     }
 
-    public Long getBlitzRank(){return blitzRank;}
+    public Long getBlitzRank() {return blitzRank;}
 
-    public void setBlitzRank(Long blitzRank){this.blitzRank = blitzRank;}
+    public void setBlitzRank(Long blitzRank) {this.blitzRank = blitzRank;}
 
     public Long getTotalPointsCurrentGame() {
         return totalPointsCurrentGame;
@@ -173,7 +173,7 @@ public class User implements Serializable {
         this.totalPointsAllGames = totalPointsAllGames;
     }
 
-    public Long getTotalBlitzPointsAllGames(){return totalBlitzPointsAllGames;}
+    public Long getTotalBlitzPointsAllGames() {return totalBlitzPointsAllGames;}
 
     public void setTotalBlitzPointsAllGames(Long totalBlitzPointsAllGames) {this.totalBlitzPointsAllGames = totalBlitzPointsAllGames;}
 

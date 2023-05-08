@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.GameCreationDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.GamePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
@@ -36,8 +36,8 @@ public class GameController {
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameCreationDTO createGame(@RequestBody GameCreationDTO gameCreationDTO){
-        Game game = gameService.createGame(gameCreationDTO.getHostId(), gameCreationDTO.getGameMode(), gameCreationDTO.getQuestionAmount(),gameCreationDTO.getTimer(), gameCreationDTO.getGameFormat());
+    public GamePostDTO createGame(@RequestBody GamePostDTO gamePostDTO){
+        Game game = gameService.createGame(gamePostDTO.getHostId(), gamePostDTO.getGameMode(), gamePostDTO.getQuestionAmount(), gamePostDTO.getTimer(), gamePostDTO.getGameFormat());
         return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(game);
     }
     @PutMapping("/game/{gameId}")
@@ -68,7 +68,7 @@ public class GameController {
     @GetMapping("/game/{gameId}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameCreationDTO retrieveGameSettings (@PathVariable long gameId){
+    public GamePostDTO retrieveGameSettings (@PathVariable long gameId){
         Game findByGameId = gameService.getGameSettings(gameId);
         return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(findByGameId);
     }

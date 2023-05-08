@@ -2,8 +2,8 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Answer;
-import ch.uzh.ifi.hase.soprafs23.questions.Question;
+import ch.uzh.ifi.hase.soprafs23.entity.Answer;
+import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -85,7 +85,7 @@ public interface DTOMapper {
     @Mapping(source = "timer", target = "timer")
     @Mapping(source = "currentRound", target = "currentRound")
     @Mapping(source = "gameFormat", target = "gameFormat")
-    GameCreationDTO convertEntityToGameCreationDTO(Game game);
+    GamePostDTO convertEntityToGameCreationDTO(Game game);
 
     @Mapping(source = "questionText", target = "questionText")
     @Mapping(source = "questionLink", target = "questionLink")

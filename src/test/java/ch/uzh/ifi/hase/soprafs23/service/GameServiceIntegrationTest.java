@@ -49,7 +49,7 @@ public class GameServiceIntegrationTest {
 
         Game testGame = new Game();
         testGame.setHostId(1L);
-        testGame.setGameMode(GameMode.valueOf("POSTER"));
+        testGame.setGameMode(GameMode.valueOf("MOVIE"));
         testGame.setQuestionAmount(10);
         testGame.setTimer(30);
 

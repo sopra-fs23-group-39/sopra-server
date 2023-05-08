@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs23.questions;
+package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.Embeddable;
 import java.util.Date;

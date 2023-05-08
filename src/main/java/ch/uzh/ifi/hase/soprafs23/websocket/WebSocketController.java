@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.websocket;
 
 import java.util.*;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.questions.Question;
+import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.QuestionGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
@@ -17,7 +17,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 
