@@ -293,4 +293,73 @@ public class UserService {
         }
     }
 
+    public void Rapidscore(AnswerPostDTO answer) {
+        long score = returnRapidScore(answer);
+        Long userId = answer.getUserId();
+        User userById = getUserById(userId);
+        Long prevScore = userById.getTotalPointsCurrentGame();
+        Long newScore;
+        if (prevScore == null) {
+            newScore = score + 0;
+        }
+        else {
+            newScore = score + prevScore;
+        }
+        userById.setTotalPointsCurrentGame(newScore);
+        userById.setCurrentPoints(score);
+    }
+
+    public long returnRapidScore(AnswerPostDTO answer) {
+        long score;
+        String correctAnswer = answer.getCorrectAnswer();
+        String userAnswer = answer.getUsersAnswer();
+        Date time = answer.getTime();
+        Date qTime = answer.getQuestionTime();
+        long diff = Math.abs(time.getTime() - qTime.getTime());
+        if (userAnswer.equals(correctAnswer)) {
+            //Scoring function
+            score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
+        }
+        else if (answer.getUsersAnswer().equals("DEFAULT")) {
+            score = -30;
+        }
+        else {
+            score = 0;
+        }
+        return score;
+    }
+
+    public void updateAllRapidGamesScore(AnswerPostDTO answer, Long gameId) {
+        Game game = gameRepository.findByGameId(gameId);
+
+        if (game.getGameFormat().equals(GameFormat.BLITZ)) {
+            long score = returnRapidScore(answer);
+            Long userId = answer.getUserId();
+            User userById = getUserById(userId);
+            Long prevScoreAllGames = userById.getTotalRapidPointsAllGames();
+            long newScoreAllGames;
+            if (prevScoreAllGames == null) {
+                newScoreAllGames = score;
+            }
+            else {
+                newScoreAllGames = score + prevScoreAllGames;
+            }
+            userById.setTotalRapidPointsAllGames(newScoreAllGames);
+        }
+    }
+
+    private List<User> sortAllRapidRanksDescOrder(List<User> allUsersInDB){
+        List<User> sortedUsersDesc = new ArrayList<>(allUsersInDB);
+        sortedUsersDesc.sort(Comparator.comparing(User::getTotalRapidPointsAllGames).reversed());
+        return sortedUsersDesc;
+    }
+
+    public void updateAllRapidRanks(List<User> allUsersInDB) {
+        List<User> sortedUsersDesc = sortAllRapidRanksDescOrder(allUsersInDB);
+        for (int i = 0; i < sortedUsersDesc.size(); i++) {
+            sortedUsersDesc.get(i).setRapidRank((long) (i + 1));
+        }
+    }
+
+
 }

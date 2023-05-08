@@ -50,8 +50,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long blitzRank;
 
-    /*@Column(nullable = false)
-    private Long rapidRank;*/
+    @Column
+    private Long rapidRank;
 
     @Column(nullable = false)
     private Long numberGames;
@@ -68,8 +68,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long totalBlitzPointsAllGames;
 
-    /*@Column(nullable = false)
-    private Long totalRapidPointsAllGames;*/
+    @Column
+    private Long totalRapidPointsAllGames;
 
     @Column(nullable = false)
     private boolean isReady;
@@ -193,11 +193,11 @@ public class User implements Serializable {
         this.isReady = isReady;
     }
 
-    /*public Long getTotalRapidPointsAllGames() { return totalRapidPointsAllGames; }
+    public Long getTotalRapidPointsAllGames() { return totalRapidPointsAllGames; }
 
     public void setTotalRapidPointsAllGames(Long totalRapidPointsAllGames) { this.totalRapidPointsAllGames = totalRapidPointsAllGames; }
 
     public Long getRapidRank() { return rapidRank; }
 
-    public void setRapidRank(Long rapidRank) { this.rapidRank = rapidRank; }*/
+    public void setRapidRank(Long rapidRank) { this.rapidRank = rapidRank; }
 }
