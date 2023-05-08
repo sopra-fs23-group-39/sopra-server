@@ -341,3 +341,9 @@ Implement trailer gamemode: https://github.com/sopra-fs23-group-39/sopra-server/
 Extend (external) API calls accordingly: https://github.com/sopra-fs23-group-39/sopra-server/issues/89  
 + rework how questions are fetched so that they are not persisted in the database. (not listed) 
 
+
+Florence Hügi:
+
+Add custom styling to Main page https://github.com/sopra-fs23-group-39/sopra-client/issues/73
+
+Add custom styling to GameSelection page https://github.com/sopra-fs23-group-39/sopra-client/issues/74
