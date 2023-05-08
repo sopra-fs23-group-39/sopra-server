@@ -37,6 +37,10 @@ public interface DTOMapper {
     @Mapping(target = "game", ignore = true)
     @Mapping(target = "hostedGame", ignore = true)
     @Mapping(target = "currentPoints", ignore = true)
+    @Mapping(target = "totalBlitzPointsAllGames", ignore = true)
+    @Mapping(target = "blitzRank", ignore = true)
+    @Mapping(target = "totalRapidPointsAllGames", ignore = true)
+    @Mapping(target = "rapidRank", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -49,6 +53,10 @@ public interface DTOMapper {
     @Mapping(source = "userRank", target = "userRank")
     @Mapping(source = "currentPoints", target = "currentPoints")
     @Mapping(source = "isReady", target = "isReady")
+    @Mapping(source = "totalBlitzPointsAllGames", target = "totalBlitzPointsAllGames")
+    @Mapping(source = "blitzRank", target = "blitzRank")
+    @Mapping(source = "totalRapidPointsAllGames", target = "totalRapidPointsAllGames")
+    @Mapping(source = "rapidRank", target = "rapidRank")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     @Mapping(source = "username", target = "username")
@@ -64,6 +72,8 @@ public interface DTOMapper {
     @Mapping(target = "game", ignore = true)
     @Mapping(target = "hostedGame", ignore = true)
     @Mapping(target = "currentPoints", ignore = true)
+    @Mapping(target = "totalRapidPointsAllGames", ignore = true)
+    @Mapping(target = "rapidRank", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(source = "gameId", target = "gameId")
@@ -74,6 +84,7 @@ public interface DTOMapper {
     @Mapping(source = "questionAmount", target = "questionAmount")
     @Mapping(source = "timer", target = "timer")
     @Mapping(source = "currentRound", target = "currentRound")
+    @Mapping(source = "gameFormat", target = "gameFormat")
     GameCreationDTO convertEntityToGameCreationDTO(Game game);
 
     @Mapping(source = "questionText", target = "questionText")

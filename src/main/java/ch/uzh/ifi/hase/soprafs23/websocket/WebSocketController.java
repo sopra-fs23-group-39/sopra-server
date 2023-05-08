@@ -126,9 +126,66 @@ public class WebSocketController {
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
         userService.score(answerPostDTO);
-        userService.updateAllGamesScore(answerPostDTO);
+        userService.updateAllGamesScore(answerPostDTO, gameId);
+        userService.updateAllBlitzGamesScore(answerPostDTO, gameId);
         List<User> allUsersInDB = userService.getUsers();
         userService.updateAllUsersRank(allUsersInDB);
+        userService.updateAllBlitzRanks(allUsersInDB);
+    }
+
+    @MessageMapping("/gamerapid/{gameId}/question")
+    @SendTo("/topic/gamerapid/{gameId}/question")
+    public QuestionGetDTO sendQuestionRapid(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor, @Payload String message) {
+
+        String sessionId = headerAccessor.getSessionId();
+        if(message.equals("NEWQUESTION")){
+            Question question = gameService.getQuestionToSend(gameId);
+            Date creationTime = new Date();
+            question.setCreationTime(creationTime);
+            return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
+        }
+        /*synchronized (connectedClients) {
+            if(connectedClients.isEmpty()){
+                Question question = gameService.getQuestionToSend(gameId);
+                Date creationTime = new Date();
+                question.setCreationTime(creationTime);
+                currentGameQuestions.put(gameId, question);
+                this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question/non-host", "HOSTREADY");
+                connectedClients.put(gameId, sessionId);
+                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
+            }else{
+                connectedClients.put(gameId, sessionId);
+                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(currentGameQuestions.get(gameId));
+            }
+        }*/
+        /*synchronized (connectedClients) {
+            if(connectedClients.size() != gameService.getHostAndPlayers(gameId).size()-1){
+                Question question = gameService.getQuestionToSend(gameId);
+                Date creationTime = new Date();
+                question.setCreationTime(creationTime);
+                currentGameQuestions.put(gameId, question);
+                this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question", "Waiting for players...");
+                connectedClients.put(gameId, sessionId);
+                //return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
+            }else{
+                Question question = gameService.getQuestionToSend(gameId);
+                Date creationTime = new Date();
+                question.setCreationTime(creationTime);
+                currentGameQuestions.put(gameId, question);
+                connectedClients.put(gameId, sessionId);
+                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(currentGameQuestions.get(gameId));
+            }
+        }*/
+        //unhandled so far, but works since checks are done in the front end, will think about something for this.
+        return null;
+    }
+
+    @MessageMapping("/gamerapid/{gameId}/answer")
+    public void getRapidAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
+        userService.Rapidscore(answerPostDTO);
+        userService.updateAllRapidGamesScore(answerPostDTO, gameId);
+        List<User> allUsersInDB = userService.getUsers();
+        userService.updateAllRapidRanks(allUsersInDB);
     }
 
 }

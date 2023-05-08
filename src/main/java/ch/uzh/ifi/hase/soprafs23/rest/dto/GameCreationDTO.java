@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.questions.Question;
@@ -9,6 +10,8 @@ import java.util.List;
 public class GameCreationDTO {
     private long gameId;
     private GameMode gameMode;
+
+    private GameFormat gameFormat;
     private Long hostId;
     private int questionAmount;
     private User host;
@@ -41,6 +44,10 @@ public class GameCreationDTO {
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
     }
+
+    public GameFormat getGameFormat(){return gameFormat;}
+
+    public void setGameFormat(GameFormat gameFormat) {this.gameFormat = gameFormat;}
 
     public Long getHostId() {
         return hostId;
