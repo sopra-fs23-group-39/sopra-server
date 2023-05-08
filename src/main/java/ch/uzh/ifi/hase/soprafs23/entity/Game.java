@@ -4,7 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import javax.transaction.Transactional;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
