@@ -333,5 +333,11 @@ Yannick Salzmann
 - Finishing points distribution for blitz games https://github.com/sopra-fs23-group-39/sopra-server/issues/93
 - Adding a scrollbar to the standings page https://github.com/sopra-fs23-group-39/sopra-client/issues/83
 - Fixing profile page, where currently an error is thrown when clicking on player stats, as well as improve the design https://github.com/sopra-fs23-group-39/sopra-client/issues/81
-- Improving the change profile page https://github.com/sopra-fs23-group-39/sopra-client/issues/82
+- Improving the change profile page https://github.com/sopra-fs23-group-39/sopra-client/issues/82  
+  
+Markus Niemack:  
+  
+Implement trailer gamemode: https://github.com/sopra-fs23-group-39/sopra-server/issues/87
+Extend (external) API calls accordingly: https://github.com/sopra-fs23-group-39/sopra-server/issues/89  
++ rework how questions are fetched so that they are not persisted in the database. (not listed) 
 
