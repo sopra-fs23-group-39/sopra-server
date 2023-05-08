@@ -347,3 +347,9 @@ Florence Hügi:
 Add custom styling to Main page https://github.com/sopra-fs23-group-39/sopra-client/issues/73
 
 Add custom styling to GameSelection page https://github.com/sopra-fs23-group-39/sopra-client/issues/74
+
+Damjan Kuzmanovic:
+
+Add custom styling to Questions page https://github.com/sopra-fs23-group-39/sopra-client/issues/77
+
+Recheck routing and guards https://github.com/sopra-fs23-group-39/sopra-client/issues/68
