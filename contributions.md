@@ -276,13 +276,16 @@ Week 6 (01.05.2023-07.05.2023)
 
 Shakirova Natalia:
 
-This week, I want to focus on our external API: optimize existing code (for now, it performs too many calls to get one "Actor" question, for example) and implement a TV shows game mode:
-task (user story) #95: As a player I want to play a game where the prompt is from a tv show (https://github.com/sopra-fs23-group-39/sopra-server/issues/95), including:
+User story #95: As a player I want to play a game where the prompt is from a tv show (https://github.com/sopra-fs23-group-39/sopra-server/issues/95), including:
 - task #98 (server): Expand API calls to include tv show (https://github.com/sopra-fs23-group-39/sopra-server/issues/98);
 - task #97 (server): Implement tv shows gamemode (https://github.com/sopra-fs23-group-39/sopra-server/issues/97);
 - task #67 (client): Add tv show gamemode selection to gameSelection (https://github.com/sopra-fs23-group-39/sopra-client/issues/67).
 
-While working with our API, I also want to check what other types of questions we can ask (directors/posters/awards/plots/characters/soundtracks/trailers...). If I find useful information, I'll implement an API part (server part) to create these questions.
+Commit (server part): https://github.com/sopra-fs23-group-39/sopra-server/commit/d04c0eceb5f2528eaded0cd1d4ce4b2b37847b70
+
+Commit (client part): https://github.com/sopra-fs23-group-39/sopra-client/commit/98bd0b77ccc8187f1ff9afb91c36bae6ef639f88
+
+Without a task: optimized api calls for "Actor" questions. 
 
 
 Yannick Salzmann
@@ -316,7 +319,14 @@ Synchronize loading question page between participating players: https://github.
 Adjust scoring to use dynamic time (more precise description in issue link)  https://github.com/sopra-fs23-group-39/sopra-server/issues/104
 
 
-Week 7 (08.05.23 - 14.05.23)
+Week 7 (08.05.2023-14.05.2023)
+
+Shakirova Natalia:
+
+Task #76 Add custom styling to WaitingRoom page (https://github.com/sopra-fs23-group-39/sopra-client/issues/76)
+
+Task #75 Add custom styling to JoinGame page (https://github.com/sopra-fs23-group-39/sopra-client/issues/75)
+
 
 Yannick Salzmann
 
