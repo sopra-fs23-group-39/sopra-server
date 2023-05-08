@@ -13,40 +13,35 @@ public class ActorApiService extends ApiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String getImageLink(String itemId, String key) throws JsonProcessingException {
-        String response = getJSONString(String.format("https://imdb-api.com/API/Name/%s/%s", key, itemId));
-        JsonNode rootNode = objectMapper.readTree(response);
-
+    public String getImageLink(String JSONObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
         return rootNode.path("image").asText();
     }
 
     @Override
-    public String getItemName(String itemId, String key) throws JsonProcessingException {
-        String response = getJSONItemById(itemId, key);
-
-        JsonNode rootNode = objectMapper.readTree(response);
-
+    public String getItemName(String JSONObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
         return rootNode.path("name").asText();
     }
 
-    @Override
-    public String getJSONItemById(String itemId, String key) {
-        return getJSONString(String.format("https://imdb-api.com/API/Name/%s/%s", key, itemId));
-    }
-
-    public List<String> getSimilarItems(String key, List<String> listToChooseFrom) throws JsonProcessingException {
+    private List<String> getSimilarItemsIds(List<String> listToChooseFrom) {
         List<String> listToChooseFrom2 = new ArrayList<>(listToChooseFrom);
         List<String> listSimilarItemsIds = new ArrayList<>();
-        List<String> listSimilarItemsNames = new ArrayList<>();
 
         Collections.shuffle(listToChooseFrom2);
 
         for (int i = 0; i < 3; i++) {
             listSimilarItemsIds.add(listToChooseFrom2.get(i));
         }
+        return listSimilarItemsIds;
+    }
 
+    public List<String> getSimilarItems(List<String> listToChooseFrom, String key) throws JsonProcessingException {
+        List<String> listSimilarItemsIds = getSimilarItemsIds(listToChooseFrom);
+        List<String> listSimilarItemsNames = new ArrayList<>();
         for (String id : listSimilarItemsIds) {
-            String itemName = getItemName(id, key);
+            String JSONObject = getJSONObject("Name", id, key);
+            String itemName = getItemName(JSONObject);
             listSimilarItemsNames.add(itemName);
         }
         return listSimilarItemsNames;

@@ -16,24 +16,28 @@ public abstract class ApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<String> getAllIds(String key, String listNumber) throws JsonProcessingException {
-        List<String> listOfMovieIds = new ArrayList<>();
-        String response = getJSONString(String.format("https://imdb-api.com/API/IMDbList/%s/%s", key, listNumber));
+    public String getJSONObject(String prefix, String itemId, String key) {
+        return getJSONString(String.format("https://imdb-api.com/en/API/%s/%s/%s", prefix, key, itemId));
+    }
 
-        JsonNode rootNode = objectMapper.readTree(response);
+    public List<String> getAllIds(String JSONObjectAsString) throws JsonProcessingException {
+        List<String> listOfAllIds = new ArrayList<>();
+
+        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
         JsonNode itemsNode = rootNode.path("items");
 
         for (JsonNode itemNode : itemsNode) {
             String movieId = itemNode.path("id").asText();
-            listOfMovieIds.add(movieId);
+            listOfAllIds.add(movieId);
         }
 
-        return listOfMovieIds;
+        return listOfAllIds;
     }
 
-    public String getRandomItem (List <String> listOfItems) {
-        Collections.shuffle(listOfItems);
-        return listOfItems.get(0);
+    public String getRandomItem(String JSONObjectAsString) throws JsonProcessingException {
+        List<String> listOfAllIds = getAllIds(JSONObjectAsString);
+        Collections.shuffle(listOfAllIds);
+        return listOfAllIds.get(0);
     }
 
     public String getJSONString(String externalAPI) {
@@ -61,10 +65,8 @@ public abstract class ApiService {
         return response.toString();
     }
 
-    public abstract String getImageLink(String itemId, String key) throws JsonProcessingException;
+    public abstract String getImageLink(String JSONObjectAsString) throws JsonProcessingException;
 
-    public abstract String getItemName(String itemId, String key) throws JsonProcessingException;
-
-    public abstract String getJSONItemById(String itemId, String key) throws JsonProcessingException;
+    public abstract String getItemName(String JSONObjectAsString) throws JsonProcessingException;
 
 }

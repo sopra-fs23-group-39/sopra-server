@@ -9,20 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class MovieApiService extends ApiService {
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
-    public String getJSONItemById(String itemId, String key) {
-        return getJSONString(String.format("https://imdb-api.com/en/API/Title/%s/%s", key, itemId));
-    }
-
-    @Override
-    public String getImageLink(String itemId, String key) throws JsonProcessingException {
+    private List<String> getImageArray(String JSONObjectAsString) throws JsonProcessingException {
         List<String> listOfImageLinks = new ArrayList<>();
-        String response = getJSONString(String.format("https://imdb-api.com/API/Images/%s/%s", key, itemId));
 
-        JsonNode rootNode = objectMapper.readTree(response);
+        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
         JsonNode itemsNode = rootNode.path("items");
 
         for (JsonNode itemNode : itemsNode) {
@@ -30,24 +22,26 @@ public class MovieApiService extends ApiService {
             listOfImageLinks.add(imageLink);
         }
 
+        return listOfImageLinks;
+    }
+
+    @Override
+    public String getImageLink(String JSONObjectAsString) throws JsonProcessingException {
+        List<String> listOfImageLinks = getImageArray(JSONObjectAsString);
         Collections.shuffle(listOfImageLinks.subList(0, 5));
         return listOfImageLinks.get(0);
     }
 
     @Override
-    public String getItemName(String itemId, String key) throws JsonProcessingException {
-        String response = getJSONItemById(itemId, key);
-
-        JsonNode rootNode = objectMapper.readTree(response);
-
+    public String getItemName(String JSONObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
         return rootNode.path("title").asText();
     }
 
-    public List<String> getSimilarItems(String itemId, String key) throws JsonProcessingException {
+    private List<String> getSimilarItemsArray(String JSONObjectAsString) throws JsonProcessingException {
         List<String> listOfSimilarMovies = new ArrayList<>();
-        String response = getJSONItemById(itemId, key);
 
-        JsonNode rootNode = objectMapper.readTree(response);
+        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
         // "similars" here - it's not a typo
         JsonNode itemsNode = rootNode.path("similars");
 
@@ -56,14 +50,18 @@ public class MovieApiService extends ApiService {
             listOfSimilarMovies.add(title);
         }
 
-        Collections.shuffle(listOfSimilarMovies);
+        return listOfSimilarMovies;
+    }
 
+    public List<String> getSimilarItems(String JSONObjectAsString) throws JsonProcessingException {
+        List<String> listOfSimilarMovies = getSimilarItemsArray(JSONObjectAsString);
+        Collections.shuffle(listOfSimilarMovies);
         List<String> threeRandomMovies = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
             threeRandomMovies.add(listOfSimilarMovies.get(i));
         }
-
         return threeRandomMovies;
     }
+
 }
