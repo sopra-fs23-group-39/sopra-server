@@ -11,10 +11,10 @@ import java.util.List;
 public class MovieApiService extends ApiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private List<String> getImageArray(String JSONObjectAsString) throws JsonProcessingException {
+    private List<String> getImageArray(String jsonObjectAsString) throws JsonProcessingException {
         List<String> listOfImageLinks = new ArrayList<>();
 
-        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
         JsonNode itemsNode = rootNode.path("items");
 
         for (JsonNode itemNode : itemsNode) {
@@ -26,22 +26,22 @@ public class MovieApiService extends ApiService {
     }
 
     @Override
-    public String getImageLink(String JSONObjectAsString) throws JsonProcessingException {
-        List<String> listOfImageLinks = getImageArray(JSONObjectAsString);
+    public String getImageLink(String jsonObjectAsString) throws JsonProcessingException {
+        List<String> listOfImageLinks = getImageArray(jsonObjectAsString);
         Collections.shuffle(listOfImageLinks.subList(0, 5));
         return listOfImageLinks.get(0);
     }
 
     @Override
-    public String getItemName(String JSONObjectAsString) throws JsonProcessingException {
-        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
+    public String getItemName(String jsonObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
         return rootNode.path("title").asText();
     }
 
-    private List<String> getSimilarItemsArray(String JSONObjectAsString) throws JsonProcessingException {
+    private List<String> getSimilarItemsArray(String jsonObjectAsString) throws JsonProcessingException {
         List<String> listOfSimilarMovies = new ArrayList<>();
 
-        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
         // "similars" here - it's not a typo
         JsonNode itemsNode = rootNode.path("similars");
 
@@ -53,8 +53,8 @@ public class MovieApiService extends ApiService {
         return listOfSimilarMovies;
     }
 
-    public List<String> getSimilarItems(String JSONObjectAsString) throws JsonProcessingException {
-        List<String> listOfSimilarMovies = getSimilarItemsArray(JSONObjectAsString);
+    public List<String> getSimilarItems(String jsonObjectAsString) throws JsonProcessingException {
+        List<String> listOfSimilarMovies = getSimilarItemsArray(jsonObjectAsString);
         Collections.shuffle(listOfSimilarMovies);
         List<String> threeRandomMovies = new ArrayList<>();
 

@@ -20,10 +20,10 @@ public abstract class ApiService {
         return getJSONString(String.format("https://imdb-api.com/en/API/%s/%s/%s", prefix, key, itemId));
     }
 
-    public List<String> getAllIds(String JSONObjectAsString) throws JsonProcessingException {
+    public List<String> getAllIds(String jsonObjectAsString) throws JsonProcessingException {
         List<String> listOfAllIds = new ArrayList<>();
 
-        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
         JsonNode itemsNode = rootNode.path("items");
 
         for (JsonNode itemNode : itemsNode) {
@@ -34,8 +34,8 @@ public abstract class ApiService {
         return listOfAllIds;
     }
 
-    public String getRandomItem(String JSONObjectAsString) throws JsonProcessingException {
-        List<String> listOfAllIds = getAllIds(JSONObjectAsString);
+    public String getRandomItem(String jsonObjectAsString) throws JsonProcessingException {
+        List<String> listOfAllIds = getAllIds(jsonObjectAsString);
         Collections.shuffle(listOfAllIds);
         return listOfAllIds.get(0);
     }
@@ -65,8 +65,8 @@ public abstract class ApiService {
         return response.toString();
     }
 
-    public abstract String getImageLink(String JSONObjectAsString) throws JsonProcessingException;
+    public abstract String getImageLink(String jsonObjectAsString) throws JsonProcessingException;
 
-    public abstract String getItemName(String JSONObjectAsString) throws JsonProcessingException;
+    public abstract String getItemName(String jsonObjectAsString) throws JsonProcessingException;
 
 }

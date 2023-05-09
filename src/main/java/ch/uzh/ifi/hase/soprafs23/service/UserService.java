@@ -293,7 +293,7 @@ public class UserService {
         }
     }
 
-    public void Rapidscore(AnswerPostDTO answer) {
+    public void rapidScore(AnswerPostDTO answer) {
         long score = returnRapidScore(answer);
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
@@ -360,6 +360,4 @@ public class UserService {
             sortedUsersDesc.get(i).setRapidRank((long) (i + 1));
         }
     }
-
-
 }

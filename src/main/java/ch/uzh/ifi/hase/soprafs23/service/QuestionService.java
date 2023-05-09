@@ -19,28 +19,28 @@ public class QuestionService {
     private static final String LIST_NUMBER_ACTORS_TV = "ls568318482";
 
     private static final String LIST_NUMBER_ACTRESSES_TV = "ls568318873";
-    private static final String PREFIX_IMDbList = "IMDbList";
-    private final String moviesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDbList, "ls568317885", KEY);
-    private final String TVSeriesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDbList, "ls568316563", KEY);
-    private final String actorsListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDbList, "ls568313759", KEY);
-    private final String actressesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDbList, "ls568313185", KEY);
+    private static final String PREFIX_IMDBLIST = "IMDbList";
+    private final String moviesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568317885", KEY);
+    private final String tvSeriesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568316563", KEY);
+    private final String actorsListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313759", KEY);
+    private final String actressesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313185", KEY);
 
     public Question getAppropriateQuestion(GameMode gameMode) throws JsonProcessingException {
+        Random random = new Random();
         Question question;
         int genderType;
         switch (gameMode) {
             case SHOW -> question = getMovieQuestion(1);
             case ACTOR -> {
-                genderType = (int) Math.floor(Math.random() * 2);
+                genderType = random.nextInt(2);
                 question = getActorQuestion(genderType);
             }
             case MIXED -> {
-                Random random = new Random();
                 int category = random.nextInt(3);
                 if (category == 0 || category == 1) {
                     question = getMovieQuestion(category);
                 } else {
-                    genderType = (int) Math.floor(Math.random() * 2);
+                    genderType = random.nextInt(2);
                     question = getActorQuestion(genderType);
                 }
             }
@@ -58,7 +58,7 @@ public class QuestionService {
             listAsJSONObject = moviesListAsJSONObject;
         } else if (category == 1) {
             questionText += "TV series?";
-            listAsJSONObject = TVSeriesListAsJSONObject;
+            listAsJSONObject = tvSeriesListAsJSONObject;
 
         }
 

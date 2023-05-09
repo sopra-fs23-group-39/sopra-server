@@ -181,7 +181,7 @@ public class WebSocketController {
 
     @MessageMapping("/gamerapid/{gameId}/answer")
     public void getRapidAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
-        userService.Rapidscore(answerPostDTO);
+        userService.rapidScore(answerPostDTO);
         userService.updateAllRapidGamesScore(answerPostDTO, gameId);
         List<User> allUsersInDB = userService.getUsers();
         userService.updateAllRapidRanks(allUsersInDB);

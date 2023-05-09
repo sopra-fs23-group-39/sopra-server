@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.Embeddable;
 import java.util.Date;
-import java.util.Objects;
 
 @Embeddable
 public class Question {
@@ -81,22 +80,4 @@ public class Question {
 
     public void setCreationTime(Date date){this.creationTime = date;}
 
-    @Override
-    public boolean equals(Object questionToCompare) {
-        if (this == questionToCompare) {
-            return true;
-        }
-        if (questionToCompare == null || getClass() != questionToCompare.getClass()) {
-            return false;
-        }
-        Question other = (Question) questionToCompare;
-        return Objects.equals(correctAnswer, other.getCorrectAnswer());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + correctAnswer.hashCode();
-        return result;
-    }
 }

@@ -13,14 +13,14 @@ public class ActorApiService extends ApiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String getImageLink(String JSONObjectAsString) throws JsonProcessingException {
-        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
+    public String getImageLink(String jsonObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
         return rootNode.path("image").asText();
     }
 
     @Override
-    public String getItemName(String JSONObjectAsString) throws JsonProcessingException {
-        JsonNode rootNode = objectMapper.readTree(JSONObjectAsString);
+    public String getItemName(String jsonObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
         return rootNode.path("name").asText();
     }
 
@@ -40,8 +40,8 @@ public class ActorApiService extends ApiService {
         List<String> listSimilarItemsIds = getSimilarItemsIds(listToChooseFrom);
         List<String> listSimilarItemsNames = new ArrayList<>();
         for (String id : listSimilarItemsIds) {
-            String JSONObject = getJSONObject("Name", id, key);
-            String itemName = getItemName(JSONObject);
+            String jsonObject = getJSONObject("Name", id, key);
+            String itemName = getItemName(jsonObject);
             listSimilarItemsNames.add(itemName);
         }
         return listSimilarItemsNames;
