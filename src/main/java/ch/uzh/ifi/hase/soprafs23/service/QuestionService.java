@@ -25,8 +25,9 @@ public class QuestionService {
     private final String actorsListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313759", KEY);
     private final String actressesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313185", KEY);
 
+    Random random = new Random();
+
     public Question getAppropriateQuestion(GameMode gameMode) throws JsonProcessingException {
-        Random random = new Random();
         Question question;
         int genderType;
         switch (gameMode) {

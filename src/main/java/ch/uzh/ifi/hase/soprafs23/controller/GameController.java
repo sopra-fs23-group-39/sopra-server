@@ -29,8 +29,8 @@ public class GameController {
     private final UserService userService;
 
     GameController(GameService gameService, UserService userService) {
-    this.gameService = gameService;
-    this.userService = userService;
+        this.gameService = gameService;
+        this.userService = userService;
     }
 
     @PostMapping("/game")
@@ -38,8 +38,9 @@ public class GameController {
     @ResponseBody
     public GamePostDTO createGame(@RequestBody GamePostDTO gamePostDTO){
         Game game = gameService.createGame(gamePostDTO.getHostId(), gamePostDTO.getGameMode(), gamePostDTO.getQuestionAmount(), gamePostDTO.getTimer(), gamePostDTO.getGameFormat());
-        return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(game);
+        return DTOMapper.INSTANCE.convertEntityToGamePostDTO(game);
     }
+
     @PutMapping("/game/{gameId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -58,6 +59,7 @@ public class GameController {
         }
         return playerDTOs;
     }
+
     @PutMapping("/game/resetIfBackOnMain")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> resetUserPointsAndGame(@RequestBody long playerId) {
@@ -70,7 +72,7 @@ public class GameController {
     @ResponseBody
     public GamePostDTO retrieveGameSettings (@PathVariable long gameId){
         Game findByGameId = gameService.getGameSettings(gameId);
-        return DTOMapper.INSTANCE.convertEntityToGameCreationDTO(findByGameId);
+        return DTOMapper.INSTANCE.convertEntityToGamePostDTO(findByGameId);
     }
 
     @GetMapping("/game/{lobbyId}/currentRanking")
