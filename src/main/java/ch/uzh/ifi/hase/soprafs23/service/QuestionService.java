@@ -90,7 +90,7 @@ public class QuestionService {
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
-    private Question getQuestion(String questionText, String questionLink, String correctAnswer, List<String> wrongAnswers) {
+    public Question getQuestion(String questionText, String questionLink, String correctAnswer, List<String> wrongAnswers) {
         List<String> answers = new ArrayList<>(wrongAnswers);
         answers.add(correctAnswer);
         Collections.shuffle(answers);

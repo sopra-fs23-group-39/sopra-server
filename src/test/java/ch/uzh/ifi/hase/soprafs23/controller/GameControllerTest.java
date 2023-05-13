@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(GameController.class)
-public class GameControllerTest {
+class GameControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -233,7 +233,7 @@ public class GameControllerTest {
                 .andReturn();
 
         String response = result.getResponse().getContentAsString();
-        List<UserGetDTO> returnedUsers = objectMapper.readValue(response, new TypeReference<List<UserGetDTO>>() {});
+        List<UserGetDTO> returnedUsers = objectMapper.readValue(response, new TypeReference<>() {});
 
         assertThat(returnedUsers).hasSize(2);
         assertThat(returnedUsers.get(0).getId()).isEqualTo(user1.getId());
