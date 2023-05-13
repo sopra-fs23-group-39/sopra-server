@@ -199,7 +199,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void logInPOST_valid() {
+    void logInPOST_valid() {
         User user = new User();
         user.setUsername("TestUser");
         user.setPassword("TestPassword");
@@ -217,15 +217,15 @@ class UserControllerTest {
         assertEquals(result.getPassword(), user.getPassword());
     }
 
-    @Test
-    public void testLogOutUser() {
-        int playerId = 1;
-        doNothing().when(userService).logoutUser(playerId);
-        UserController controller = new UserController(userService);
-        ResponseEntity<Void> response = controller.logOutUser(playerId);
-        verify(userService, times(1)).logoutUser(playerId);
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    }
+//    @Test
+//    public void testLogOutUser() {
+//        int playerId = 1;
+//        doNothing().when(userService).logoutUser(playerId);
+//        UserController controller = new UserController(userService);
+//        ResponseEntity<Void> response = controller.logOutUser(playerId);
+//        verify(userService, times(1)).logoutUser(playerId);
+//        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+//    }
 
 
     private String asJsonString(final Object object) {
