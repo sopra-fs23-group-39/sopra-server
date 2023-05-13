@@ -62,6 +62,7 @@ public class WebSocketController {
         }
         if(message.equals("START")){
             String someString = "game started.";
+            gameService.setGameIsStarted(gameId, true);
             this.messagingTemplate.convertAndSend("/topic/game/" + gameId, someString);
         }
     }
