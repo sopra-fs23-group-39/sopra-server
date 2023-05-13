@@ -199,7 +199,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void logInPOST_valid() {
+    void logInPOST_valid() {
         User user = new User();
         user.setUsername("TestUser");
         user.setPassword("TestPassword");

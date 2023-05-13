@@ -17,7 +17,6 @@ public class QuestionService {
     private static final String KEY = "k_3zhp2s2n";
 
     private static final String LIST_NUMBER_ACTORS_TV = "ls568318482";
-
     private static final String LIST_NUMBER_ACTRESSES_TV = "ls568318873";
     private static final String PREFIX_IMDBLIST = "IMDbList";
     private final String moviesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568317885", KEY);

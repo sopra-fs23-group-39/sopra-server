@@ -38,7 +38,7 @@ public class MovieApiService extends ApiService {
         return rootNode.path("title").asText();
     }
 
-    private List<String> getSimilarItemsArray(String jsonObjectAsString) throws JsonProcessingException {
+    public List<String> getSimilarItemsArray(String jsonObjectAsString) throws JsonProcessingException {
         List<String> listOfSimilarMovies = new ArrayList<>();
 
         JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);

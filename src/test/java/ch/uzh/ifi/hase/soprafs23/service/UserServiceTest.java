@@ -1,28 +1,35 @@
-//package ch.uzh.ifi.hase.soprafs23.service;
-//
-//import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-//import ch.uzh.ifi.hase.soprafs23.entity.User;
-//import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.web.server.ResponseStatusException;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//public class UserServiceTest {
-//
-//  @Mock
-//  private UserRepository userRepository;
-//
-//  @InjectMocks
-//  private UserService userService;
-//
-//  private User testUser;
-//
+package ch.uzh.ifi.hase.soprafs23.service;
+
+import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UserServiceTest {
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private GameRepository gameRepository;
+    @InjectMocks
+    private UserService userService = new UserService(userRepository, gameRepository);
+
+    private User testUser = new User();
+    private AnswerPostDTO answerPostDTO = new AnswerPostDTO();
+
 //  @BeforeEach
 //  public void setup() {
 //    MockitoAnnotations.openMocks(this);
@@ -30,14 +37,13 @@
 //    // given
 //    testUser = new User();
 //    testUser.setId(1L);
-//    testUser.setName("testName");
 //    testUser.setUsername("testUsername");
 //
 //    // when -> any object is being save in the userRepository -> return the dummy
 //    // testUser
 //    Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
 //  }
-//
+
 //  @Test
 //  public void createUser_validInputs_success() {
 //    // when -> any object is being save in the userRepository -> return the dummy
@@ -81,16 +87,50 @@
 //    // is thrown
 //    assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
 //  }
-// @Test
-//    public void correctScoreCalculation_wrongAnswer(){
-//        AnswerPostDTO answerPostDTO = new AnswerPostDTO();
-//        answerPostDTO.setCorrectAnswer("A");
-//        answerPostDTO.setUsersAnswer("B");
-//        answerPostDTO.setQuestionTime(new Date());
-//        answerPostDTO.setTime(new Date());
-//
-//        assertEquals(userService.ReturnScore(answerPostDTO),0);
-//
-//    }
-//
-//}
+
+    @BeforeEach
+    void answerSetup() {
+        answerPostDTO.setUserId(1L);
+        answerPostDTO.setGameId(1L);
+        answerPostDTO.setCorrectAnswer("Inception");
+
+        LocalDateTime questionDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(30);
+        Date questionTime = Date.from(questionDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        answerPostDTO.setQuestionTime(questionTime);
+
+        LocalDateTime answerDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(32);
+        Date answerTime = Date.from(answerDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        answerPostDTO.setTime(answerTime);
+    }
+
+    @Test
+    void correctScoreCalculation_wrongAnswer() {
+        answerPostDTO.setUsersAnswer("Shutter Island");
+        assertEquals(userService.returnScore(answerPostDTO),0);
+    }
+
+    @Test
+    void correctScoreCalculation_rightAnswer() {
+        answerPostDTO.setUsersAnswer("Inception");
+        assertEquals(userService.returnScore(answerPostDTO),209);
+    }
+
+    @Test
+    void correctScoreCalculationRapid_wrongAnswer() {
+        answerPostDTO.setUsersAnswer("Shutter Island");
+        assertEquals(userService.returnRapidScore(answerPostDTO),0);
+    }
+
+    @Test
+    void correctScoreCalculationRapid_wrongAnswerDefault() {
+        answerPostDTO.setUsersAnswer("DEFAULT");
+        assertEquals(userService.returnRapidScore(answerPostDTO),-30);
+    }
+
+    @Test
+    void correctScoreCalculationRapid_rightAnswer() {
+        answerPostDTO.setUsersAnswer("Inception");
+        assertEquals(userService.returnRapidScore(answerPostDTO),209);
+    }
+
+}

@@ -123,6 +123,10 @@ public class GameControllerTest {
 //    @Test
 //    void playerList_returnsListOfPlayerDTOs() throws Exception {
 //        ObjectMapper objectMapper = new ObjectMapper();
+//        Game game = new Game();
+//        game.setGameId(1L);
+//        Long gameId = 1L;
+//
 //        User host = new User();
 //        host.setId(1L);
 //        host.setUsername("host");
@@ -134,7 +138,7 @@ public class GameControllerTest {
 //        player2.setUsername("player2");
 //        List<User> players = Arrays.asList(host, player1, player2);
 //
-//        given(gameService.getHostAndPlayers(1L)).willReturn(players);
+//        given(gameService.getHostAndPlayers(gameId)).willReturn(players);
 //
 //        UserGetDTO hostGetDTO = new UserGetDTO();
 //        hostGetDTO.setId(1L);
@@ -149,10 +153,6 @@ public class GameControllerTest {
 //        given(dtoMapper.convertEntityToUserGetDTO(host)).willReturn(hostGetDTO);
 //        given(dtoMapper.convertEntityToUserGetDTO(player1)).willReturn(player1GetDTO);
 //        given(dtoMapper.convertEntityToUserGetDTO(player2)).willReturn(player2GetDTO);
-//
-//        Game game = new Game();
-//        game.setGameId(1L);
-//        Long gameId = 1L;
 //
 //        MvcResult result = mockMvc.perform(get(String.format("/game/%d", gameId)))
 //                .andExpect(status().isOk())
