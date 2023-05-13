@@ -179,8 +179,8 @@ public class UserService {
         userRepository.flush();
     }
 
-    public void score(AnswerPostDTO answer) {
-        long score = returnScore(answer);
+    public void score(AnswerPostDTO answer, long gameId) {
+        long score = returnScore(answer, gameId);
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
         Long prevScore = userById.getTotalPointsCurrentGame();
@@ -195,22 +195,25 @@ public class UserService {
         userById.setCurrentPoints(score);
     }
 
-    public long returnScore(AnswerPostDTO answer) {
-        long score;
+    public long returnScore(AnswerPostDTO answer, long gameId) {
+        Game game = gameRepository.findByGameId(gameId);
+
+        long score = 0;
         String correctAnswer = answer.getCorrectAnswer();
         String userAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
         Date qTime = answer.getQuestionTime();
         long diff = Math.abs(time.getTime() - qTime.getTime());
+
         if (userAnswer.equals(correctAnswer)) {
             //Scoring function
-            score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
-        }
-        else if (answer.getUsersAnswer().equals("DEFAULT")) {
-            score = 0;
-        }
-        else {
-            score = 0;
+            if (game.getGameFormat().equals(GameFormat.CUSTOM)) {
+
+                score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
+            }
+            else if (game.getGameFormat().equals(GameFormat.BLITZ)) {
+                score = (long) (0.1*diff + 100);
+            }
         }
         return score;
     }
@@ -219,7 +222,7 @@ public class UserService {
         Game game = gameRepository.findByGameId(gameId);
 
         if (game.getGameFormat().equals(GameFormat.CUSTOM)) {
-            long score = returnScore(answer);
+            long score = returnScore(answer, gameId);
             Long userId = answer.getUserId();
             User userById = getUserById(userId);
             Long prevScoreAllGames = userById.getTotalPointsAllGames();
@@ -238,7 +241,7 @@ public class UserService {
         Game game = gameRepository.findByGameId(gameId);
 
         if (game.getGameFormat().equals(GameFormat.BLITZ)) {
-            long score = returnScore(answer);
+            long score = returnScore(answer, gameId);
             Long userId = answer.getUserId();
             User userById = getUserById(userId);
             Long prevScoreAllGames = userById.getTotalPointsAllGames();
@@ -348,7 +351,7 @@ public class UserService {
         }
     }
 
-    private List<User> sortAllRapidRanksDescOrder(List<User> allUsersInDB){
+    private List<User> sortAllRapidRanksDescOrder(List<User> allUsersInDB) {
         List<User> sortedUsersDesc = new ArrayList<>(allUsersInDB);
         sortedUsersDesc.sort(Comparator.comparing(User::getTotalRapidPointsAllGames).reversed());
         return sortedUsersDesc;
