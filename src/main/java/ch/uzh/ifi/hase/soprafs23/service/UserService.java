@@ -325,8 +325,7 @@ public class UserService {
         }
         else if (answer.getUsersAnswer().equals("DEFAULT")) {
             score = -30;
-        }
-        else {
+        } else {
             score = 0;
         }
         return score;

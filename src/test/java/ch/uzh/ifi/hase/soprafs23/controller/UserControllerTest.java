@@ -2,10 +2,13 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,13 +17,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,6 +46,46 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private DTOMapper dtoMapper;
+
+//    @Test
+//    public void testGetAllUsers() throws Exception {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//        User user1 = new User();
+//        user1.setId(1L);
+//        user1.setUsername("user1");
+//        User user2 = new User();
+//        user2.setId(2L);
+//        user2.setUsername("user2");
+//        List<User> users = Arrays.asList(user1, user2);
+//
+//        given(userService.getUsers()).willReturn(users);
+//
+//        UserGetDTO userGetDTO1 = new UserGetDTO();
+//        userGetDTO1.setId(user1.getId());
+//        userGetDTO1.setUsername(user1.getUsername());
+//        UserGetDTO userGetDTO2 = new UserGetDTO();
+//        userGetDTO2.setId(user2.getId());
+//        userGetDTO2.setUsername(user2.getUsername());
+//        given(dtoMapper.convertEntityToUserGetDTO(user1)).willReturn(userGetDTO1);
+//        given(dtoMapper.convertEntityToUserGetDTO(user2)).willReturn(userGetDTO2);
+//
+//        MvcResult result = mockMvc.perform(get("/users"))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        String response = result.getResponse().getContentAsString();
+//        List<UserGetDTO> returnedUsers = objectMapper.readValue(response, new TypeReference<List<UserGetDTO>>() {});
+//
+//        assertThat(returnedUsers).hasSize(2);
+//        assertThat(returnedUsers.get(0).getId()).isEqualTo(user1.getId());
+//        assertThat(returnedUsers.get(0).getUsername()).isEqualTo(user1.getUsername());
+//        assertThat(returnedUsers.get(1).getId()).isEqualTo(user2.getId());
+//        assertThat(returnedUsers.get(1).getUsername()).isEqualTo(user2.getUsername());
+//    }
 
     @Test
      void usersPOST_addValidUser() throws Exception {
@@ -146,6 +197,36 @@ class UserControllerTest {
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    void logInPOST_valid() {
+        User user = new User();
+        user.setUsername("TestUser");
+        user.setPassword("TestPassword");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setUsername("TestUser");
+        userPostDTO.setPassword("TestPassword");
+
+        given(userService.logIn(Mockito.any())).willReturn(user);
+
+        UserController userController = new UserController(userService);
+        UserGetDTO result = userController.logInUser(userPostDTO);
+
+        assertEquals(result.getUsername(), user.getUsername());
+        assertEquals(result.getPassword(), user.getPassword());
+    }
+
+//    @Test
+//    public void testLogOutUser() {
+//        int playerId = 1;
+//        doNothing().when(userService).logoutUser(playerId);
+//        UserController controller = new UserController(userService);
+//        ResponseEntity<Void> response = controller.logOutUser(playerId);
+//        verify(userService, times(1)).logoutUser(playerId);
+//        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+//    }
+
 
     private String asJsonString(final Object object) {
         try {

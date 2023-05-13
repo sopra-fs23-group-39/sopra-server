@@ -17,7 +17,6 @@ public class QuestionService {
     private static final String KEY = "k_3zhp2s2n";
 
     private static final String LIST_NUMBER_ACTORS_TV = "ls568318482";
-
     private static final String LIST_NUMBER_ACTRESSES_TV = "ls568318873";
     private static final String PREFIX_IMDBLIST = "IMDbList";
     private final String moviesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568317885", KEY);
@@ -25,8 +24,9 @@ public class QuestionService {
     private final String actorsListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313759", KEY);
     private final String actressesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313185", KEY);
 
+    Random random = new Random();
+
     public Question getAppropriateQuestion(GameMode gameMode) throws JsonProcessingException {
-        Random random = new Random();
         Question question;
         int genderType;
         switch (gameMode) {
@@ -90,7 +90,7 @@ public class QuestionService {
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
-    private Question getQuestion(String questionText, String questionLink, String correctAnswer, List<String> wrongAnswers) {
+    public Question getQuestion(String questionText, String questionLink, String correctAnswer, List<String> wrongAnswers) {
         List<String> answers = new ArrayList<>(wrongAnswers);
         answers.add(correctAnswer);
         Collections.shuffle(answers);
