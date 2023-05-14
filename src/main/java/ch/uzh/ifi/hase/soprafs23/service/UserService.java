@@ -167,18 +167,6 @@ public class UserService {
         return userById;
     }
 
-    public void readyUser(long userId) {
-        User newReadyUser = userRepository.findById(userId);
-        if (newReadyUser == null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Can't find user to ready");
-        }
-
-        newReadyUser.setIsReady(true);
-        userRepository.save(newReadyUser);
-        userRepository.flush();
-    }
-
     public void score(AnswerPostDTO answer, long gameId) {
         long score = returnScore(answer, gameId);
         Long userId = answer.getUserId();

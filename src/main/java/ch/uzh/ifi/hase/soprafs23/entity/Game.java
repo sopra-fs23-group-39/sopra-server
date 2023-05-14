@@ -65,7 +65,6 @@ public class Game implements Serializable {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private List<User> players = new ArrayList<>();
 
-
     @Column
     private int currentRound;
 
@@ -119,7 +118,6 @@ public class Game implements Serializable {
     public void setHostId(Long hostId) {
         this.hostId = hostId;
     }
-
 
     public int getCurrentRound() {
         return currentRound;

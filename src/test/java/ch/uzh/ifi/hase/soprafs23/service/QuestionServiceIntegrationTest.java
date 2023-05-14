@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class QuestionServiceTest {
+class QuestionServiceIntegrationTest {
 
     @Test
     void testGetAppropriateQuestionShow() throws JsonProcessingException {
