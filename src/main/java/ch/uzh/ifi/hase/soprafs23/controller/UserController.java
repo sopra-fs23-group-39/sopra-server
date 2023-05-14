@@ -93,10 +93,4 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 
-    @PostMapping("/users/ready")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void readyUser(@RequestBody int userId) {
-        userService.readyUser(userId);
-    }
 }

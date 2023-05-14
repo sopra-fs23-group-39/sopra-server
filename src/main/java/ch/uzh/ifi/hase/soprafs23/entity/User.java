@@ -71,9 +71,6 @@ public class User implements Serializable {
     @Column
     private Long totalRapidPointsAllGames;
 
-    @Column(nullable = false)
-    private boolean isReady;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "game_id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "gameId")
@@ -183,14 +180,6 @@ public class User implements Serializable {
 
     public void setNumberGames(Long numberGames) {
         this.numberGames = numberGames;
-    }
-
-    public boolean getIsReady() {
-        return isReady;
-    }
-
-    public void setIsReady(boolean isReady) {
-        this.isReady = isReady;
     }
 
     public Long getTotalRapidPointsAllGames() { return totalRapidPointsAllGames; }
