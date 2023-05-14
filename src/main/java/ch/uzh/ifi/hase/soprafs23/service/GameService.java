@@ -49,6 +49,7 @@ public class GameService {
         game.setTimer(timer);
         game.setHost(userService.getUserById(hostId));
         game.setGameFormat(gameFormat);
+        game.setIsStarted(false);
 
 
 
@@ -141,5 +142,9 @@ public class GameService {
     }
     public Game getGameById(Long gameId){
         return gameRepository.findByGameId(gameId);
+    }
+
+    public void setGameIsStarted(long GameId,boolean isStarted){
+        gameRepository.findByGameId(GameId).setIsStarted(isStarted);
     }
 }

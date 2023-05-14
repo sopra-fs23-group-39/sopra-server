@@ -85,6 +85,7 @@ public interface DTOMapper {
     @Mapping(source = "timer", target = "timer")
     @Mapping(source = "currentRound", target = "currentRound")
     @Mapping(source = "gameFormat", target = "gameFormat")
+    @Mapping(source = "isStarted", target = "isStarted")
     GamePostDTO convertEntityToGamePostDTO(Game game);
 
     @Mapping(source = "questionText", target = "questionText")

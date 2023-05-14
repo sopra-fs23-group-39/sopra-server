@@ -19,6 +19,8 @@ public class GamePostDTO {
 
     private int currentRound;
 
+    private boolean isStarted;
+
 
     public int getQuestionAmount() {
         return questionAmount;
@@ -78,4 +80,7 @@ public class GamePostDTO {
 
     public void setCurrentRound(int currentRound) {this.currentRound = currentRound;}
 
+    public boolean getIsStarted() { return isStarted;}
+
+    public void setIsStarted(boolean isStarted) {this.isStarted = isStarted;}
 }

@@ -53,6 +53,9 @@ public class Game implements Serializable {
     @Column(nullable = true)
     private GameFormat gameFormat;
 
+    @Column(nullable = true)
+    private boolean isStarted;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JoinColumn(name = "gameHost_id", referencedColumnName = "id")
@@ -125,4 +128,8 @@ public class Game implements Serializable {
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
+
+    public boolean getIsStarted() { return isStarted; }
+
+    public void setIsStarted(boolean started) { this.isStarted = started; }
 }
