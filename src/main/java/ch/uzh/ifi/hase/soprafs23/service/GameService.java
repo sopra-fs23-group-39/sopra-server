@@ -50,12 +50,7 @@ public class GameService {
         game.setHost(userService.getUserById(hostId));
         game.setGameFormat(gameFormat);
 
-      /*try {
-          game.setQuestions(questionService.getListOfQuestions(gameMode, questionAmount));
-      }
-      catch (JsonProcessingException e) {
-          throw new RuntimeException(e);
-      }*/
+
 
         game.getPlayers().add(userService.getUserById(hostId));
         userService.getUserById(hostId).setGame(game);
