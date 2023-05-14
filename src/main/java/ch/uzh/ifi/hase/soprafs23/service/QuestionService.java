@@ -35,6 +35,9 @@ public class QuestionService {
                 genderType = random.nextInt(2);
                 question = getActorQuestion(genderType);
             }
+            case TRAILER -> {
+                question = getTrailerQuestion();
+            }
             case MIXED -> {
                 int category = random.nextInt(3);
                 if (category == 0 || category == 1) {
@@ -47,6 +50,17 @@ public class QuestionService {
             default -> question = getMovieQuestion(0);
         }
         return question;
+    }
+
+    public Question getTrailerQuestion() throws JsonProcessingException {
+        String questionText = "What is the title of this ";
+        String movieId = movieApiService.getRandomItem(moviesListAsJSONObject);
+        String questionLink = movieApiService.getEmbedLink(movieApiService.getJSONObject("YouTubeTrailer", movieId, KEY));
+        System.out.println("Embed id : " + questionLink);
+        String movieAsJSONObject = movieApiService.getJSONObject("Title", movieId, KEY);
+        String correctAnswer = movieApiService.getItemName(movieAsJSONObject);
+        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject);
+        return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
     public Question getMovieQuestion(int category) throws JsonProcessingException {

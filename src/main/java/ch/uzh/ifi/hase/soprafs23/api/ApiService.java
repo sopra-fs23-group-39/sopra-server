@@ -69,4 +69,5 @@ public abstract class ApiService {
 
     public abstract String getItemName(String jsonObjectAsString) throws JsonProcessingException;
 
+
 }

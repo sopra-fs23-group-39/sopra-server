@@ -32,6 +32,13 @@ public class MovieApiService extends ApiService {
         return listOfImageLinks.get(0);
     }
 
+    public String getEmbedLink(String jsonObjectAsString) throws JsonProcessingException {
+        JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
+        System.out.println(rootNode.path("title").asText());
+        System.out.println(rootNode.path("videoId").asText());
+        return rootNode.path("videoId").asText();
+    }
+
     @Override
     public String getItemName(String jsonObjectAsString) throws JsonProcessingException {
         JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
