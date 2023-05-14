@@ -195,13 +195,16 @@ public class UserService {
 
         if (userAnswer.equals(correctAnswer)) {
             //Scoring function
-            if (game.getGameFormat().equals(GameFormat.CUSTOM)) {
+            if (game.getGameFormat().equals(GameFormat.CUSTOM) || game.getGameFormat().equals(GameFormat.RAPID)) {
 
                 score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
             }
             else if (game.getGameFormat().equals(GameFormat.BLITZ)) {
                 score = (long) (0.1*diff + 100);
             }
+        }
+        else if(game.getGameFormat().equals(GameFormat.RAPID)){
+            score = -30;
         }
         return score;
     }
@@ -284,7 +287,7 @@ public class UserService {
         }
     }
 
-    public void rapidScore(AnswerPostDTO answer) {
+    /*public void rapidScore(AnswerPostDTO answer) {
         long score = returnRapidScore(answer);
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
@@ -317,13 +320,13 @@ public class UserService {
             score = 0;
         }
         return score;
-    }
+    }*/
 
     public void updateAllRapidGamesScore(AnswerPostDTO answer, Long gameId) {
         Game game = gameRepository.findByGameId(gameId);
 
-        if (game.getGameFormat().equals(GameFormat.BLITZ)) {
-            long score = returnRapidScore(answer);
+        if (game.getGameFormat().equals(GameFormat.RAPID)) {
+            long score = returnScore(answer, gameId);
             Long userId = answer.getUserId();
             User userById = getUserById(userId);
             Long prevScoreAllGames = userById.getTotalRapidPointsAllGames();
