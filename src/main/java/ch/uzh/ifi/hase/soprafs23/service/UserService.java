@@ -167,26 +167,23 @@ public class UserService {
         return userById;
     }
 
-    public void score(AnswerPostDTO answer, long gameId) {
-        long score = returnScore(answer, gameId);
+    public void score(AnswerPostDTO answer, GameFormat gameFormat) {
+        long score = returnScore(answer, gameFormat);
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
         Long prevScore = userById.getTotalPointsCurrentGame();
         Long newScore;
         if (prevScore == null) {
             newScore = score + 0;
-        }
-        else {
+        } else {
             newScore = score + prevScore;
         }
         userById.setTotalPointsCurrentGame(newScore);
         userById.setCurrentPoints(score);
     }
 
-    public long returnScore(AnswerPostDTO answer, long gameId) {
-        Game game = gameRepository.findByGameId(gameId);
-
-        long score = 0;
+    public long returnScore(AnswerPostDTO answer, GameFormat gameFormat) {
+        long score;
         String correctAnswer = answer.getCorrectAnswer();
         String userAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
@@ -194,56 +191,38 @@ public class UserService {
         long diff = Math.abs(time.getTime() - qTime.getTime());
 
         if (userAnswer.equals(correctAnswer)) {
-            //Scoring function
-            if (game.getGameFormat().equals(GameFormat.CUSTOM) || game.getGameFormat().equals(GameFormat.RAPID)) {
+            score = switch (gameFormat) {
+                case CUSTOM, RAPID -> (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
+                case BLITZ -> (long) (0.1 * diff + 100);
+            };
+        } else {
+            score = switch (gameFormat) {
+                case CUSTOM, BLITZ -> 0;
+                case RAPID -> -30;
+            };
+        }
 
-                score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
-            }
-            else if (game.getGameFormat().equals(GameFormat.BLITZ)) {
-                score = (long) (0.1*diff + 100);
-            }
-        }
-        else if(game.getGameFormat().equals(GameFormat.RAPID)){
-            score = -30;
-        }
         return score;
     }
 
-    public void updateAllGamesScore(AnswerPostDTO answer, long gameId) {
-        Game game = gameRepository.findByGameId(gameId);
+    public void updateAllGamesScore(AnswerPostDTO answer, GameFormat gameFormat) {
+        long score = returnScore(answer, gameFormat);
+        Long userId = answer.getUserId();
+        User userById = getUserById(userId);
+        Long prevScoreAllGames;
 
-        if (game.getGameFormat().equals(GameFormat.CUSTOM)) {
-            long score = returnScore(answer, gameId);
-            Long userId = answer.getUserId();
-            User userById = getUserById(userId);
-            Long prevScoreAllGames = userById.getTotalPointsAllGames();
-            long newScoreAllGames;
-            if (prevScoreAllGames == null) {
-                newScoreAllGames = score;
-            }
-            else {
-                newScoreAllGames = score + prevScoreAllGames;
-            }
-            userById.setTotalPointsAllGames(newScoreAllGames);
-        }
-    }
+        prevScoreAllGames = switch (gameFormat) {
+            case CUSTOM -> userById.getTotalPointsAllGames();
+            case BLITZ -> userById.getTotalBlitzPointsAllGames();
+            case RAPID -> userById.getTotalRapidPointsAllGames();
+        };
 
-    public void updateAllBlitzGamesScore(AnswerPostDTO answer, long gameId) {
-        Game game = gameRepository.findByGameId(gameId);
+        long newScoreAllGames = score + prevScoreAllGames;
 
-        if (game.getGameFormat().equals(GameFormat.BLITZ)) {
-            long score = returnScore(answer, gameId);
-            Long userId = answer.getUserId();
-            User userById = getUserById(userId);
-            Long prevScoreAllGames = userById.getTotalPointsAllGames();
-            long newScoreAllGames;
-            if (prevScoreAllGames == null) {
-                newScoreAllGames = score;
-            }
-            else {
-                newScoreAllGames = score + prevScoreAllGames;
-            }
-            userById.setTotalBlitzPointsAllGames(newScoreAllGames);
+        switch (gameFormat) {
+            case CUSTOM -> userById.setTotalPointsAllGames(newScoreAllGames);
+            case BLITZ -> userById.setTotalBlitzPointsAllGames(newScoreAllGames);
+            case RAPID -> userById.setTotalRapidPointsAllGames(newScoreAllGames);
         }
     }
 
@@ -284,60 +263,6 @@ public class UserService {
         List<User> sortedUsersDesc = sortAllBlitzRanksDescOrder(allUsersInDB);
         for (int i = 0; i < sortedUsersDesc.size(); i++) {
             sortedUsersDesc.get(i).setBlitzRank((long) (i + 1));
-        }
-    }
-
-    /*public void rapidScore(AnswerPostDTO answer) {
-        long score = returnRapidScore(answer);
-        Long userId = answer.getUserId();
-        User userById = getUserById(userId);
-        Long prevScore = userById.getTotalPointsCurrentGame();
-        Long newScore;
-        if (prevScore == null) {
-            newScore = score + 0;
-        }
-        else {
-            newScore = score + prevScore;
-        }
-        userById.setTotalPointsCurrentGame(newScore);
-        userById.setCurrentPoints(score);
-    }
-
-    public long returnRapidScore(AnswerPostDTO answer) {
-        long score;
-        String correctAnswer = answer.getCorrectAnswer();
-        String userAnswer = answer.getUsersAnswer();
-        Date time = answer.getTime();
-        Date qTime = answer.getQuestionTime();
-        long diff = Math.abs(time.getTime() - qTime.getTime());
-        if (userAnswer.equals(correctAnswer)) {
-            //Scoring function
-            score = (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
-        }
-        else if (answer.getUsersAnswer().equals("DEFAULT")) {
-            score = -30;
-        } else {
-            score = 0;
-        }
-        return score;
-    }*/
-
-    public void updateAllRapidGamesScore(AnswerPostDTO answer, Long gameId) {
-        Game game = gameRepository.findByGameId(gameId);
-
-        if (game.getGameFormat().equals(GameFormat.RAPID)) {
-            long score = returnScore(answer, gameId);
-            Long userId = answer.getUserId();
-            User userById = getUserById(userId);
-            Long prevScoreAllGames = userById.getTotalRapidPointsAllGames();
-            long newScoreAllGames;
-            if (prevScoreAllGames == null) {
-                newScoreAllGames = score;
-            }
-            else {
-                newScoreAllGames = score + prevScoreAllGames;
-            }
-            userById.setTotalRapidPointsAllGames(newScoreAllGames);
         }
     }
 

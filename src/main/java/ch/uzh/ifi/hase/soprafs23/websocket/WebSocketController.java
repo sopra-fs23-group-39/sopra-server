@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.websocket;
 
 import java.util.*;
+
+import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
@@ -29,10 +31,6 @@ public class WebSocketController {
     //private final Map<Long, ArrayList<WebSocketSession>> hostSessions = new HashMap<>();
     private final Map<Long, Question> currentGameQuestions = new HashMap<>();
     private final Map<Long, String> connectedClients = new HashMap<>();
-
-
-
-
 
     public WebSocketController(SimpMessagingTemplate messagingTemplate, GameService gameService, UserService userService) {
         this.messagingTemplate = messagingTemplate;
@@ -125,9 +123,9 @@ public class WebSocketController {
 
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
-        userService.score(answerPostDTO, gameId);
-        userService.updateAllGamesScore(answerPostDTO, gameId);
-        userService.updateAllBlitzGamesScore(answerPostDTO, gameId);
+        GameFormat gameFormat = gameService.getGameById(gameId).getGameFormat();
+        userService.score(answerPostDTO, gameFormat);
+        userService.updateAllGamesScore(answerPostDTO, gameFormat);
         List<User> allUsersInDB = userService.getUsers();
         userService.updateAllUsersRank(allUsersInDB);
         userService.updateAllBlitzRanks(allUsersInDB);
@@ -182,10 +180,10 @@ public class WebSocketController {
 
     @MessageMapping("/gamerapid/{gameId}/answer")
     public void getRapidAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {
-        userService.score(answerPostDTO,answerPostDTO.getGameId());
-        userService.updateAllRapidGamesScore(answerPostDTO, gameId);
+        GameFormat gameFormat = gameService.getGameById(gameId).getGameFormat();
+        userService.score(answerPostDTO, gameFormat);
+        userService.updateAllGamesScore(answerPostDTO, gameFormat);
         List<User> allUsersInDB = userService.getUsers();
         userService.updateAllRapidRanks(allUsersInDB);
     }
-
 }

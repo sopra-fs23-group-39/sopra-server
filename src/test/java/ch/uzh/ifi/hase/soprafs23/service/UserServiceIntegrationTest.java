@@ -1,5 +1,3 @@
-
-
 // package ch.uzh.ifi.hase.soprafs23.service;
 
 // import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
@@ -293,25 +291,6 @@
 //     @Test
 //     public void testGetUserByInvalidId() {
 //         assertThrows(ResponseStatusException.class, () -> userService.getUserById(2L));
-//     }
-
-//     @Test
-//     public void testReadyUserSuccess() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
-//         userService.readyUser(user.getId());
-
-//         User updatedUser = userService.getUserById(user.getId());
-//         assertTrue(updatedUser.getIsReady());
-//     }
-
-//     @Test
-//     public void testReadyUserWhenUserIsNull() {
-//         assertThrows(ResponseStatusException.class, () -> userService.readyUser(123L));
 //     }
 // }
 

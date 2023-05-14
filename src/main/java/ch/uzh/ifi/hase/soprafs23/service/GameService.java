@@ -144,7 +144,7 @@ public class GameService {
         return gameRepository.findByGameId(gameId);
     }
 
-    public void setGameIsStarted(long GameId,boolean isStarted){
-        gameRepository.findByGameId(GameId).setIsStarted(isStarted);
+    public void setGameIsStarted(long gameId,boolean isStarted){
+        gameRepository.findByGameId(gameId).setIsStarted(isStarted);
     }
 }

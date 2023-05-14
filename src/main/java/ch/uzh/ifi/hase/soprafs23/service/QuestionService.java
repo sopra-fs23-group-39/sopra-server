@@ -35,9 +35,7 @@ public class QuestionService {
                 genderType = random.nextInt(2);
                 question = getActorQuestion(genderType);
             }
-            case TRAILER -> {
-                question = getTrailerQuestion();
-            }
+            case TRAILER -> question = getTrailerQuestion();
             case MIXED -> {
                 int category = random.nextInt(3);
                 if (category == 0 || category == 1) {
