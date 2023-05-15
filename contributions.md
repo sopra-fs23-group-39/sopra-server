@@ -327,6 +327,11 @@ Task #76 Add custom styling to WaitingRoom page (https://github.com/sopra-fs23-g
 
 Task #75 Add custom styling to JoinGame page (https://github.com/sopra-fs23-group-39/sopra-client/issues/75)
 
+Commit for both tasks #75 and #76 (client): https://github.com/sopra-fs23-group-39/sopra-client/commit/2d7fa42e9e74b57cf446ab6344f392249e9008f6
+
+Task #106 Create tests for back-end (part 1, up to 50% coverage) (https://github.com/sopra-fs23-group-39/sopra-server/issues/106): test coverage increased from 11% to 50%
+
+
 
 Yannick Salzmann
 
@@ -361,4 +366,13 @@ Yannick Salzmann
 
 - Redesign the Winner page https://github.com/sopra-fs23-group-39/sopra-client/issues/79
 - Redesign and extend the leaderboard for multiple game formats https://github.com/sopra-fs23-group-39/sopra-client/issues/80
+
+Natalia Shakirova
+
+Task #107 Create tests for back-end (part 2, up to 75% coverage) (https://github.com/sopra-fs23-group-39/sopra-server/issues/107)
+
+Without a task:
+- add uniqueness constraint for questions (prevent having 2 same answers in a Question object);
+- testing application from a user point of view, finding bugs, fixing them;
+- Sonar: clean up
 
