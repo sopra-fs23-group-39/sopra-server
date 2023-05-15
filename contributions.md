@@ -382,3 +382,11 @@ Damjan Kuzmanovic
 -Add the scrollbar to the Standings Page https://github.com/sopra-fs23-group-39/sopra-client/issues/83
 -Additional tasks regarding bug fixing, testing etc. overall polishing of the code 
 
+
+Markus Niemack:  
+(tentative) wordle format: https://github.com/sopra-fs23-group-39/sopra-server/issues/83  
+https://github.com/sopra-fs23-group-39/sopra-client/issues/61  
+https://github.com/sopra-fs23-group-39/sopra-client/issues/61  
+we are probably not implementing these features, so I'm probably going to work on fixing the database conflict errors and bugfixing.
+
+
