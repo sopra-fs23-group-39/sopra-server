@@ -353,3 +353,9 @@ Damjan Kuzmanovic:
 Add custom styling to Questions page https://github.com/sopra-fs23-group-39/sopra-client/issues/77
 
 Recheck routing and guards https://github.com/sopra-fs23-group-39/sopra-client/issues/68
+
+Add IsStarted Flag to not allow the users to join the game that has started https://github.com/sopra-fs23-group-39/sopra-server/issues/105
+
+Week 8 (15.05.2023-21.05.2023)
+
+
