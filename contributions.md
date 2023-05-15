@@ -331,7 +331,6 @@ Task #75 Add custom styling to JoinGame page (https://github.com/sopra-fs23-grou
 Yannick Salzmann
 
 - Finishing points distribution for blitz games https://github.com/sopra-fs23-group-39/sopra-server/issues/93
-- Adding a scrollbar to the standings page https://github.com/sopra-fs23-group-39/sopra-client/issues/83
 - Fixing profile page, where currently an error is thrown when clicking on player stats, as well as improve the design https://github.com/sopra-fs23-group-39/sopra-client/issues/81
 - Improving the change profile page https://github.com/sopra-fs23-group-39/sopra-client/issues/82  
   
@@ -358,4 +357,8 @@ Add IsStarted Flag to not allow the users to join the game that has started http
 
 Week 8 (15.05.2023-21.05.2023)
 
+Yannick Salzmann
+
+- Redesign the Winner page https://github.com/sopra-fs23-group-39/sopra-client/issues/79
+- Redesign and extend the leaderboard for multiple game formats https://github.com/sopra-fs23-group-39/sopra-client/issues/80
 
