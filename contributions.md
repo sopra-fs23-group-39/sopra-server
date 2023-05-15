@@ -371,10 +371,9 @@ Natalia Shakirova
 
 Task #107 Create tests for back-end (part 2, up to 75% coverage) (https://github.com/sopra-fs23-group-39/sopra-server/issues/107)
 
-Without a task:
-- add uniqueness constraint for questions (prevent having 2 same answers in a Question object);
-- testing application from a user point of view, finding bugs, fixing them;
-- Sonar: clean up
+Task #108: Add uniqueness check for all types of questions (all 4 answers should be unique) https://github.com/sopra-fs23-group-39/sopra-server/issues/108
+
+Without a task: testing application from a user's point of view, finding bugs, fixing them
 
 Damjan Kuzmanovic
 
