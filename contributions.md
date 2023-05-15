@@ -376,3 +376,9 @@ Without a task:
 - testing application from a user point of view, finding bugs, fixing them;
 - Sonar: clean up
 
+Damjan Kuzmanovic
+
+-Redesign the Standings Page https://github.com/sopra-fs23-group-39/sopra-client/issues/78
+-Add the scrollbar to the Standings Page
+-Additional tasks regarding bug fixing, testing etc. overall polishing of the code
+
