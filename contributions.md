@@ -379,6 +379,6 @@ Without a task:
 Damjan Kuzmanovic
 
 -Redesign the Standings Page https://github.com/sopra-fs23-group-39/sopra-client/issues/78
--Add the scrollbar to the Standings Page
--Additional tasks regarding bug fixing, testing etc. overall polishing of the code
+-Add the scrollbar to the Standings Page https://github.com/sopra-fs23-group-39/sopra-client/issues/83
+-Additional tasks regarding bug fixing, testing etc. overall polishing of the code 
 
