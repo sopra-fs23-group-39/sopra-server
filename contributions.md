@@ -390,3 +390,6 @@ https://github.com/sopra-fs23-group-39/sopra-client/issues/61
 we are probably not implementing these features, so I'm probably going to work on fixing the database conflict errors and bugfixing.
 
 
+Florence Hügi:
+Add custom styling to all pages: https://github.com/sopra-fs23-group-39/sopra-client/issues/70
+Adjust question and GameSelection pages accordingly: https://github.com/sopra-fs23-group-39/sopra-client/issues/62
