@@ -71,7 +71,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GamePostDTO retrieveGameSettings (@PathVariable long gameId){
-        Game findByGameId = gameService.getGameSettings(gameId);
+        Game findByGameId = gameService.getGameById(gameId);
         return DTOMapper.INSTANCE.convertEntityToGamePostDTO(findByGameId);
     }
 

@@ -99,7 +99,7 @@ public class GameService {
         userService.getUserById(playerId).setGame(null);
     }
 
-    public Game getGameSettings(long gameId) {
+    public Game getGameById(Long gameId) {
         String message = "Game with id %d was not found!";
         try {
             return gameRepository.findByGameId(gameId);
@@ -139,9 +139,6 @@ public class GameService {
             }
         }
         return winner;
-    }
-    public Game getGameById(Long gameId){
-        return gameRepository.findByGameId(gameId);
     }
 
     public void setGameIsStarted(long gameId,boolean isStarted){

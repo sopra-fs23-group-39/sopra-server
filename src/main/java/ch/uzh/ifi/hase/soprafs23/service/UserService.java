@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
+import jnr.a64asm.Offset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,9 @@ public class UserService {
         User newLoggedinUser = userRepository.findById(userID);
         if (newLoggedinUser == null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Can't find user to log out");
+                    "Can't find a user to log out");
         }
+        newLoggedinUser.setStatus(UserStatus.OFFLINE);
         userRepository.save(newLoggedinUser);
         userRepository.flush();
     }
@@ -255,7 +257,7 @@ public class UserService {
 
     public List<User> sortAllBlitzRanksDescOrder(List<User> allUsersInDB) {
         List<User> sortedUsersDesc = new ArrayList<>(allUsersInDB);
-        sortedUsersDesc.sort(Comparator.comparing(User::getTotalPointsAllGames).reversed());
+        sortedUsersDesc.sort(Comparator.comparing(User::getTotalBlitzPointsAllGames).reversed());
         return sortedUsersDesc;
     }
 

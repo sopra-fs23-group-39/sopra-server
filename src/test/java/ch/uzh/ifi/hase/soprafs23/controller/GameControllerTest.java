@@ -106,7 +106,7 @@ class GameControllerTest {
         game.getPlayers().add(host);
         game.setCurrentRound(0);
 
-        given(gameService.getGameSettings(1L)).willReturn(game);
+        given(gameService.getGameById(1L)).willReturn(game);
 
         MockHttpServletRequestBuilder getRequest = get("/game/1/settings");
 

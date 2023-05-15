@@ -51,7 +51,7 @@ public class QuestionService {
     }
 
     public Question getTrailerQuestion() throws JsonProcessingException {
-        String questionText = "What is the title of this ";
+        String questionText = "What is the title of this movie?";
         String movieId = movieApiService.getRandomItem(moviesListAsJSONObject);
         String questionLink = movieApiService.getEmbedLink(movieApiService.getJSONObject("YouTubeTrailer", movieId, KEY));
         System.out.println("Embed id : " + questionLink);

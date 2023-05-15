@@ -127,6 +127,8 @@ public class WebSocketController {
         userService.score(answerPostDTO, gameFormat);
         userService.updateAllGamesScore(answerPostDTO, gameFormat);
         List<User> allUsersInDB = userService.getUsers();
+        //Looks like we do unnecessary job updating 2 rankings, although we get message only about one type of game
+        // Merge with Rapid? (delete that endpoint?)
         userService.updateAllUsersRank(allUsersInDB);
         userService.updateAllBlitzRanks(allUsersInDB);
     }
