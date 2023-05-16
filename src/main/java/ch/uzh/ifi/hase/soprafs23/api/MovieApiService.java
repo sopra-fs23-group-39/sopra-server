@@ -60,15 +60,12 @@ public class MovieApiService extends ApiService {
         return listOfSimilarMovies;
     }
 
-    public List<String> getSimilarItems(String jsonObjectAsString) throws JsonProcessingException {
+    public List<String> getSimilarItems(String jsonObjectAsString, List<String> additionalItems) throws JsonProcessingException {
         List<String> listOfSimilarMovies = getSimilarItemsArray(jsonObjectAsString);
         Collections.shuffle(listOfSimilarMovies);
-        List<String> threeRandomMovies = new ArrayList<>();
+        listOfSimilarMovies.addAll(additionalItems);
 
-        for (int i = 0; i < 3; i++) {
-            threeRandomMovies.add(listOfSimilarMovies.get(i));
-        }
-        return threeRandomMovies;
+        return getThreeItemsWithoutDuplicates(listOfSimilarMovies);
     }
 
 }

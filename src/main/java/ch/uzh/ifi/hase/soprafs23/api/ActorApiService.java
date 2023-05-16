@@ -26,14 +26,9 @@ public class ActorApiService extends ApiService {
 
     private List<String> getSimilarItemsIds(List<String> listToChooseFrom) {
         List<String> listToChooseFrom2 = new ArrayList<>(listToChooseFrom);
-        List<String> listSimilarItemsIds = new ArrayList<>();
-
         Collections.shuffle(listToChooseFrom2);
 
-        for (int i = 0; i < 3; i++) {
-            listSimilarItemsIds.add(listToChooseFrom2.get(i));
-        }
-        return listSimilarItemsIds;
+        return getThreeItemsWithoutDuplicates(listToChooseFrom2);
     }
 
     public List<String> getSimilarItems(List<String> listToChooseFrom, String key) throws JsonProcessingException {

@@ -5,97 +5,56 @@ import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionServiceIntegrationTest {
 
+    QuestionService questionService = new QuestionService();
+
     @Test
     void testGetAppropriateQuestionShow() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
-        Question questionShow = questionService.getAppropriateQuestion(GameMode.SHOW);
-
-        assertNotNull(questionShow.getQuestionText());
-        assertEquals("What is the title of this TV series?", questionShow.getQuestionText());
-        assertNotNull(questionShow.getQuestionLink());
-        assertNotNull(questionShow.getCorrectAnswer());
-        assertNotNull(questionShow.getAnswer1());
-        assertNotNull(questionShow.getAnswer2());
-        assertNotNull(questionShow.getAnswer3());
-        assertNotNull(questionShow.getAnswer4());
-
-        List<String> answers = Arrays.asList(questionShow.getAnswer1(), questionShow.getAnswer2(), questionShow.getAnswer3(), questionShow.getAnswer4());
-        assertTrue(answers.contains(questionShow.getCorrectAnswer()));
+        Question question = questionService.getAppropriateQuestion(GameMode.SHOW);
+        assertTestPasses(question, "What is the title of this TV series?");
     }
 
     @Test
     void testGetAppropriateQuestionMovie() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
-        Question questionMovie = questionService.getAppropriateQuestion(GameMode.MOVIE);
-
-        assertNotNull(questionMovie.getQuestionText());
-        assertEquals("What is the title of this movie?", questionMovie.getQuestionText());
-        assertNotNull(questionMovie.getQuestionLink());
-        assertNotNull(questionMovie.getCorrectAnswer());
-        assertNotNull(questionMovie.getAnswer1());
-        assertNotNull(questionMovie.getAnswer2());
-        assertNotNull(questionMovie.getAnswer3());
-        assertNotNull(questionMovie.getAnswer3());
-
-        List<String> answers = Arrays.asList(questionMovie.getAnswer1(), questionMovie.getAnswer2(), questionMovie.getAnswer3(), questionMovie.getAnswer4());
-        assertTrue(answers.contains(questionMovie.getCorrectAnswer()));
+        Question question= questionService.getAppropriateQuestion(GameMode.MOVIE);
+        assertTestPasses(question, "What is the title of this movie?");
     }
 
     @Test
     void testGetAppropriateQuestionActor() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         Question questionActor = questionService.getAppropriateQuestion(GameMode.ACTOR);
+        String correctAnswer = questionActor.getCorrectAnswer();
 
         assertNotNull(questionActor.getQuestionText());
         List<String> questionTexts = Arrays.asList("What is the name of this actor?", "What is the name of this actress?");
 
         assertTrue(questionTexts.contains(questionActor.getQuestionText()));
         assertNotNull(questionActor.getQuestionLink());
-        assertNotNull(questionActor.getCorrectAnswer());
+        assertNotNull(correctAnswer);
         assertNotNull(questionActor.getAnswer1());
         assertNotNull(questionActor.getAnswer2());
         assertNotNull(questionActor.getAnswer3());
         assertNotNull(questionActor.getAnswer4());
 
         List<String> answers = Arrays.asList(questionActor.getAnswer1(), questionActor.getAnswer2(), questionActor.getAnswer3(), questionActor.getAnswer4());
-        assertTrue(answers.contains(questionActor.getCorrectAnswer()));
-    }
-
-    @Test
-    void testGetAppropriateQuestionTrailer() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
-        Question question = questionService.getAppropriateQuestion(GameMode.TRAILER);
-        String questionText = question.getQuestionText();
-        String correctAnswer = question.getCorrectAnswer();
-        String answer1 = question.getAnswer1();
-        String answer2 = question.getAnswer2();
-        String answer3 = question.getAnswer3();
-        String answer4 = question.getAnswer4();
-
-        assertNotNull(questionText);
-        assertEquals("What is the title of this movie?", questionText);
-        assertNotNull(question.getQuestionLink());
-        assertNotNull(correctAnswer);
-        assertNotNull(answer1);
-        assertNotNull(answer2);
-        assertNotNull(answer3);
-        assertNotNull(answer4);
-
-        List<String> answers = Arrays.asList(answer1, answer2, answer3, answer4);
+        Set<String> answersSet = new HashSet<>(answers);
+        assertEquals(answers.size(), answersSet.size());
         assertTrue(answers.contains(correctAnswer));
     }
 
     @Test
+    void testGetAppropriateQuestionTrailer() throws JsonProcessingException {
+        Question question = questionService.getAppropriateQuestion(GameMode.TRAILER);
+        assertTestPasses(question, "What is the title of this movie?");
+    }
+
+    @Test
     void testGetAppropriateQuestionMixed() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         List<Question> listOfQuestions = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             listOfQuestions.add(questionService.getAppropriateQuestion(GameMode.MIXED));
@@ -124,8 +83,6 @@ class QuestionServiceIntegrationTest {
         String correctAnswer = "Inception";
         List<String> wrongAnswers = Arrays.asList("Interstellar", "Shutter Island", "Django Unchained");
 
-        QuestionService questionService = new QuestionService();
-
         Question question = questionService.getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
 
         assertEquals(questionText, question.getQuestionText());
@@ -153,80 +110,38 @@ class QuestionServiceIntegrationTest {
 
     @Test
     void testGetMovieQuestionCategory0() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         Question question = questionService.getMovieQuestion(0);
-
-        assertNotNull(question.getQuestionText());
-        assertEquals("What is the title of this movie?", question.getQuestionText());
-        assertNotNull(question.getQuestionLink());
-        assertNotNull(question.getCorrectAnswer());
-        assertNotNull(question.getAnswer1());
-        assertNotNull(question.getAnswer2());
-        assertNotNull(question.getAnswer3());
-        assertNotNull(question.getAnswer4());
-
-        List<String> answers = Arrays.asList(question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4());
-        assertTrue(answers.contains(question.getCorrectAnswer()));
+        assertTestPasses(question, "What is the title of this movie?");
     }
 
     @Test
     void testGetMovieQuestionCategory1() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         Question question = questionService.getMovieQuestion(1);
-
-        assertNotNull(question.getQuestionText());
-        assertEquals("What is the title of this TV series?", question.getQuestionText());
-        assertNotNull(question.getQuestionLink());
-        assertNotNull(question.getCorrectAnswer());
-        assertNotNull(question.getAnswer1());
-        assertNotNull(question.getAnswer2());
-        assertNotNull(question.getAnswer3());
-        assertNotNull(question.getAnswer4());
-
-        List<String> answers = Arrays.asList(question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4());
-        assertTrue(answers.contains(question.getCorrectAnswer()));
+        assertTestPasses(question, "What is the title of this TV series?");
     }
 
     @Test
     void testGetActorQuestionGender0() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         Question question = questionService.getActorQuestion(0);
 
-        assertNotNull(question.getQuestionText());
-        assertEquals("What is the name of this actor?", question.getQuestionText());
-        assertNotNull(question.getQuestionLink());
-        assertNotNull(question.getCorrectAnswer());
-        assertNotNull(question.getAnswer1());
-        assertNotNull(question.getAnswer2());
-        assertNotNull(question.getAnswer3());
-        assertNotNull(question.getAnswer3());
-
-        List<String> answers = Arrays.asList(question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4());
-        assertTrue(answers.contains(question.getCorrectAnswer()));
+        assertTestPasses(question, "What is the name of this actor?");
     }
 
     @Test
     void testGetActorQuestionGender1() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         Question question = questionService.getActorQuestion(1);
 
-        assertNotNull(question.getQuestionText());
-        assertEquals("What is the name of this actress?", question.getQuestionText());
-        assertNotNull(question.getQuestionLink());
-        assertNotNull(question.getCorrectAnswer());
-        assertNotNull(question.getAnswer1());
-        assertNotNull(question.getAnswer2());
-        assertNotNull(question.getAnswer3());
-        assertNotNull(question.getAnswer4());
-
-        List<String> answers = Arrays.asList(question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4());
-        assertTrue(answers.contains(question.getCorrectAnswer()));
+        assertTestPasses(question, "What is the name of this actress?");
     }
 
     @Test
     void testGetTrailerQuestion() throws JsonProcessingException {
-        QuestionService questionService = new QuestionService();
         Question question = questionService.getTrailerQuestion();
+
+        assertTestPasses(question, "What is the title of this movie?");
+    }
+
+    private void assertTestPasses(Question question, String correctQuestionText) {
         String questionText = question.getQuestionText();
         String correctAnswer = question.getCorrectAnswer();
         String answer1 = question.getAnswer1();
@@ -235,7 +150,7 @@ class QuestionServiceIntegrationTest {
         String answer4 = question.getAnswer4();
 
         assertNotNull(questionText);
-        assertEquals("What is the title of this movie?", questionText);
+        assertEquals(correctQuestionText, questionText);
         assertNotNull(question.getQuestionLink());
         assertNotNull(correctAnswer);
         assertNotNull(answer1);
@@ -244,6 +159,8 @@ class QuestionServiceIntegrationTest {
         assertNotNull(answer4);
 
         List<String> answers = Arrays.asList(answer1, answer2, answer3, answer4);
+        Set<String> answersSet = new HashSet<>(answers);
+        assertEquals(answers.size(), answersSet.size());
         assertTrue(answers.contains(correctAnswer));
     }
 }

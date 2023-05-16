@@ -6,10 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class QuestionService {
     private final MovieApiService movieApiService = new MovieApiService();
@@ -23,6 +20,8 @@ public class QuestionService {
     private final String tvSeriesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568316563", KEY);
     private final String actorsListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313759", KEY);
     private final String actressesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568313185", KEY);
+
+    List<String> addMovies = Arrays.asList("The Silence of the Lambs", "Schindler's List", "Schindler's List", "American History X");
 
     Random random = new Random();
 
@@ -57,28 +56,29 @@ public class QuestionService {
         System.out.println("Embed id : " + questionLink);
         String movieAsJSONObject = movieApiService.getJSONObject("Title", movieId, KEY);
         String correctAnswer = movieApiService.getItemName(movieAsJSONObject);
-        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject);
+        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject, addMovies);
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
     public Question getMovieQuestion(int category) throws JsonProcessingException {
         String questionText = "What is the title of this ";
         String listAsJSONObject = null;
-
+        List<String> additionalMovies = new ArrayList<>();
         if (category == 0) {
             questionText += "movie?";
             listAsJSONObject = moviesListAsJSONObject;
+            additionalMovies = addMovies;
         } else if (category == 1) {
             questionText += "TV series?";
             listAsJSONObject = tvSeriesListAsJSONObject;
-
+            additionalMovies = Arrays.asList("True Detective", "Breaking Bad", "Homeland", "The Queen's Gambit");
         }
 
         String movieId = movieApiService.getRandomItem(listAsJSONObject);
         String questionLink = movieApiService.getImageLink(movieApiService.getJSONObject("Images", movieId, KEY));
         String movieAsJSONObject = movieApiService.getJSONObject("Title", movieId, KEY);
         String correctAnswer = movieApiService.getItemName(movieAsJSONObject);
-        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject);
+        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject, additionalMovies);
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 

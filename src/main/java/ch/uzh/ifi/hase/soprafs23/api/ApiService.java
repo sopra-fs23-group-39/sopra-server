@@ -65,6 +65,22 @@ public abstract class ApiService {
         return response.toString();
     }
 
+    public List<String> getThreeItemsWithoutDuplicates(List<String> listToChooseFrom) {
+        List<String> listSimilarItemsIds = new ArrayList<>();
+        int count = 0;
+        for (String item : listToChooseFrom) {
+            if (count < 3) {
+                if (!listSimilarItemsIds.contains(item)) {
+                    listSimilarItemsIds.add(item);
+                    count++;
+                }
+            } else {
+                break;
+            }
+        }
+        return listSimilarItemsIds;
+    }
+
     public abstract String getImageLink(String jsonObjectAsString) throws JsonProcessingException;
 
     public abstract String getItemName(String jsonObjectAsString) throws JsonProcessingException;
