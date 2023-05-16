@@ -8,7 +8,6 @@ import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
-import jnr.a64asm.Offset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,17 +55,18 @@ public class UserService {
         newUser.setUserRank(1000L);
         newUser.setBlitzRank(1000L);
         newUser.setTotalBlitzPointsAllGames(0L);
+        newUser.setRapidRank(1000L);
+        newUser.setTotalRapidPointsAllGames(0L);
         checkIfUserExists(newUser);
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
         newUser = userRepository.save(newUser);
         userRepository.flush();
 
         List<User> allUsersInDB = getUsers();
         updateAllUsersRank(allUsersInDB);
         updateAllBlitzRanks(allUsersInDB);
+        updateAllRapidRanks(allUsersInDB);
 
-        log.debug("Created Information for User: {}", newUser);
+        log.debug("Created information for user: {}", newUser);
         return newUser;
     }
 
