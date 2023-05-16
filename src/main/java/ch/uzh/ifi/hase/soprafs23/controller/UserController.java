@@ -57,11 +57,11 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    @PostMapping("/users/logout")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void logOutUser(@RequestBody int userId) {
+    @PutMapping("/users/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> logOutUser(@RequestBody int userId) {
         userService.logoutUser(userId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/users/{id}")
@@ -76,7 +76,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody UserPutDTO userPutDTO) {
         userService.updateUserProfile(userPutDTO, id);
-
         return ResponseEntity.noContent().build();
     }
 

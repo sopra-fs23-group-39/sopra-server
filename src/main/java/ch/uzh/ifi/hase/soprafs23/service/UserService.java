@@ -71,13 +71,13 @@ public class UserService {
     }
 
     public void logoutUser(long userID) {
-        User newLoggedinUser = userRepository.findById(userID);
-        if (newLoggedinUser == null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
+        User user = userRepository.findById(userID);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Can't find a user to log out");
         }
-        newLoggedinUser.setStatus(UserStatus.OFFLINE);
-        userRepository.save(newLoggedinUser);
+        user.setStatus(UserStatus.OFFLINE);
+        userRepository.save(user);
         userRepository.flush();
     }
 

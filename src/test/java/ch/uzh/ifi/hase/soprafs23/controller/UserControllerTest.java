@@ -24,9 +24,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.hamcrest.Matchers.is;
@@ -52,6 +54,34 @@ class UserControllerTest {
 
 //    @Test
 //    public void testGetAllUsers() throws Exception {
+//        //given
+//        User user = new User();
+//        user.setId(1L);
+//        user.setUsername("Username");
+//        user.setPassword("Password");
+//        user.setStatus(UserStatus.ONLINE);
+//
+//        List<User> allUsers = Collections.singletonList(user);
+//
+//        // this mocks the UserService -> we define what the userService should
+//        // return when getUsers() is called
+//        given(userService.getUsers()).willReturn(allUsers);
+//
+//        // when
+//        MockHttpServletRequestBuilder getRequest = get("/users")
+//                .contentType(MediaType.APPLICATION_JSON);
+//
+//        // then
+//        mockMvc.perform(getRequest).andExpect(status().isOk())
+//                .andExpect(jsonPath("$", hasSize(1)))
+//                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
+//                .andExpect(jsonPath("$[0].password", is(user.getPassword())))
+//                .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
+//    }
+
+//    @Test
+//    public void testGetAllUsers() throws Exception {
+//
 //        ObjectMapper objectMapper = new ObjectMapper();
 //
 //        User user1 = new User();
@@ -223,16 +253,39 @@ class UserControllerTest {
         assertEquals(result.getPassword(), user.getPassword());
     }
 
-//    @Test
-//    public void testLogOutUser() {
-//        int playerId = 1;
-//        doNothing().when(userService).logoutUser(playerId);
-//        UserController controller = new UserController(userService);
-//        ResponseEntity<Void> response = controller.logOutUser(playerId);
-//        verify(userService, times(1)).logoutUser(playerId);
-//        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-//    }
+    @Test
+    void logoutPUT_putValidUser() throws Exception {
+        User user = new User();
+        Long userId = 1L;
+        user.setId(userId);
 
+        // HttpStatus 204 No Content
+        Mockito.doNothing().when(userService).logoutUser(userId);
+
+        MockHttpServletRequestBuilder putRequest = put("/users/logout")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(userId));
+
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void logoutPUT_putInvalidUser() throws Exception {
+        User user = new User();
+        Long userId = 1L;
+        user.setId(userId);
+
+        // Use doThrow() to throw an exception when logoutUser() is called
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(userService).logoutUser(userId);
+
+        MockHttpServletRequestBuilder putRequest = put("/users/logout")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.valueOf(userId));
+
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNotFound());
+    }
 
     private String asJsonString(final Object object) {
         try {
