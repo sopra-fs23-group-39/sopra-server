@@ -18,7 +18,6 @@ public class UserGetDTO {
     private Long totalPointsCurrentGame;
     private Long currentPoints;
     private Long totalPointsAllGames;
-    private boolean isReady;
     private Game game;
     private Game hostedGame;
 
@@ -90,7 +89,6 @@ public class UserGetDTO {
         this.totalPointsCurrentGame = totalPointsCurrentGame;
     }
 
-
     public UserStatus getStatus() {
     return status;
     }
@@ -105,14 +103,6 @@ public class UserGetDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public boolean getIsReady() {
-        return isReady;
-    }
-
-    public void setIsReady(boolean isReady) {
-        this.isReady = isReady;
     }
 
     public long getCurrentPoints() {

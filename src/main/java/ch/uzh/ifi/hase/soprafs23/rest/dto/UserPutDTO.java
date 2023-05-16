@@ -9,8 +9,6 @@ public class UserPutDTO {
     private String password;
     private String status;
 
-    private Boolean isReady;
-
     public String getUsername() {
         return username;
     }
@@ -43,11 +41,4 @@ public class UserPutDTO {
         this.status = status;
     }
 
-    public Boolean getIsReady() {
-        return isReady;
-    }
-
-    public void setIsReady(Boolean isReady) {
-        this.isReady = isReady;
-    }
 }
