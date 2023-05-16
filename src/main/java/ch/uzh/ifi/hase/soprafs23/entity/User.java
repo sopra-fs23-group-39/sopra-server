@@ -50,7 +50,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long blitzRank;
 
-    @Column
+    @Column(nullable = false)
     private Long rapidRank;
 
     @Column(nullable = false)
@@ -68,7 +68,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Long totalBlitzPointsAllGames;
 
-    @Column
+    @Column(nullable = false)
     private Long totalRapidPointsAllGames;
 
     @ManyToOne(fetch = FetchType.EAGER)

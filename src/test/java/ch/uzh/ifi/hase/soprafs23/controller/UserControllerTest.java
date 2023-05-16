@@ -94,9 +94,15 @@ class UserControllerTest {
         user.setPassword("testPassword");
         user.setId(1L);
         user.setStatus(UserStatus.ONLINE);
-        user.setUserRank(1L);
         user.setNumberGames(0L);
+        user.setUserRank(1L);
+        user.setCurrentPoints(0L);
+        user.setTotalPointsAllGames(0L);
         user.setTotalPointsCurrentGame(0L);
+        user.setRapidRank(1L);
+        user.setTotalRapidPointsAllGames(0L);
+        user.setBlitzRank(1L);
+        user.setTotalBlitzPointsAllGames(0L);
 
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("testUsername");
@@ -111,8 +117,8 @@ class UserControllerTest {
 
         mockMvc.perform(postRequest)
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
-                .andExpect(jsonPath("$.password", is(user.getPassword())));
-                //.andExpect(status().isCreated());
+                .andExpect(jsonPath("$.password", is(user.getPassword())))
+                .andExpect(status().isCreated());
     }
 
     @Test
