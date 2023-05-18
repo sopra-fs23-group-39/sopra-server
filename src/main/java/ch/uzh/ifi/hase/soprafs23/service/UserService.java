@@ -124,7 +124,7 @@ public class UserService {
         String existingPassword = userByUsername.getPassword();
 
         if (!(existingPassword.equals(userInputPassword))) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The provided password is wrong!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The provided password is wrong!");
         }
 
         userByUsername.setStatus(UserStatus.ONLINE);

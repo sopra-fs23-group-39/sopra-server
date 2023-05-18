@@ -3,36 +3,19 @@
  import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
  import ch.uzh.ifi.hase.soprafs23.entity.User;
  import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+ import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
  import org.junit.jupiter.api.BeforeEach;
  import org.junit.jupiter.api.Test;
  import org.mockito.InjectMocks;
  import org.mockito.Mock;
  import org.mockito.Mockito;
  import org.mockito.MockitoAnnotations;
- import org.springframework.boot.test.context.SpringBootTest;
- import org.springframework.http.HttpStatus;
- import org.springframework.test.context.web.WebAppConfiguration;
  import org.springframework.web.server.ResponseStatusException;
 
- import java.util.Optional;
- import java.util.UUID;
-
  import static org.junit.jupiter.api.Assertions.*;
-
+ import static org.mockito.Mockito.*;
 
  class UserServiceTest {
-
-//     @Qualifier("userRepository")
-//     @Autowired
-//     private UserRepository userRepository;
-//
-//     @Qualifier("gameRepository")
-//     @Autowired
-//     private GameRepository gameRepository;
-//
-//     @Autowired
-//     private UserService userService = new UserService(userRepository, gameRepository);
-
      @Mock
      private UserRepository userRepository;
 
@@ -53,17 +36,17 @@
 
          // when -> any object is being saved in the userRepository -> return the dummy
          // testUser
-         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
+         when(userRepository.save(Mockito.any())).thenReturn(testUser);
      }
 
      @Test
-     public void createUser_validInputs_success() {
+     void createUser_validInputs_success() {
          // when -> any object is being saved in the userRepository -> return the dummy
          // testUser
          User createdUser = userService.createUser(testUser);
 
          // then
-         Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
+         verify(userRepository, times(1)).save(Mockito.any());
 
          assertEquals(testUser.getId(), createdUser.getId());
          assertEquals(testUser.getPassword(), createdUser.getPassword());
@@ -82,111 +65,97 @@
      }
 
      @Test
-     public void createUser_duplicateName_throwsException() {
+     void createUser_duplicateName_throwsException() {
          // given -> a first user has already been created
          userService.createUser(testUser);
 
          // when -> setup additional mocks for UserRepository
          //Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
-         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+         when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
          // then -> attempt to create second user with same user -> check that an error
          // is thrown
          assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
      }
 
-//     @Test
-//     public void getUser_validInputs_success() {
-//         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
-//
-//         User foundUser = userService.getUserProfile(1L);
-//
-//         assertEquals(testUser.getId(), foundUser.getId());
-//         assertEquals(testUser.getPassword(), foundUser.getPassword());
-//         assertEquals(testUser.getUsername(), foundUser.getUsername());
-//     }
+     @Test
+     public void loginUser_validInputs_success() {
+         // given -> an existing user
+         User existingUser = new User();
+         existingUser.setId(1L);
+         existingUser.setPassword("testPassword");
+         existingUser.setUsername("testUsername");
+         existingUser.setStatus(UserStatus.OFFLINE);
 
-//     public User getUserProfile(long id) {
-//         String message = "User with id %d was not found!";
-//         User userToReturn = userRepository.findById(id);
-//
-//         if (userToReturn == null) {
-//             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, id));
-//         }
-//
-//         return userToReturn;
-//     }
+         // when -> the userRepository is queried for a user with a certain username -> return the dummy
+         // testUser
+         when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
+         // when -> attempt to login with valid credentials
+         User loggedInUser = userService.logIn(existingUser);
 
+         // then -> check that user status is set to online
+         verify(userRepository, times(1)).flush();
+         assertEquals(UserStatus.ONLINE, loggedInUser.getStatus());
+     }
 
-//     @BeforeEach
-//     public void setup() {
-//         userRepository.deleteAll();
-//     }
+     @Test
+     public void loginUser_nonExistentUsername_throwsNotFoundException() {
+         // given -> a user with a non-existent username
+         User user = new User();
+         user.setPassword("testPassword");
+         user.setUsername("nonExistentUsername");
 
-//     @Test
-//     public void createUser_validInputs_success() {
-//         assertNull(userRepository.findByUsername("testUsername"));
-//
-//         User testUser = new User();
-//         testUser.setPassword("testName");
-//         testUser.setUsername("testUsername");
-//
-//         // when
-//         User createdUser = userService.createUser(testUser);
-//
-//         // then
-//         assertEquals(testUser.getId(), createdUser.getId());
-//         assertEquals(testUser.getPassword(), createdUser.getPassword());
-//         assertEquals(testUser.getUsername(), createdUser.getUsername());
-//         assertNotNull(createdUser.getToken());
-//         assertEquals(UserStatus.ONLINE, createdUser.getStatus());
-//     }
- }
+         // when -> userRepository is queried for a user with a certain username -> return null
+         when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
 
-//     @Test
-//     public void createUser_duplicateUsername_throwsException() {
-//         assertNull(userRepository.findByUsername("testUsername"));
+         // when -> attempt to log in with non-existent username
+         assertThrows(ResponseStatusException.class, () -> userService.logIn(user));
+     }
 
-//         User testUser = new User();
-//         testUser.setPassword("testPassword");
-//         testUser.setUsername("testUsername");
-//         User createdUser = userService.createUser(testUser);
+     @Test
+     public void loginUser_incorrectPassword_throwsUnauthorizedException() {
+         // given -> an existing user
+         User existingUser = new User();
+         existingUser.setId(1L);
+         existingUser.setPassword("correctPassword");
+         existingUser.setUsername("testUsername");
+         existingUser.setStatus(UserStatus.OFFLINE);
 
-//         // attempt to create second user with same username
-//         User testUser2 = new User();
+         // given -> a user with an incorrect password
+         User user = new User();
+         user.setPassword("incorrectPassword");
+         user.setUsername("testUsername");
 
-//         // change the name but forget about the username
-//         testUser2.setPassword("testPassword");
-//         testUser2.setUsername("testUsername");
+         // when -> userRepository is queried for a user with a certain username -> return the existingUser
+         when(userRepository.findByUsername(Mockito.any())).thenReturn(existingUser);
 
-//         // check that an error is thrown
-//         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
-//     }
+         // when -> attempt to log in with incorrect password
+         assertThrows(ResponseStatusException.class, () -> userService.logIn(user));
+     }
 
+     @Test
+     public void testGetUserProfile() {
+         Long userId = 1L;
+         User user = new User();
+         user.setId(userId);
 
-// /*
-//     @Test
-//     public void testLogoutUser() {
-//         assertNull(userRepository.findById(1L));
+         when(userRepository.findById(1L)).thenReturn(user);
 
-//         User loggedinUser = new User();
-//         loggedinUser.setId(1L);
-//         loggedinUser.setUsername("testUsername");
-//         loggedinUser.setPassword("testPassword");
-//         loggedinUser.setStatus(UserStatus.ONLINE);
+         // check that the fetched user matches the created user
+         assertEquals(user, userService.getUserProfile(1L));
+     }
 
-//         userService.createUser(loggedinUser);
+     @Test
+     public void testGetUserProfileInvalidId() {
+         Long userId = 1L;
+         User user = new User();
+         user.setId(userId);
 
-//         userService.logoutUser(1L);
+         when(userRepository.findById(1L)).thenReturn(null);
 
-//         User updatedUser = userRepository.findById(1L);
-
-//         assertEquals(UserStatus.OFFLINE, updatedUser.getStatus());
-//     }
-
-//      */
-
+         assertThrows(ResponseStatusException.class, () -> userService.getUserProfile(1L));
+     }
 
 //     @Test
 //     public void testLogoutUserWithInvalidInput() {
@@ -206,105 +175,57 @@
 //         assertEquals("Can't find user to log out", exception.getReason());
 //     }
 
-//     @Test
-//     public void testCheckIfUserExists() {
-//         User existingUser = new User();
-//         existingUser.setUsername("testUsername");
-//         existingUser.setPassword("testPassword");
+//    @Test
+//    public void testLogoutUser_UserExists_SuccessfulLogout() {
+//        when(userRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
+//        Long id = testUser.getId();
+//
+//        // Act
+//        userService.logoutUser(id);
+//
+//        // Assert
+//        verify(userRepository, times(1)).findById(id);
+//        verify(userRepository, times(1)).save(testUser);
+//        verify(userRepository, times(1)).flush();
+//        Assertions.assertEquals(UserStatus.OFFLINE, testUser.getStatus());
+//    }
 
-//         userService.createUser(existingUser);
+     @Test
+     public void testCheckIfUserExists_Conflict() {
+         User existingUser = new User();
+         existingUser.setUsername("testUsername");
+         existingUser.setPassword("testPassword");
 
-//         // expect ResponseStatusException 409 Conflict
-//         assertThrows(ResponseStatusException.class, () -> userService.checkIfUserExists(existingUser));
-//     }
+         when(userRepository.findByUsername(Mockito.any())).thenReturn(existingUser);
 
-//     @Test
-//     public void testCheckIfUserExistsWithNotExistingUser() {
-//         User existingUser = new User();
-//         existingUser.setUsername("testUsername");
-//         existingUser.setPassword("testPassword");
+         // expect ResponseStatusException 409 Conflict
+         assertThrows(ResponseStatusException.class, () -> userService.checkIfUserExists(existingUser));
+     }
 
-//         // expect no exception
-//         assertDoesNotThrow(() -> userService.checkIfUserExists(existingUser));
-//     }
+     @Test
+     public void testCheckIfUserExistsWithoutExistingUser() {
+         User existingUser = new User();
+         existingUser.setUsername("testUsername");
+         existingUser.setPassword("testPassword");
 
+         when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
 
-// /*
-//     @Test
-//     public void testGetUserProfileWithValidId() {
-//         User getProfileUser = new User();
-//         getProfileUser.setId(1L);
-//         getProfileUser.setUsername("testUsername");
-//         getProfileUser.setPassword("testPassword");
+         // expect no exception
+         assertDoesNotThrow(() -> userService.checkIfUserExists(existingUser));
+     }
 
-//         userService.createUser(getProfileUser);
-//         userRepository.save(getProfileUser);
+     @Test
+     public void updateUserProfile_UserNotFound_ThrowsException() {
+         // Given
+         Long userId = 1L;
+         UserPutDTO userPutDTO = new UserPutDTO();
 
+         // When
+         when(userRepository.findById(userId)).thenReturn(null);
 
-//         User comparisonUser = userService.getUserProfile(1L);
-
-//         // compare user with comparisonUser
-//         assertEquals(getProfileUser.getId(), comparisonUser.getId());
-//         assertEquals(getProfileUser.getPassword(), comparisonUser.getPassword());
-//         assertEquals(getProfileUser.getUsername(), comparisonUser.getUsername());
-//     }
-//      */
-
-
-//     @Test
-//     public void testGetUserProfileWithInvalidId() {
-//         User user = new User();
-//         user.setId(1L);
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
-//         assertThrows(ResponseStatusException.class, () -> userService.getUserProfile(2L));
-//     }
-
-//     @Test
-//     public void testLogInWithValidCredentials() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
-//         User loggedInUser = userService.logIn(user);
-
-//         assertEquals(UserStatus.ONLINE, loggedInUser.getStatus());
-//     }
-
-//     @Test
-//     public void testLogInWithInvalidPassword() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
-//         User userWithInvalidPassword = new User();
-//         userWithInvalidPassword.setUsername("testUsername");
-//         userWithInvalidPassword.setPassword("invalidPassword");
-
-//         assertThrows(ResponseStatusException.class, () -> userService.logIn(userWithInvalidPassword));
-//     }
-
-//     @Test
-//     public void testLogInWithoutExistingUsername() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
-//         User userWithNonExistingUsername = new User();
-//         userWithNonExistingUsername.setUsername("notExistingUsername");
-//         userWithNonExistingUsername.setPassword("testPassword");
-
-//         assertThrows(ResponseStatusException.class, () -> userService.logIn(userWithNonExistingUsername));
-//     }
+         // Then
+         assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userPutDTO, userId));
+     }
 
 //     @Test
 //     public void testUpdateUserProfileWithValidInput() {
@@ -322,25 +243,6 @@
 
 //         User updatedUser = userService.getUserProfile(user.getId());
 //         assertEquals("newUsername", updatedUser.getUsername());
-//         assertEquals("newPassword", updatedUser.getPassword());
-//     }
-
-//     @Test
-//     public void testUpdateUserProfileWithInvalidUsername() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
-//         UserPutDTO userPutDTO = new UserPutDTO();
-//         userPutDTO.setUsername(null);
-//         userPutDTO.setPassword("newPassword");
-
-//         userService.updateUserProfile(userPutDTO, user.getId());
-
-//         User updatedUser = userService.getUserProfile(user.getId());
-//         assertEquals("testUsername", updatedUser.getUsername());
 //         assertEquals("newPassword", updatedUser.getPassword());
 //     }
 
@@ -363,26 +265,27 @@
 //         assertEquals("testPassword", updatedUser.getPassword());
 //     }
 
-//     @Test
-//     public void testGetUserById() {
-//         User newUser = new User();
-//         newUser.setUsername("testUsername");
-//         newUser.setPassword("testPassword");
+     @Test
+     public void testGetUserById() {
+         Long userId = 1L;
+         User user = new User();
+         user.setId(userId);
 
-//         userService.createUser(newUser);
+         when(userRepository.findById(1L)).thenReturn(user);
 
-//         // get the user from the database
-//         User obtainedUser = userService.getUserById(newUser.getId());
+         // check that the fetched user matches the created user
+         assertEquals(user, userService.getUserById(1L));
+     }
 
-//         // check that the fetched user matches the created user
-//         assertEquals(newUser.getId(), obtainedUser.getId());
-//         assertEquals(newUser.getUsername(), obtainedUser.getUsername());
-//         assertEquals(newUser.getPassword(), obtainedUser.getPassword());
-//     }
+     @Test
+     public void testGetUserByInvalidId() {
+         Long userId = 1L;
+         User user = new User();
+         user.setId(userId);
 
-//     @Test
-//     public void testGetUserByInvalidId() {
-//         assertThrows(ResponseStatusException.class, () -> userService.getUserById(2L));
-//     }
-// }
+         when(userRepository.findById(1L)).thenReturn(null);
+
+         assertThrows(ResponseStatusException.class, () -> userService.getUserById(1L));
+     }
+ }
 
