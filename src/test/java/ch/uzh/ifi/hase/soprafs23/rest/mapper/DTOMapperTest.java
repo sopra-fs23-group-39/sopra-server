@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests if the mapping between the internal and the external/API representation
  * works.
  */
-public class DTOMapperTest {
+class DTOMapperTest {
     @Test
-    public void testCreateUser_fromUserPostDTO_toUser_success() {
+    void testCreateUser_fromUserPostDTO_toUser_success() {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setPassword("TestPassword");
         userPostDTO.setUsername("TestUsername");
@@ -35,7 +35,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void testGetUser_fromUser_toUserGetDTO_success() {
+    void testGetUser_fromUser_toUserGetDTO_success() {
         User user = new User();
         user.setPassword("TestPassword");
         user.setUsername("TestUsername");
@@ -51,7 +51,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void testCreateAnswer_fromAnswerPostDTO_toAnswer_success() {
+    void testCreateAnswer_fromAnswerPostDTO_toAnswer_success() {
         AnswerPostDTO answerPostDTO = new AnswerPostDTO();
         answerPostDTO.setGameId(1L);
         answerPostDTO.setUserId(1L);
@@ -77,7 +77,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void testGetQuestion_fromQuestion_toQuestionGetDTO_success() {
+    void testGetQuestion_fromQuestion_toQuestionGetDTO_success() {
         String questionText = "What is the title of this movie?";
         String questionLink = "https://m.media-amazon.com/images/M/MV5BMjIyNjk1OTgzNV5BMl5BanBnXkFtZTcwOTU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg";
         String correctAnswer = "Inception";

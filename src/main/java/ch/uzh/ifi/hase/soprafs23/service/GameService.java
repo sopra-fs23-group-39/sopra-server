@@ -28,9 +28,6 @@ import java.util.List;
 @Service
 @Transactional
 public class GameService {
-
-    private final Logger log = LoggerFactory.getLogger(GameService.class);
-
     private final GameRepository gameRepository;
     private final UserService userService;
     private final QuestionService questionService = new QuestionService();
@@ -51,21 +48,19 @@ public class GameService {
         game.setGameFormat(gameFormat);
         game.setIsStarted(false);
 
-
-
         game.getPlayers().add(userService.getUserById(hostId));
         userService.getUserById(hostId).setGame(game);
         game = gameRepository.save(game);
         gameRepository.flush();
         //Host number of games increased
-        userService.getUserById(hostId).setNumberGames(userService.getUserById(hostId).getNumberGames()+1);
+        userService.getUserById(hostId).setNumberGames(userService.getUserById(hostId).getNumberGames() + 1);
         userService.getUserById(hostId).setTotalPointsCurrentGame((long)0);
         return game;
     }
 
     public void findAndJoinGame(Long gameId, Long userId, User user) {
         Game game = gameRepository.findByGameId(gameId);
-        String message = String.format("No games with id %d was found", gameId);
+        String message = String.format("No games with id %d was found!", gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
@@ -73,7 +68,7 @@ public class GameService {
         game.getPlayers().add(user);
         user.setGame(game);
         //Player number of games increased
-        userService.getUserById(userId).setNumberGames(userService.getUserById(userId).getNumberGames()+1);
+        userService.getUserById(userId).setNumberGames(userService.getUserById(userId).getNumberGames() + 1);
         userService.getUserById(userId).setTotalPointsCurrentGame((long)0);
     }
 

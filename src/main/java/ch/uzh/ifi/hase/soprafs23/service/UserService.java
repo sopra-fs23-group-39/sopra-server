@@ -46,6 +46,7 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
+        checkIfUserExists(newUser);
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.ONLINE);
         newUser.setTotalPointsCurrentGame(0L);
@@ -57,7 +58,6 @@ public class UserService {
         newUser.setTotalBlitzPointsAllGames(0L);
         newUser.setRapidRank(1000L);
         newUser.setTotalRapidPointsAllGames(0L);
-        checkIfUserExists(newUser);
         newUser = userRepository.save(newUser);
         userRepository.flush();
 
@@ -66,7 +66,6 @@ public class UserService {
         updateAllBlitzRanks(allUsersInDB);
         updateAllRapidRanks(allUsersInDB);
 
-        log.debug("Created information for user: {}", newUser);
         return newUser;
     }
 
@@ -83,8 +82,7 @@ public class UserService {
 
     /**
      * This is a helper method that will check the uniqueness criteria of the
-     * username and the name
-     * defined in the User entity. The method will do nothing if the input is unique
+     * username defined in the User entity. The method will do nothing if the input is unique
      * and throw an error otherwise.
      *
      * @param userToBeCreated
@@ -120,22 +118,19 @@ public class UserService {
         User userByUsername = userRepository.findByUsername(userInputUsername);
 
         if (userByUsername == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You have to enter a username");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with these credentials is not yet registered. Please, register first!");
         }
 
         String existingPassword = userByUsername.getPassword();
 
-        userRepository.save(userByUsername);
-        userRepository.flush();
-
-        if (userByUsername.getUsername() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Username is wrong or does not exist");
-        }
-        else if (!(existingPassword.equals(userInputPassword))) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong password");
+        if (!(existingPassword.equals(userInputPassword))) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The provided password is wrong!");
         }
 
         userByUsername.setStatus(UserStatus.ONLINE);
+
+        userRepository.save(userByUsername);
+        userRepository.flush();
 
         return userByUsername;
     }
@@ -164,7 +159,7 @@ public class UserService {
         User userById = userRepository.findById(userId);
         if (userById == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "User not found");
+                    String.format("User with id %d was not found!", userId));
         }
         return userById;
     }
@@ -229,14 +224,26 @@ public class UserService {
     }
 
     public List<User> retrieveCurrentRanking(long lobbyId) {
-        Game game = gameRepository.findByGameId(lobbyId);
+        Game game;
+        String message = "Game with id %d was not found!";
+        try {
+            game = gameRepository.findByGameId(lobbyId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, lobbyId));
+        }
         List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
         return users;
     }
 
     public List<User> retrieveTotalRanking(long lobbyId) {
-        Game game = gameRepository.findByGameId(lobbyId);
+        Game game;
+        String message = "Game with id %d was not found!";
+        try {
+            game = gameRepository.findByGameId(lobbyId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, lobbyId));
+        }
         List<User> users = game.getPlayers();
         users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
         return users;

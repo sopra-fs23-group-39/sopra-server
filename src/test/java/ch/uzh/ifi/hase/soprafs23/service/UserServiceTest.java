@@ -1,32 +1,123 @@
-// package ch.uzh.ifi.hase.soprafs23.service;
+ package ch.uzh.ifi.hase.soprafs23.service;
 
-// import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-// import ch.uzh.ifi.hase.soprafs23.entity.User;
-// import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
-// import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.beans.factory.annotation.Qualifier;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.test.context.web.WebAppConfiguration;
-// import org.springframework.transaction.annotation.Transactional;
-// import org.springframework.web.server.ResponseStatusException;
+ import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+ import ch.uzh.ifi.hase.soprafs23.entity.User;
+ import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+ import org.junit.jupiter.api.BeforeEach;
+ import org.junit.jupiter.api.Test;
+ import org.mockito.InjectMocks;
+ import org.mockito.Mock;
+ import org.mockito.Mockito;
+ import org.mockito.MockitoAnnotations;
+ import org.springframework.boot.test.context.SpringBootTest;
+ import org.springframework.http.HttpStatus;
+ import org.springframework.test.context.web.WebAppConfiguration;
+ import org.springframework.web.server.ResponseStatusException;
 
-// import static org.junit.jupiter.api.Assertions.*;
+ import java.util.Optional;
+ import java.util.UUID;
+
+ import static org.junit.jupiter.api.Assertions.*;
 
 
-// @WebAppConfiguration
-// @SpringBootTest
-// public class UserServiceIntegrationTest {
+ class UserServiceTest {
 
 //     @Qualifier("userRepository")
 //     @Autowired
 //     private UserRepository userRepository;
-
+//
+//     @Qualifier("gameRepository")
 //     @Autowired
-//     private UserService userService;
+//     private GameRepository gameRepository;
+//
+//     @Autowired
+//     private UserService userService = new UserService(userRepository, gameRepository);
+
+     @Mock
+     private UserRepository userRepository;
+
+     @InjectMocks
+     private UserService userService;
+
+     private User testUser;
+
+     @BeforeEach
+     public void setup() {
+         MockitoAnnotations.openMocks(this);
+
+         // given
+         testUser = new User();
+         testUser.setId(1L);
+         testUser.setPassword("testPassword");
+         testUser.setUsername("testUsername");
+
+         // when -> any object is being saved in the userRepository -> return the dummy
+         // testUser
+         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
+     }
+
+     @Test
+     public void createUser_validInputs_success() {
+         // when -> any object is being saved in the userRepository -> return the dummy
+         // testUser
+         User createdUser = userService.createUser(testUser);
+
+         // then
+         Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
+
+         assertEquals(testUser.getId(), createdUser.getId());
+         assertEquals(testUser.getPassword(), createdUser.getPassword());
+         assertEquals(testUser.getUsername(), createdUser.getUsername());
+         assertNotNull(createdUser.getToken());
+         assertEquals(UserStatus.ONLINE, createdUser.getStatus());
+         assertNotNull(createdUser.getTotalPointsCurrentGame());
+         assertNotNull(createdUser.getCurrentPoints());
+         assertNotNull(createdUser.getTotalPointsAllGames());
+         assertNotNull(createdUser.getNumberGames());
+         assertNotNull(createdUser.getUserRank());
+         assertNotNull(createdUser.getBlitzRank());
+         assertNotNull(createdUser.getTotalBlitzPointsAllGames());
+         assertNotNull(createdUser.getRapidRank());
+         assertNotNull(createdUser.getTotalRapidPointsAllGames());
+     }
+
+     @Test
+     public void createUser_duplicateName_throwsException() {
+         // given -> a first user has already been created
+         userService.createUser(testUser);
+
+         // when -> setup additional mocks for UserRepository
+         //Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
+         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+
+         // then -> attempt to create second user with same user -> check that an error
+         // is thrown
+         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
+     }
+
+//     @Test
+//     public void getUser_validInputs_success() {
+//         Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
+//
+//         User foundUser = userService.getUserProfile(1L);
+//
+//         assertEquals(testUser.getId(), foundUser.getId());
+//         assertEquals(testUser.getPassword(), foundUser.getPassword());
+//         assertEquals(testUser.getUsername(), foundUser.getUsername());
+//     }
+
+//     public User getUserProfile(long id) {
+//         String message = "User with id %d was not found!";
+//         User userToReturn = userRepository.findById(id);
+//
+//         if (userToReturn == null) {
+//             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, id));
+//         }
+//
+//         return userToReturn;
+//     }
+
+
 
 //     @BeforeEach
 //     public void setup() {
@@ -36,14 +127,14 @@
 //     @Test
 //     public void createUser_validInputs_success() {
 //         assertNull(userRepository.findByUsername("testUsername"));
-
+//
 //         User testUser = new User();
 //         testUser.setPassword("testName");
 //         testUser.setUsername("testUsername");
-
+//
 //         // when
 //         User createdUser = userService.createUser(testUser);
-
+//
 //         // then
 //         assertEquals(testUser.getId(), createdUser.getId());
 //         assertEquals(testUser.getPassword(), createdUser.getPassword());
@@ -51,6 +142,7 @@
 //         assertNotNull(createdUser.getToken());
 //         assertEquals(UserStatus.ONLINE, createdUser.getStatus());
 //     }
+ }
 
 //     @Test
 //     public void createUser_duplicateUsername_throwsException() {

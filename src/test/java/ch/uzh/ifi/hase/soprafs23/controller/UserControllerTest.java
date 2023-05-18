@@ -224,7 +224,7 @@ class UserControllerTest {
         userPutDTO.setUsername("testUsername");
 
         // Use doThrow() to throw an exception when updateUserProfile() is called
-        Mockito.doThrow(new ResponseStatusException(HttpStatus.NO_CONTENT)).when(userService).updateUserProfile(userPutDTO, 1L);
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NO_CONTENT)).when(userService).updateUserProfile(userPutDTO, 1);
 
         MockHttpServletRequestBuilder putRequest = put("/users/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -251,6 +251,47 @@ class UserControllerTest {
 
         assertEquals(result.getUsername(), user.getUsername());
         assertEquals(result.getPassword(), user.getPassword());
+    }
+
+    @Test
+    void logInPOST_invalidUsername() throws Exception {
+        User user = new User();
+        user.setUsername("testUsername");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setPassword("testPassword");
+        userPostDTO.setUsername("testUsername");
+
+        // HttpStatus 404 Not found
+        when(userService.logIn(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        MockHttpServletRequestBuilder postRequest = post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        mockMvc.perform(postRequest)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void logInPOST_invalidPassword() throws Exception {
+        User user = new User();
+        user.setUsername("testUsername");
+        user.setPassword("testPassword");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setPassword("testPassword");
+        userPostDTO.setUsername("testUsername");
+
+        // HttpStatus 409 Conflict
+        when(userService.logIn(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.CONFLICT));
+
+        MockHttpServletRequestBuilder postRequest = post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        mockMvc.perform(postRequest)
+                .andExpect(status().isConflict());
     }
 
     @Test

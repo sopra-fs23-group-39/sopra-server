@@ -120,6 +120,18 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.gameFormat", is("CUSTOM")));
     }
 
+    @Test
+    void gameSettingsGET_getInvalidGameSettings() throws Exception {
+        // HttpStatus 404 Not Found
+        when(gameService.getGameById(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        MockHttpServletRequestBuilder getRequest = get("/game/1/settings")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound());
+    }
+
 //    @Test
 //    void playerList_returnsListOfPlayerDTOs() throws Exception {
 //        ObjectMapper objectMapper = new ObjectMapper();
@@ -171,6 +183,17 @@ class GameControllerTest {
 //    }
 
     @Test
+    void playerList_returnsListOfPlayerDTOs_NotFound() throws Exception {
+        when(gameService.getHostAndPlayers(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        MockHttpServletRequestBuilder getRequest = get("/game/1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void joinGamePUT_valid() throws Exception {
         Long gameId = 1L;
         Long userId = 2L;
@@ -192,17 +215,48 @@ class GameControllerTest {
     }
 
     @Test
-    void resetUserPointsAndGame_removesPlayerAndReturnsNoContent() {
-        Long playerId = 1L;
-        doNothing().when(gameService).removePlayer(playerId);
-        GameController controller = new GameController(gameService,userService);
-        ResponseEntity<Void> response = controller.resetUserPointsAndGame(playerId);
-        verify(gameService).removePlayer(playerId);
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    void joinGamePUT_invalid() throws Exception {
+        // HttpStatus 404 Not Found
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(gameService).findAndJoinGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.any());
+
+        MockHttpServletRequestBuilder putRequest = put("/game/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(1));
+
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    void getByLobbyId_returnsCorrectUserList() throws Exception {
+    void resetUserPointsAndGame_removesPlayerAndReturnsNoContent() throws Exception {
+        Long userId = 1L;
+
+        doNothing().when(gameService).removePlayer(userId);
+
+        MockHttpServletRequestBuilder requestBuilder = put("/game/resetIfBackOnMain")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(1));
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isNoContent());
+
+        verify(gameService, times(1)).removePlayer(userId);
+    }
+
+    @Test
+    void resetUserPointsAndGame_removesPlayerAndReturnsNotFound() throws Exception {
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(gameService).removePlayer(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder putRequest = put("/game/resetIfBackOnMain")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(1));
+
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getCurrentRanking_returnsCorrectUserList() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         Long gameId = 1L;
         User user1 = new User();
@@ -244,6 +298,17 @@ class GameControllerTest {
         assertThat(returnedUsers.get(1).getCurrentPoints()).isEqualTo(user2.getCurrentPoints());
     }
 
+    @Test
+    void getCurrentRanking_returnsNotFound() throws Exception {
+        when(userService.retrieveCurrentRanking(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        MockHttpServletRequestBuilder getRequest = get("/game/1/currentRanking")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound());
+    }
+
 //    @Test
 //    void getRankingByLobbyId_returnsCorrectUserList() throws Exception {
 //        ObjectMapper objectMapper = new ObjectMapper();
@@ -276,7 +341,7 @@ class GameControllerTest {
 //                .andReturn();
 //
 //        String response = result.getResponse().getContentAsString();
-//        List<UserGetDTO> returnedUsers = objectMapper.readValue(response, new TypeReference<List<UserGetDTO>>() {});
+//        List<UserGetDTO> returnedUsers = objectMapper.readValue(response, new TypeReference<>() {});
 //
 //        assertThat(returnedUsers).hasSize(2);
 //        assertThat(returnedUsers.get(0).getId()).isEqualTo(user1.getId());
@@ -286,6 +351,17 @@ class GameControllerTest {
 //        assertThat(returnedUsers.get(1).getUsername()).isEqualTo(user2.getUsername());
 //        assertThat(returnedUsers.get(1).getTotalPointsCurrentGame()).isEqualTo(user2.getTotalPointsCurrentGame());
 //    }
+
+    @Test
+    void getTotalRanking_returnsNotFound() throws Exception {
+        when(userService.retrieveTotalRanking(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        MockHttpServletRequestBuilder getRequest = get("/game/1/totalRanking")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound());
+    }
 
     @Test
     void testWinner() {
@@ -307,6 +383,18 @@ class GameControllerTest {
 
         assertEquals(winnerGetDTO.getId(), result.getId());
         assertEquals(winnerGetDTO.getUsername(), result.getUsername());
+    }
+
+    @Test
+    void testWinner_NotFound() throws Exception {
+        // HttpStatus 404 Not Found
+        when(gameService.getWinner(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        MockHttpServletRequestBuilder getRequest = get("/game/1/winner")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound());
     }
 
     private String asJsonString(Object object) {
