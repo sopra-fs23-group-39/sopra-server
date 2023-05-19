@@ -72,6 +72,10 @@ public class Game implements Serializable {
         return players;
     }
 
+    public void setPlayers(List<User> players) {
+        this.players = players;
+    }
+
     public User getHost() {
         return host;
     }
@@ -130,4 +134,5 @@ public class Game implements Serializable {
     public boolean getIsStarted() { return isStarted; }
 
     public void setIsStarted(boolean started) { this.isStarted = started; }
+
 }

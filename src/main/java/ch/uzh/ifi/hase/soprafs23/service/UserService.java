@@ -136,19 +136,31 @@ public class UserService {
     }
 
     public void updateUserProfile(UserPutDTO userPutDTO, long id) {
-        String messageId = "User with id %d was not found!";
         User userToUpdate = userRepository.findById(id);
+        String oldUsername = userToUpdate.getUsername();
+        String oldPassword = userToUpdate.getPassword();
 
+        String newUsername = userPutDTO.getUsername();
+        String newPassword = userPutDTO.getPassword();
+        User userWithTheSameUsername = userRepository.findByUsername(newUsername);
+
+        String messageId = "User with id %d does not exist!";
         if (userToUpdate == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(messageId, id));
-        }
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %d does not exist!", id));
+        } else if (userWithTheSameUsername != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this username already exists, please choose another username!");
+        } else {
+            if (newUsername == null || newUsername.trim().isEmpty()) {
+                userToUpdate.setUsername(oldUsername);
+            } else {
+                userToUpdate.setUsername(newUsername);
+            }
 
-        if (userPutDTO.getUsername() != null) {
-            userToUpdate.setUsername(userPutDTO.getUsername());
-        }
-
-        if (userPutDTO.getPassword() != null) {
-            userToUpdate.setPassword(userPutDTO.getPassword());
+            if (newPassword != null || newPassword.trim().isEmpty()) {
+                userToUpdate.setPassword(oldPassword);
+            } else {
+                userToUpdate.setUsername(newPassword);
+            }
         }
 
         userRepository.save(userToUpdate);
@@ -189,13 +201,13 @@ public class UserService {
 
         if (userAnswer.equals(correctAnswer)) {
             score = switch (gameFormat) {
-                case CUSTOM, RAPID -> (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
                 case BLITZ -> (long) (0.1 * diff + 100);
+                default -> (long) (500 / (Math.log((diff / 1000)) * ((double) diff / 1000) + 1));
             };
         } else {
             score = switch (gameFormat) {
-                case CUSTOM, BLITZ -> 0;
                 case RAPID -> -30;
+                default -> 0;
             };
         }
 
@@ -206,46 +218,44 @@ public class UserService {
         long score = returnScore(answer, gameFormat);
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
-        Long prevScoreAllGames;
-
-        prevScoreAllGames = switch (gameFormat) {
-            case CUSTOM -> userById.getTotalPointsAllGames();
-            case BLITZ -> userById.getTotalBlitzPointsAllGames();
-            case RAPID -> userById.getTotalRapidPointsAllGames();
-        };
+        Long prevScoreAllGames = getPrevScoreAllGames(gameFormat, userById);
 
         long newScoreAllGames = score + prevScoreAllGames;
 
         switch (gameFormat) {
-            case CUSTOM -> userById.setTotalPointsAllGames(newScoreAllGames);
             case BLITZ -> userById.setTotalBlitzPointsAllGames(newScoreAllGames);
             case RAPID -> userById.setTotalRapidPointsAllGames(newScoreAllGames);
+            default -> userById.setTotalPointsAllGames(newScoreAllGames);
         }
     }
 
+    Long getPrevScoreAllGames(GameFormat gameFormat, User userById) {
+        return switch (gameFormat) {
+            case BLITZ -> userById.getTotalBlitzPointsAllGames();
+            case RAPID -> userById.getTotalRapidPointsAllGames();
+            default -> userById.getTotalPointsAllGames();
+        };
+    }
+
     public List<User> retrieveCurrentRanking(long lobbyId) {
-        Game game;
-        String message = "Game with id %d was not found!";
-        try {
-            game = gameRepository.findByGameId(lobbyId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, lobbyId));
-        }
-        List<User> users = game.getPlayers();
+        List<User> users = getUsers(lobbyId);
         users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
         return users;
     }
 
     public List<User> retrieveTotalRanking(long lobbyId) {
-        Game game;
-        String message = "Game with id %d was not found!";
-        try {
-            game = gameRepository.findByGameId(lobbyId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(message, lobbyId));
+        List<User> users = getUsers(lobbyId);
+        users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
+        return users;
+    }
+
+    public List<User> getUsers(long lobbyId) {
+        Game game = gameRepository.findByGameId(lobbyId);
+        String message = String.format("No games with id %d was found", lobbyId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
         List<User> users = game.getPlayers();
-        users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
         return users;
     }
 

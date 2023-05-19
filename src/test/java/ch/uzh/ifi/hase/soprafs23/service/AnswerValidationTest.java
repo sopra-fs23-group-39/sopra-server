@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
@@ -15,7 +16,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AnswerValidationIntegrationTest {
+class AnswerValidationTest {
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -80,4 +81,5 @@ class AnswerValidationIntegrationTest {
         answerPostDTO.setUsersAnswer(correctAnswer);
         assertEquals(300, userService.returnScore(answerPostDTO, GameFormat.BLITZ));
     }
+
 }

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class GlobalExceptionAdviceTest {
+class GlobalExceptionAdviceTest {
 
     private CustomGlobalExceptionAdvice globalExceptionAdvice;
 
@@ -26,13 +26,13 @@ public class GlobalExceptionAdviceTest {
     private Logger logger;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
         globalExceptionAdvice = new CustomGlobalExceptionAdvice(logger);
     }
 
     @Test
-    public void testHandleConflict_IllegalArgumentException() {
+    void testHandleConflict_IllegalArgumentException() {
         RuntimeException ex = new IllegalArgumentException("test exception");
         WebRequest request = mock(WebRequest.class);
 
@@ -43,7 +43,7 @@ public class GlobalExceptionAdviceTest {
     }
 
     @Test
-    public void testHandleConflict_IllegalStateException() {
+    void testHandleConflict_IllegalStateException() {
         RuntimeException ex = new IllegalStateException("test exception");
         WebRequest request = mock(WebRequest.class);
 
@@ -55,7 +55,7 @@ public class GlobalExceptionAdviceTest {
 
 
     @Test
-    public void testHandleException() {
+    void testHandleException() {
         Exception ex = new Exception("test exception");
 
         ResponseStatusException response = globalExceptionAdvice.handleException(ex);

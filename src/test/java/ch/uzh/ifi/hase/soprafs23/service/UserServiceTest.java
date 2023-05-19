@@ -1,8 +1,12 @@
  package ch.uzh.ifi.hase.soprafs23.service;
 
+ import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
  import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+ import ch.uzh.ifi.hase.soprafs23.entity.Game;
  import ch.uzh.ifi.hase.soprafs23.entity.User;
+ import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
  import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+ import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
  import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
  import org.junit.jupiter.api.BeforeEach;
  import org.junit.jupiter.api.Test;
@@ -10,7 +14,15 @@
  import org.mockito.Mock;
  import org.mockito.Mockito;
  import org.mockito.MockitoAnnotations;
+ import org.springframework.http.HttpStatus;
  import org.springframework.web.server.ResponseStatusException;
+
+ import java.time.LocalDateTime;
+ import java.time.ZoneId;
+ import java.util.ArrayList;
+ import java.util.Comparator;
+ import java.util.Date;
+ import java.util.List;
 
  import static org.junit.jupiter.api.Assertions.*;
  import static org.mockito.Mockito.*;
@@ -19,13 +31,18 @@
      @Mock
      private UserRepository userRepository;
 
+     @Mock
+     private GameRepository gameRepository;
+
      @InjectMocks
      private UserService userService;
 
      private User testUser;
 
+     private final AnswerPostDTO answerPostDTO = new AnswerPostDTO();
+
      @BeforeEach
-     public void setup() {
+     void setup() {
          MockitoAnnotations.openMocks(this);
 
          // given
@@ -40,12 +57,22 @@
      }
 
      @Test
+     void getUsersTest() {
+         List<User> userList = new ArrayList<>();
+         userList.add(testUser);
+
+         when(userRepository.findAll()).thenReturn(userList);
+         List<User> users = userService.getUsers();
+
+         assertEquals(1, users.size());
+         assertEquals(testUser.getUsername(), users.get(0).getUsername());
+         assertEquals(testUser.getPassword(), users.get(0).getPassword());
+     }
+
+     @Test
      void createUser_validInputs_success() {
-         // when -> any object is being saved in the userRepository -> return the dummy
-         // testUser
          User createdUser = userService.createUser(testUser);
 
-         // then
          verify(userRepository, times(1)).save(Mockito.any());
 
          assertEquals(testUser.getId(), createdUser.getId());
@@ -70,7 +97,6 @@
          userService.createUser(testUser);
 
          // when -> setup additional mocks for UserRepository
-         //Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
          when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
          // then -> attempt to create second user with same user -> check that an error
@@ -79,7 +105,7 @@
      }
 
      @Test
-     public void loginUser_validInputs_success() {
+     void loginUser_validInputs_success() {
          // given -> an existing user
          User existingUser = new User();
          existingUser.setId(1L);
@@ -100,7 +126,7 @@
      }
 
      @Test
-     public void loginUser_nonExistentUsername_throwsNotFoundException() {
+     void loginUser_nonExistentUsername_throwsNotFoundException() {
          // given -> a user with a non-existent username
          User user = new User();
          user.setPassword("testPassword");
@@ -114,7 +140,7 @@
      }
 
      @Test
-     public void loginUser_incorrectPassword_throwsUnauthorizedException() {
+     void loginUser_incorrectPassword_throwsUnauthorizedException() {
          // given -> an existing user
          User existingUser = new User();
          existingUser.setId(1L);
@@ -135,7 +161,7 @@
      }
 
      @Test
-     public void testGetUserProfile() {
+     void testGetUserProfile() {
          Long userId = 1L;
          User user = new User();
          user.setId(userId);
@@ -147,7 +173,7 @@
      }
 
      @Test
-     public void testGetUserProfileInvalidId() {
+     void testGetUserProfileInvalidId() {
          Long userId = 1L;
          User user = new User();
          user.setId(userId);
@@ -157,41 +183,28 @@
          assertThrows(ResponseStatusException.class, () -> userService.getUserProfile(1L));
      }
 
-//     @Test
-//     public void testLogoutUserWithInvalidInput() {
-//         User loggedinUser = new User();
-//         loggedinUser.setId(1L);
-//         loggedinUser.setUsername("testUsername");
-//         loggedinUser.setPassword("testPassword");
-//         loggedinUser.setStatus(UserStatus.ONLINE);
-
-//         userService.createUser(loggedinUser);
-
-//         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-//             userService.logoutUser(2L);
-//         });
-
-//         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
-//         assertEquals("Can't find user to log out", exception.getReason());
-//     }
-
-//    @Test
-//    public void testLogoutUser_UserExists_SuccessfulLogout() {
-//        when(userRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
-//        Long id = testUser.getId();
-//
-//        // Act
-//        userService.logoutUser(id);
-//
-//        // Assert
-//        verify(userRepository, times(1)).findById(id);
-//        verify(userRepository, times(1)).save(testUser);
-//        verify(userRepository, times(1)).flush();
-//        Assertions.assertEquals(UserStatus.OFFLINE, testUser.getStatus());
-//    }
+     @Test
+     void testLogoutUser() {
+         long id = 1;
+         testUser = new User();
+         testUser.setId(id);
+         testUser.setPassword("testPassword");
+         testUser.setUsername("testUsername");
+         when(userRepository.findById(id)).thenReturn(testUser);
+         userService.logoutUser(id);
+         verify(userRepository).save(testUser);
+         assertEquals(UserStatus.OFFLINE, testUser.getStatus());
+     }
 
      @Test
-     public void testCheckIfUserExists_Conflict() {
+     void testLogoutUser_NotFound() {
+         long id = 1;
+         when(userRepository.findById(id)).thenReturn(null);
+         assertThrows(ResponseStatusException.class, () -> userService.logoutUser(id));
+     }
+
+     @Test
+     void testCheckIfUserExists_Conflict() {
          User existingUser = new User();
          existingUser.setUsername("testUsername");
          existingUser.setPassword("testPassword");
@@ -203,7 +216,7 @@
      }
 
      @Test
-     public void testCheckIfUserExistsWithoutExistingUser() {
+     void testCheckIfUserExistsWithoutExistingUser() {
          User existingUser = new User();
          existingUser.setUsername("testUsername");
          existingUser.setPassword("testPassword");
@@ -214,40 +227,75 @@
          assertDoesNotThrow(() -> userService.checkIfUserExists(existingUser));
      }
 
+//     @Test
+//     void updateUser_UserNotFound_ThrowsException() {
+//         // Given
+//         long userId = 1L;
+//         UserPutDTO userInput = new UserPutDTO();
+//
+//         // When
+//         when(userRepository.findById(userId)).thenReturn(null);
+//
+//         // Then
+//         assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userInput, userId));
+//     }
+
      @Test
-     public void updateUserProfile_UserNotFound_ThrowsException() {
+     void updateUserProfile_Conflict_ThrowsException() {
          // Given
-         Long userId = 1L;
+         long userId = 1L;
+         String username = "Alice";
          UserPutDTO userPutDTO = new UserPutDTO();
+         userPutDTO.setId(userId);
+         userPutDTO.setUsername(username);
+
+         User existingUser = new User();
+         existingUser.setId(userId);
+         existingUser.setUsername(username);
 
          // When
-         when(userRepository.findById(userId)).thenReturn(null);
+         when(userRepository.findById(userId)).thenReturn(existingUser);
+         when(userRepository.findByUsername(username)).thenReturn(existingUser);
 
          // Then
          assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userPutDTO, userId));
+
+         verify(userRepository, never()).save(any(User.class));
+         verify(userRepository, never()).flush();
      }
 
 //     @Test
-//     public void testUpdateUserProfileWithValidInput() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
-
-//         userService.createUser(user);
-
+//     void testUpdateUserProfile_UserExists() {
+//         long userId = 1L;
+//         String newUsername = "newUsername";
+//         String newPassword = "newPassword";
+//
 //         UserPutDTO userPutDTO = new UserPutDTO();
-//         userPutDTO.setUsername("newUsername");
-//         userPutDTO.setPassword("newPassword");
-
-//         userService.updateUserProfile(userPutDTO, user.getId());
-
-//         User updatedUser = userService.getUserProfile(user.getId());
-//         assertEquals("newUsername", updatedUser.getUsername());
-//         assertEquals("newPassword", updatedUser.getPassword());
+//         userPutDTO.setId(userId);
+//         userPutDTO.setUsername(newUsername);
+//         userPutDTO.setUsername(newPassword);
+//
+//         User userToUpdate = new User();
+//         userToUpdate.setId(userId);
+//         userToUpdate.setUsername("oldUsername");
+//         userToUpdate.setPassword("oldPassword");
+//
+//         when(userRepository.findById(userId)).thenReturn(userToUpdate);
+//         when(userRepository.findByUsername(newUsername)).thenReturn(null);
+//
+//         userService.updateUserProfile(userPutDTO, userId);
+//
+//         // Verify that the user's username and password were updated correctly
+//         assertEquals(newUsername, userToUpdate.getUsername());
+//         assertEquals(newPassword, userToUpdate.getPassword());
+//
+//         // Verify that the userRepository.save() and userRepository.flush() methods were called
+//         verify(userRepository, times(1)).save(userToUpdate);
+//         verify(userRepository, times(1)).flush();
 //     }
 
 //     @Test
-//     public void testUpdateUserProfileWithInvalidPassword() {
+//     void testUpdateUserProfileWithInvalidPassword() {
 //         User user = new User();
 //         user.setUsername("testUsername");
 //         user.setPassword("testPassword");
@@ -266,7 +314,7 @@
 //     }
 
      @Test
-     public void testGetUserById() {
+     void testGetUserById() {
          Long userId = 1L;
          User user = new User();
          user.setId(userId);
@@ -278,7 +326,7 @@
      }
 
      @Test
-     public void testGetUserByInvalidId() {
+     void testGetUserByInvalidId() {
          Long userId = 1L;
          User user = new User();
          user.setId(userId);
@@ -287,5 +335,262 @@
 
          assertThrows(ResponseStatusException.class, () -> userService.getUserById(1L));
      }
+
+     @BeforeEach
+     void answerSetup() {
+         answerPostDTO.setUserId(1L);
+         answerPostDTO.setGameId(1L);
+         answerPostDTO.setCorrectAnswer("Inception");
+
+         LocalDateTime questionDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(30);
+         Date questionTime = Date.from(questionDateTime.atZone(ZoneId.systemDefault()).toInstant());
+         answerPostDTO.setQuestionTime(questionTime);
+
+         LocalDateTime answerDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(32);
+         Date answerTime = Date.from(answerDateTime.atZone(ZoneId.systemDefault()).toInstant());
+         answerPostDTO.setTime(answerTime);
+
+     }
+    @Test
+    void testScore_CUSTOM_correctAnswer() {
+         answerPostDTO.setUsersAnswer("Inception");
+
+        GameFormat gameFormat = GameFormat.CUSTOM;
+
+        User user = new User();
+        long userId = 1L;
+        user.setId(userId);
+        user.setTotalPointsCurrentGame(100L);
+
+        when(userRepository.findById(userId)).thenReturn(user);
+
+        userService.score(answerPostDTO, gameFormat);
+
+        // Verify that the user's total points for the current game have been updated correctly
+        assertEquals(309L, user.getTotalPointsCurrentGame());
+    }
+
+     @Test
+     void testScore_CUSTOM_wrongAnswer() {
+         answerPostDTO.setUsersAnswer("Shutter Island");
+
+         GameFormat gameFormat = GameFormat.CUSTOM;
+
+         User user = new User();
+         long userId = 1L;
+         user.setId(userId);
+         user.setTotalPointsCurrentGame(100L);
+
+         when(userRepository.findById(userId)).thenReturn(user);
+
+         userService.score(answerPostDTO, gameFormat);
+
+         // Verify that the user's total points for the current game have been updated correctly
+         assertEquals(100L, user.getTotalPointsCurrentGame());
+     }
+
+     @Test
+     void testScore_BLITZ_correctAnswer() {
+         answerPostDTO.setUsersAnswer("Inception");
+
+         GameFormat gameFormat = GameFormat.BLITZ;
+
+         User user = new User();
+         long userId = 1L;
+         user.setId(userId);
+         user.setTotalPointsCurrentGame(100L);
+
+         when(userRepository.findById(userId)).thenReturn(user);
+
+         userService.score(answerPostDTO, gameFormat);
+
+         // Verify that the user's total points for the current game have been updated correctly
+         assertEquals(400L, user.getTotalPointsCurrentGame());
+     }
+
+     @Test
+     void testScore_BLITZ_wrongAnswer() {
+         answerPostDTO.setUsersAnswer("Shutter Island");
+
+         GameFormat gameFormat = GameFormat.BLITZ;
+
+         User user = new User();
+         long userId = 1L;
+         user.setId(userId);
+         user.setTotalPointsCurrentGame(100L);
+
+         when(userRepository.findById(userId)).thenReturn(user);
+
+         userService.score(answerPostDTO, gameFormat);
+
+         // Verify that the user's total points for the current game have been updated correctly
+         assertEquals(100L, user.getTotalPointsCurrentGame());
+     }
+
+     @Test
+     void testScore_RAPID_correctAnswer() {
+         answerPostDTO.setUsersAnswer("Inception");
+
+         GameFormat gameFormat = GameFormat.RAPID;
+
+         User user = new User();
+         long userId = 1L;
+         user.setId(userId);
+         user.setTotalPointsCurrentGame(100L);
+
+         when(userRepository.findById(userId)).thenReturn(user);
+
+         userService.score(answerPostDTO, gameFormat);
+
+         // Verify that the user's total points for the current game have been updated correctly
+         assertEquals(309L, user.getTotalPointsCurrentGame());
+     }
+
+     @Test
+     void testScore_RAPID_wrongAnswer() {
+         answerPostDTO.setUsersAnswer("Shutter Island");
+
+         GameFormat gameFormat = GameFormat.RAPID;
+
+         User user = new User();
+         long userId = 1L;
+         user.setId(userId);
+         user.setTotalPointsCurrentGame(100L);
+
+         when(userRepository.findById(userId)).thenReturn(user);
+
+         userService.score(answerPostDTO, gameFormat);
+
+         // Verify that the user's total points for the current game have been updated correctly
+         assertEquals(70L, user.getTotalPointsCurrentGame());
+     }
+
+     @Test
+     void testRetrieveCurrentRanking() {
+         long gameId = 1L;
+         Game game = new Game();
+         List<User> users = new ArrayList<>();
+         User user1 = new User();
+         user1.setUsername("User1");
+         user1.setCurrentPoints(10L);
+         User user2 = new User();
+         user2.setUsername("User2");
+         user2.setCurrentPoints(20L);
+         game.setPlayers(users);
+
+         when(gameRepository.findByGameId(gameId)).thenReturn(game);
+
+         List<User> result = userService.retrieveCurrentRanking(gameId);
+
+         // Verify that the users list is sorted in descending order based on currentPoints
+         List<User> expected = new ArrayList<>(users);
+         expected.sort(Comparator.comparing(User::getCurrentPoints).reversed());
+         assertEquals(expected, result);
+     }
+
+     @Test
+     void testRetrieveTotalRanking() {
+         long gameId = 1L;
+         Game game = new Game();
+         List<User> users = new ArrayList<>();
+         User user1 = new User();
+         user1.setUsername("User1");
+         user1.setTotalPointsCurrentGame(10L);
+         User user2 = new User();
+         user2.setUsername("User2");
+         user2.setTotalPointsCurrentGame(20L);
+         game.setPlayers(users);
+
+         when(gameRepository.findByGameId(gameId)).thenReturn(game);
+
+         List<User> result = userService.retrieveTotalRanking(gameId);
+
+         // Verify that the users list is sorted in descending order based on totalPointsCurrentGame
+         List<User> expected = new ArrayList<>(users);
+         expected.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
+         assertEquals(expected, result);
+     }
+
+     @Test
+     void testGetUsers_GameExists() {
+         long gameId = 1L;
+
+         Game game = new Game();
+         List<User> users = new ArrayList<>();
+         users.add(new User());
+         users.add(new User());
+         game.setPlayers(users);
+
+         when(gameRepository.findByGameId(gameId)).thenReturn(game);
+
+         List<User> result = userService.getUsers(gameId);
+         assertEquals(users, result);
+     }
+
+     @Test
+     void testGetUsers_GameNotFound() {
+         long gameId = 1L;
+
+         when(gameRepository.findByGameId(gameId)).thenReturn(null);
+
+         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                 () -> userService.getUsers(gameId),
+                 "No games with id " + gameId + " was found");
+
+         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+         assertEquals("No games with id " + gameId + " was found", exception.getReason());
+     }
+
+     @Test
+     void testGetPrevScoreAllGames() {
+         User user = new User();
+         user.setTotalBlitzPointsAllGames(100L);
+         user.setTotalRapidPointsAllGames(200L);
+         user.setTotalPointsAllGames(300L);
+
+         Long prevScoreBlitz = userService.getPrevScoreAllGames(GameFormat.BLITZ, user);
+         assertEquals(100L, prevScoreBlitz);
+
+         Long prevScoreRapid = userService.getPrevScoreAllGames(GameFormat.RAPID, user);
+         assertEquals(200L, prevScoreRapid);
+
+         Long prevScoreDefault = userService.getPrevScoreAllGames(GameFormat.CUSTOM, user);
+         assertEquals(300L, prevScoreDefault);
+     }
+
+//     @Test
+//     public void testUpdateAllGamesScore() {
+//         long userId = 1L;
+//
+//         AnswerPostDTO answerPostDTO = new AnswerPostDTO();
+//         answerPostDTO.setUserId(userId);
+//         answerPostDTO.setGameId(1L);
+//         answerPostDTO.setCorrectAnswer("Inception");
+//         answerPostDTO.setUsersAnswer("Inception");
+//
+//         LocalDateTime questionDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(30);
+//         Date questionTime = Date.from(questionDateTime.atZone(ZoneId.systemDefault()).toInstant());
+//         answerPostDTO.setQuestionTime(questionTime);
+//
+//         LocalDateTime answerDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(32);
+//         Date answerTime = Date.from(answerDateTime.atZone(ZoneId.systemDefault()).toInstant());
+//         answerPostDTO.setTime(answerTime);
+//
+//         GameFormat gameFormat = GameFormat.CUSTOM;
+//
+//         User user = new User();
+//         user.setId(userId);
+//         user.setTotalBlitzPointsAllGames(100L);
+//
+////         when(userService.getUserById(userId)).thenReturn(user);
+//         when(userRepository.findById(userId)).thenReturn(user);
+//         when(userService.returnScore(answerPostDTO, gameFormat)).thenReturn(209L);
+//         when(userService.getPrevScoreAllGames(gameFormat, user)).thenReturn(100L);
+//
+//         userService.updateAllGamesScore(answerPostDTO, gameFormat);
+//
+//         assertEquals(309L, user.getTotalPointsAllGames());
+//     }
+
  }
 
