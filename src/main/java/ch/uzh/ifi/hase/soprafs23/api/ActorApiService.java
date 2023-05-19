@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class ActorApiService extends ApiService {
@@ -26,9 +27,10 @@ public class ActorApiService extends ApiService {
 
     private List<String> getSimilarItemsIds(List<String> listToChooseFrom) {
         List<String> listToChooseFrom2 = new ArrayList<>(listToChooseFrom);
-        Collections.shuffle(listToChooseFrom2);
+        HashSet<String> hashSet = new HashSet<>(listToChooseFrom2);
+        List<String> listOfSimilarItemsNoDuplicates = new ArrayList<>(hashSet);
 
-        return getThreeItemsWithoutDuplicates(listToChooseFrom2);
+        return getFourItems(listOfSimilarItemsNoDuplicates);
     }
 
     public List<String> getSimilarItems(List<String> listToChooseFrom, String key) throws JsonProcessingException {

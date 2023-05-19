@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs23.constant.Gender;
 import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
@@ -122,14 +123,14 @@ class QuestionServiceTest {
 
     @Test
     void testGetActorQuestionGender0() throws JsonProcessingException {
-        Question question = questionService.getActorQuestion(0);
+        Question question = questionService.getActorQuestion(Gender.ACTOR);
 
         assertTestPasses(question, "What is the name of this actor?");
     }
 
     @Test
     void testGetActorQuestionGender1() throws JsonProcessingException {
-        Question question = questionService.getActorQuestion(1);
+        Question question = questionService.getActorQuestion(Gender.ACTRESS);
 
         assertTestPasses(question, "What is the name of this actress?");
     }

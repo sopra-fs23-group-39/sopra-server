@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import javax.transaction.Transactional;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -27,7 +26,7 @@ public class Game implements Serializable {
     public Game() {
         /*
         This no-argument constructor is required,
-        Hibernate use reflection on this constructor to instantiate objects
+        Hibernate uses reflection on this constructor to instantiate objects
          */
     }
     @Serial

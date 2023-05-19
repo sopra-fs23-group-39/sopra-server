@@ -65,18 +65,10 @@ public abstract class ApiService {
         return response.toString();
     }
 
-    public List<String> getThreeItemsWithoutDuplicates(List<String> listToChooseFrom) {
+    public List<String> getFourItems(List<String> listToChooseFrom) {
         List<String> listSimilarItemsIds = new ArrayList<>();
-        int count = 0;
-        for (String item : listToChooseFrom) {
-            if (count < 3) {
-                if (!listSimilarItemsIds.contains(item)) {
-                    listSimilarItemsIds.add(item);
-                    count++;
-                }
-            } else {
-                break;
-            }
+        for (int i = 0; i < 4; i++) {
+            listSimilarItemsIds.add(listToChooseFrom.get(i));
         }
         return listSimilarItemsIds;
     }

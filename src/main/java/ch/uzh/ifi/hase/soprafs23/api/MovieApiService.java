@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class MovieApiService extends ApiService {
@@ -34,8 +35,6 @@ public class MovieApiService extends ApiService {
 
     public String getEmbedLink(String jsonObjectAsString) throws JsonProcessingException {
         JsonNode rootNode = objectMapper.readTree(jsonObjectAsString);
-        System.out.println(rootNode.path("title").asText());
-        System.out.println(rootNode.path("videoId").asText());
         return rootNode.path("videoId").asText();
     }
 
@@ -62,10 +61,17 @@ public class MovieApiService extends ApiService {
 
     public List<String> getSimilarItems(String jsonObjectAsString, List<String> additionalItems) throws JsonProcessingException {
         List<String> listOfSimilarMovies = getSimilarItemsArray(jsonObjectAsString);
-        Collections.shuffle(listOfSimilarMovies);
-        listOfSimilarMovies.addAll(additionalItems);
+        HashSet<String> hashSet = new HashSet<>(listOfSimilarMovies);
+        List<String> listOfSimilarMoviesNoDuplicates = new ArrayList<>(hashSet);
 
-        return getThreeItemsWithoutDuplicates(listOfSimilarMovies);
+        int listSize = listOfSimilarMoviesNoDuplicates.size();
+        if (listSize < 4) {
+            listOfSimilarMoviesNoDuplicates.addAll(additionalItems);
+            HashSet<String> hashSet2 = new HashSet<>(listOfSimilarMoviesNoDuplicates);
+            listOfSimilarMoviesNoDuplicates = new ArrayList<>(hashSet2);
+        }
+
+        return getFourItems(listOfSimilarMoviesNoDuplicates);
     }
 
 }

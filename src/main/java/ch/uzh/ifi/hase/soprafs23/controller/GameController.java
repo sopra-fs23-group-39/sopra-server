@@ -33,7 +33,7 @@ public class GameController {
         this.userService = userService;
     }
 
-    //Tested, only CREATED, other status is not tested
+    //Tested, only CREATED, another status is not tested
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

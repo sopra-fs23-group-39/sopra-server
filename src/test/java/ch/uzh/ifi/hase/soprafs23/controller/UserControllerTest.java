@@ -285,15 +285,15 @@ class UserControllerTest {
         userPostDTO.setPassword("testPassword");
         userPostDTO.setUsername("testUsername");
 
-        // HttpStatus 409 Conflict
-        when(userService.logIn(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.CONFLICT));
+        // HttpStatus Unauthorized
+        when(userService.logIn(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
 
         MockHttpServletRequestBuilder postRequest = post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 
         mockMvc.perform(postRequest)
-                .andExpect(status().isConflict());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

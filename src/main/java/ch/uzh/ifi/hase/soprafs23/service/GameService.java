@@ -7,8 +7,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -78,8 +76,6 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
-        //User host = userService.getUserById(game.getHostId());
-        //players.add(0, host);
         return game.getPlayers();
     }
     public void removeAllPlayers(Long gameId){
@@ -112,8 +108,7 @@ public class GameService {
             try {
                 question = questionService.getAppropriateQuestion(gameById.getGameMode());
                 gameById.setCurrentRound(++currentRound);
-            }
-            catch (JsonProcessingException e) {
+            } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -136,7 +131,7 @@ public class GameService {
         return winner;
     }
 
-    public void setGameIsStarted(long gameId,boolean isStarted){
+    public void setGameIsStarted(long gameId, boolean isStarted) {
         gameRepository.findByGameId(gameId).setIsStarted(isStarted);
     }
 }

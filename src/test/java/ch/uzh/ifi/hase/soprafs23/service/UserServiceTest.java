@@ -227,21 +227,24 @@
          assertDoesNotThrow(() -> userService.checkIfUserExists(existingUser));
      }
 
-//     @Test
-//     void updateUser_UserNotFound_ThrowsException() {
-//         // Given
-//         long userId = 1L;
-//         UserPutDTO userInput = new UserPutDTO();
-//
-//         // When
-//         when(userRepository.findById(userId)).thenReturn(null);
-//
-//         // Then
-//         assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userInput, userId));
-//     }
+    @Test
+    void updateUserProfile_NotFound_invalidUserId() {
+        long userId = 1L;
+        String username = "Alice";
 
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setId(userId);
+        userPutDTO.setUsername(username);
+
+        when(userRepository.findById(userId)).thenReturn(null);
+
+        assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userPutDTO, userId));
+
+        verify(userRepository, never()).save(any(User.class));
+        verify(userRepository, never()).flush();
+    }
      @Test
-     void updateUserProfile_Conflict_ThrowsException() {
+     void updateUserProfile_Conflict_userWithThisUsernameAlreadyExists() {
          // Given
          long userId = 1L;
          String username = "Alice";
@@ -264,54 +267,95 @@
          verify(userRepository, never()).flush();
      }
 
-//     @Test
-//     void testUpdateUserProfile_UserExists() {
-//         long userId = 1L;
-//         String newUsername = "newUsername";
-//         String newPassword = "newPassword";
-//
-//         UserPutDTO userPutDTO = new UserPutDTO();
-//         userPutDTO.setId(userId);
-//         userPutDTO.setUsername(newUsername);
-//         userPutDTO.setUsername(newPassword);
-//
-//         User userToUpdate = new User();
-//         userToUpdate.setId(userId);
-//         userToUpdate.setUsername("oldUsername");
-//         userToUpdate.setPassword("oldPassword");
-//
-//         when(userRepository.findById(userId)).thenReturn(userToUpdate);
-//         when(userRepository.findByUsername(newUsername)).thenReturn(null);
-//
-//         userService.updateUserProfile(userPutDTO, userId);
-//
-//         // Verify that the user's username and password were updated correctly
-//         assertEquals(newUsername, userToUpdate.getUsername());
-//         assertEquals(newPassword, userToUpdate.getPassword());
-//
-//         // Verify that the userRepository.save() and userRepository.flush() methods were called
-//         verify(userRepository, times(1)).save(userToUpdate);
-//         verify(userRepository, times(1)).flush();
-//     }
+     @Test
+     void updateUserProfile_WithExistingUser_ShouldUpdateUsernameAndPassword() {
+         // Arrange
+         long userId = 1L;
+         String newUsername = "newUsername";
+         String newPassword = "newPassword";
 
-//     @Test
-//     void testUpdateUserProfileWithInvalidPassword() {
-//         User user = new User();
-//         user.setUsername("testUsername");
-//         user.setPassword("testPassword");
+         UserPutDTO userPutDTO = new UserPutDTO();
+         userPutDTO.setUsername(newUsername);
+         userPutDTO.setPassword(newPassword);
+         userPutDTO.setId(userId);
 
-//         userService.createUser(user);
+         User existingUser = new User();
+         existingUser.setId(userId);
+         existingUser.setUsername("oldUsername");
+         existingUser.setPassword("oldPassword");
 
-//         UserPutDTO userPutDTO = new UserPutDTO();
-//         userPutDTO.setUsername("newUsername");
-//         userPutDTO.setPassword(null);
+         Mockito.when(userRepository.findById(userId)).thenReturn(existingUser);
+         Mockito.when(userRepository.findByUsername(newUsername)).thenReturn(null);
 
-//         userService.updateUserProfile(userPutDTO, user.getId());
+         // Act
+         userService.updateUserProfile(userPutDTO, userId);
 
-//         User updatedUser = userService.getUserProfile(user.getId());
-//         assertEquals("newUsername", updatedUser.getUsername());
-//         assertEquals("testPassword", updatedUser.getPassword());
-//     }
+         // Assert
+         assertEquals(newUsername, existingUser.getUsername());
+         assertEquals(newPassword, existingUser.getPassword());
+         verify(userRepository, Mockito.times(1)).save(existingUser);
+         verify(userRepository, Mockito.times(1)).flush();
+     }
+
+     @Test
+     void updateUserProfile_WithExistingUserAndNullNewValues_ShouldNotUpdateUsernameAndPassword() {
+         // Arrange
+         long userId = 1L;
+         String newUsername = null;
+         String newPassword = null;
+
+         UserPutDTO userPutDTO = new UserPutDTO();
+         userPutDTO.setUsername(newUsername);
+         userPutDTO.setPassword(newPassword);
+         userPutDTO.setId(userId);
+
+         User existingUser = new User();
+         existingUser.setId(userId);
+         existingUser.setUsername("oldUsername");
+         existingUser.setPassword("oldPassword");
+
+         Mockito.when(userRepository.findById(userId)).thenReturn(existingUser);
+         Mockito.when(userRepository.findByUsername(newUsername)).thenReturn(null);
+
+         // Act
+         userService.updateUserProfile(userPutDTO, userId);
+
+         // Assert
+         assertEquals("oldUsername", existingUser.getUsername());
+         assertEquals("oldPassword", existingUser.getPassword());
+         verify(userRepository, Mockito.times(1)).save(existingUser);
+         verify(userRepository, Mockito.times(1)).flush();
+     }
+
+     @Test
+     void updateUserProfile_WithExistingUserAndEmptyStrings_ShouldNotUpdateUsernameAndPassword() {
+         // Arrange
+         long userId = 1L;
+         String newUsername = "";
+         String newPassword = "  ";
+
+         UserPutDTO userPutDTO = new UserPutDTO();
+         userPutDTO.setUsername(newUsername);
+         userPutDTO.setPassword(newPassword);
+         userPutDTO.setId(userId);
+
+         User existingUser = new User();
+         existingUser.setId(userId);
+         existingUser.setUsername("oldUsername");
+         existingUser.setPassword("oldPassword");
+
+         Mockito.when(userRepository.findById(userId)).thenReturn(existingUser);
+         Mockito.when(userRepository.findByUsername(newUsername)).thenReturn(null);
+
+         // Act
+         userService.updateUserProfile(userPutDTO, userId);
+
+         // Assert
+         assertEquals("oldUsername", existingUser.getUsername());
+         assertEquals("oldPassword", existingUser.getPassword());
+         verify(userRepository, Mockito.times(1)).save(existingUser);
+         verify(userRepository, Mockito.times(1)).flush();
+     }
 
      @Test
      void testGetUserById() {
@@ -523,7 +567,7 @@
 
          when(gameRepository.findByGameId(gameId)).thenReturn(game);
 
-         List<User> result = userService.getUsers(gameId);
+         List<User> result = userService.getGamePlayers(gameId);
          assertEquals(users, result);
      }
 
@@ -534,7 +578,7 @@
          when(gameRepository.findByGameId(gameId)).thenReturn(null);
 
          ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                 () -> userService.getUsers(gameId),
+                 () -> userService.getGamePlayers(gameId),
                  "No games with id " + gameId + " was found");
 
          assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());

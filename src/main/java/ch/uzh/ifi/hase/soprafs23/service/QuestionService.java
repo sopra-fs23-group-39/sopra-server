@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.api.ActorApiService;
 import ch.uzh.ifi.hase.soprafs23.api.MovieApiService;
 import ch.uzh.ifi.hase.soprafs23.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs23.constant.Gender;
 import ch.uzh.ifi.hase.soprafs23.entity.Question;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -27,12 +28,12 @@ public class QuestionService {
 
     public Question getAppropriateQuestion(GameMode gameMode) throws JsonProcessingException {
         Question question;
-        int genderType;
+        int randomIndex;
         switch (gameMode) {
             case SHOW -> question = getMovieQuestion(1);
             case ACTOR -> {
-                genderType = random.nextInt(2);
-                question = getActorQuestion(genderType);
+                randomIndex = random.nextInt(Gender.values().length);
+                question = getActorQuestion(Gender.values()[randomIndex]);
             }
             case TRAILER -> question = getTrailerQuestion();
             case MIXED -> {
@@ -40,8 +41,8 @@ public class QuestionService {
                 if (category == 0 || category == 1) {
                     question = getMovieQuestion(category);
                 } else {
-                    genderType = random.nextInt(2);
-                    question = getActorQuestion(genderType);
+                    randomIndex = random.nextInt(Gender.values().length);
+                    question = getActorQuestion(Gender.values()[randomIndex]);
                 }
             }
             default -> question = getMovieQuestion(0);
@@ -53,10 +54,10 @@ public class QuestionService {
         String questionText = "What is the title of this movie?";
         String movieId = movieApiService.getRandomItem(moviesListAsJSONObject);
         String questionLink = movieApiService.getEmbedLink(movieApiService.getJSONObject("YouTubeTrailer", movieId, KEY));
-        System.out.println("Embed id : " + questionLink);
         String movieAsJSONObject = movieApiService.getJSONObject("Title", movieId, KEY);
         String correctAnswer = movieApiService.getItemName(movieAsJSONObject);
-        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject, addMovies);
+        List<String> listWithFourAnswers = movieApiService.getSimilarItems(movieAsJSONObject, addMovies);
+        List<String> wrongAnswers = removeCorrectAnswerFromWrongAnswers(listWithFourAnswers, correctAnswer);
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
 
 //        String questionText = "What is the title of this movie?";
@@ -84,7 +85,8 @@ public class QuestionService {
         String questionLink = movieApiService.getImageLink(movieApiService.getJSONObject("Images", movieId, KEY));
         String movieAsJSONObject = movieApiService.getJSONObject("Title", movieId, KEY);
         String correctAnswer = movieApiService.getItemName(movieAsJSONObject);
-        List<String> wrongAnswers = movieApiService.getSimilarItems(movieAsJSONObject, additionalMovies);
+        List<String> listWithFourAnswers = movieApiService.getSimilarItems(movieAsJSONObject, additionalMovies);
+        List<String> wrongAnswers = removeCorrectAnswerFromWrongAnswers(listWithFourAnswers, correctAnswer);
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
 
 //        String questionText = "What is the title of this movie?";
@@ -94,14 +96,14 @@ public class QuestionService {
 //        return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
-    public Question getActorQuestion(int gender) throws JsonProcessingException {
+    public Question getActorQuestion(Gender gender) throws JsonProcessingException {
         String questionText = "What is the name of this ";
-        String listAsJSONObject = null;
+        String listAsJSONObject;
 
-        if (gender == 0) {
+        if (gender == Gender.ACTOR) {
             questionText += "actor?";
             listAsJSONObject = actorsListAsJSONObject;
-        } else if (gender == 1) {
+        } else {
             questionText += "actress?";
             listAsJSONObject = actressesListAsJSONObject;
         }
@@ -110,7 +112,9 @@ public class QuestionService {
         String actorAsJSONObject = actorApiService.getJSONObject("Name", actorId, KEY);
         String questionLink = actorApiService.getImageLink(actorAsJSONObject);
         String correctAnswer = actorApiService.getItemName(actorAsJSONObject);
-        List<String> wrongAnswers = actorApiService.getSimilarItems(actorApiService.getAllIds(listAsJSONObject), KEY);
+        List<String> listWithFourAnswers = actorApiService.getSimilarItems(actorApiService.getAllIds(listAsJSONObject), KEY);
+        List<String> wrongAnswers = removeCorrectAnswerFromWrongAnswers(listWithFourAnswers, correctAnswer);
+
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
 
 //        String questionText = "What is the name of this actor?";
@@ -126,5 +130,14 @@ public class QuestionService {
         Collections.shuffle(answers);
 
         return new Question(questionText, questionLink, correctAnswer, answers.get(0), answers.get(1), answers.get(2),answers.get(3));
+    }
+
+    public List<String> removeCorrectAnswerFromWrongAnswers(List<String> listWithFourItems, String correctAnswer) {
+        List<String> newList = new ArrayList<>(listWithFourItems);
+        boolean duplicateExists = newList.remove(correctAnswer);
+        if (!duplicateExists) {
+            newList.remove(newList.size() - 1);
+        }
+        return newList;
     }
 }

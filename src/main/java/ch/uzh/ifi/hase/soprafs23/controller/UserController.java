@@ -44,6 +44,7 @@ public class UserController {
         return userGetDTOs;
     }
 
+    //Tested CREATED + CONFLICT
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -57,13 +58,14 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
+    // Tested NO_CONTENT, NOT_FOUND
     @PutMapping("/users/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> logOutUser(@RequestBody int userId) {
         userService.logoutUser(userId);
         return ResponseEntity.noContent().build();
     }
-
+    //Tested OK + NOT_FOUND
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -72,6 +74,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userById);
     }
 
+    //Tested NO_CONTENT, check "invalid situations" tests
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody UserPutDTO userPutDTO) {
@@ -79,6 +82,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    //Tested NOT_FOUND, UNAUTHORIZED. Check test for OK
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

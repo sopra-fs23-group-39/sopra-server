@@ -8,8 +8,6 @@ import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -30,7 +28,6 @@ import java.util.*;
 @Service
 @Transactional
 public class UserService {
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
 
@@ -137,29 +134,32 @@ public class UserService {
 
     public void updateUserProfile(UserPutDTO userPutDTO, long id) {
         User userToUpdate = userRepository.findById(id);
-        String oldUsername = userToUpdate.getUsername();
-        String oldPassword = userToUpdate.getPassword();
 
         String newUsername = userPutDTO.getUsername();
         String newPassword = userPutDTO.getPassword();
         User userWithTheSameUsername = userRepository.findByUsername(newUsername);
 
-        String messageId = "User with id %d does not exist!";
         if (userToUpdate == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %d does not exist!", id));
         } else if (userWithTheSameUsername != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this username already exists, please choose another username!");
         } else {
-            if (newUsername == null || newUsername.trim().isEmpty()) {
+            String oldUsername = userToUpdate.getUsername();
+            String oldPassword = userToUpdate.getPassword();
+            if (newUsername == null) {
+                userToUpdate.setUsername(oldUsername);
+            } else if (newUsername.trim().isEmpty()) {
                 userToUpdate.setUsername(oldUsername);
             } else {
                 userToUpdate.setUsername(newUsername);
             }
 
-            if (newPassword != null || newPassword.trim().isEmpty()) {
+            if (newPassword == null) {
+                userToUpdate.setPassword(oldPassword);
+            } else if (newPassword.trim().isEmpty()) {
                 userToUpdate.setPassword(oldPassword);
             } else {
-                userToUpdate.setUsername(newPassword);
+                userToUpdate.setPassword(newPassword);
             }
         }
 
@@ -181,12 +181,8 @@ public class UserService {
         Long userId = answer.getUserId();
         User userById = getUserById(userId);
         Long prevScore = userById.getTotalPointsCurrentGame();
-        Long newScore;
-        if (prevScore == null) {
-            newScore = score + 0;
-        } else {
-            newScore = score + prevScore;
-        }
+        Long newScore = score + prevScore;
+
         userById.setTotalPointsCurrentGame(newScore);
         userById.setCurrentPoints(score);
     }
@@ -238,25 +234,24 @@ public class UserService {
     }
 
     public List<User> retrieveCurrentRanking(long lobbyId) {
-        List<User> users = getUsers(lobbyId);
+        List<User> users = getGamePlayers(lobbyId);
         users.sort(Comparator.comparing(User::getCurrentPoints).reversed());
         return users;
     }
 
     public List<User> retrieveTotalRanking(long lobbyId) {
-        List<User> users = getUsers(lobbyId);
+        List<User> users = getGamePlayers(lobbyId);
         users.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
         return users;
     }
 
-    public List<User> getUsers(long lobbyId) {
+    public List<User> getGamePlayers(long lobbyId) {
         Game game = gameRepository.findByGameId(lobbyId);
         String message = String.format("No games with id %d was found", lobbyId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
-        List<User> users = game.getPlayers();
-        return users;
+        return game.getPlayers();
     }
 
     public List<User> sortAllUsersDescOrder(List<User> allUsersInDB) {

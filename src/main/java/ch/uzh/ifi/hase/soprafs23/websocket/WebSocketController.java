@@ -40,11 +40,9 @@ public class WebSocketController {
 
     @MessageMapping("/game/{gameId}")
     public void handleGameConnect(@DestinationVariable long gameId, @Headers Map<String, Object> headers, @Payload String message) {
-        System.out.println("received message: " + message);
         String[] messageParts = message.split(" ");
-        if(messageParts.length == 2 && messageParts[0].equals("DISCONNECT") && !messageParts[1].isEmpty()){
+        if (messageParts.length == 2 && messageParts[0].equals("DISCONNECT") && !messageParts[1].isEmpty()) {
             String playerId = messageParts[1];
-            System.out.println("Setting " + playerId + "'s game to null...");
             gameService.removePlayer(Long.parseLong(playerId));
 
         }
