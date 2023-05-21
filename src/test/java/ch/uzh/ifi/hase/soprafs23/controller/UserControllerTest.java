@@ -51,9 +51,6 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private DTOMapper dtoMapper;
-
 //    @Test
 //    public void testGetAllUsers() throws Exception {
 //        //given
@@ -79,44 +76,6 @@ class UserControllerTest {
 //                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
 //                .andExpect(jsonPath("$[0].password", is(user.getPassword())))
 //                .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
-//    }
-
-//    @Test
-//    public void testGetAllUsers() throws Exception {
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        User user1 = new User();
-//        user1.setId(1L);
-//        user1.setUsername("user1");
-//        User user2 = new User();
-//        user2.setId(2L);
-//        user2.setUsername("user2");
-//        List<User> users = Arrays.asList(user1, user2);
-//
-//        given(userService.getUsers()).willReturn(users);
-//
-//        UserGetDTO userGetDTO1 = new UserGetDTO();
-//        userGetDTO1.setId(user1.getId());
-//        userGetDTO1.setUsername(user1.getUsername());
-//        UserGetDTO userGetDTO2 = new UserGetDTO();
-//        userGetDTO2.setId(user2.getId());
-//        userGetDTO2.setUsername(user2.getUsername());
-//        given(dtoMapper.convertEntityToUserGetDTO(user1)).willReturn(userGetDTO1);
-//        given(dtoMapper.convertEntityToUserGetDTO(user2)).willReturn(userGetDTO2);
-//
-//        MvcResult result = mockMvc.perform(get("/users"))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        String response = result.getResponse().getContentAsString();
-//        List<UserGetDTO> returnedUsers = objectMapper.readValue(response, new TypeReference<List<UserGetDTO>>() {});
-//
-//        assertThat(returnedUsers).hasSize(2);
-//        assertThat(returnedUsers.get(0).getId()).isEqualTo(user1.getId());
-//        assertThat(returnedUsers.get(0).getUsername()).isEqualTo(user1.getUsername());
-//        assertThat(returnedUsers.get(1).getId()).isEqualTo(user2.getId());
-//        assertThat(returnedUsers.get(1).getUsername()).isEqualTo(user2.getUsername());
 //    }
 
     @Test

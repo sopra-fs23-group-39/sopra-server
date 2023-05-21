@@ -68,7 +68,7 @@ public class QuestionGetDTO {
 
     public void setAnswer4(String answer4) { this.answer4 = answer4; }
 
-    public Date getCreationTime(){return creationTime;}
+    public Date getCreationTime() {return creationTime;}
 
-    public void setCreationTime(Date creationTime){this.creationTime=creationTime;}
+    public void setCreationTime(Date creationTime) {this.creationTime=creationTime;}
 }

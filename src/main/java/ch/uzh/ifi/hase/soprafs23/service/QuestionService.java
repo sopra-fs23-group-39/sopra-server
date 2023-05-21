@@ -69,13 +69,14 @@ public class QuestionService {
 
     public Question getMovieQuestion(int category) throws JsonProcessingException {
         String questionText = "What is the title of this ";
-        String listAsJSONObject = null;
-        List<String> additionalMovies = new ArrayList<>();
+        String listAsJSONObject;
+        List<String> additionalMovies;
         if (category == 0) {
             questionText += "movie?";
             listAsJSONObject = moviesListAsJSONObject;
             additionalMovies = addMovies;
-        } else if (category == 1) {
+        //Here "else" means category 1 (TV series)
+        } else {
             questionText += "TV series?";
             listAsJSONObject = tvSeriesListAsJSONObject;
             additionalMovies = Arrays.asList("True Detective", "Breaking Bad", "Homeland", "The Queen's Gambit");

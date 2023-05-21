@@ -111,9 +111,9 @@ public class Game implements Serializable {
         this.gameMode = mode;
     }
 
-    public GameFormat getGameFormat(){return gameFormat;}
+    public GameFormat getGameFormat() {return gameFormat;}
 
-    public void setGameFormat(GameFormat format){this.gameFormat = format;}
+    public void setGameFormat(GameFormat format) {this.gameFormat = format;}
     public Long getHostId() {
         return hostId;
     }

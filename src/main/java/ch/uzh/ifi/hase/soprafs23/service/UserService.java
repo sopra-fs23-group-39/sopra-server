@@ -218,10 +218,14 @@ public class UserService {
 
         long newScoreAllGames = score + prevScoreAllGames;
 
+        updateAllGamesScoreAuxiliaryMethod(gameFormat, newScoreAllGames, userById);
+    }
+
+    public void updateAllGamesScoreAuxiliaryMethod(GameFormat gameFormat, long newScoreAllGames, User user) {
         switch (gameFormat) {
-            case BLITZ -> userById.setTotalBlitzPointsAllGames(newScoreAllGames);
-            case RAPID -> userById.setTotalRapidPointsAllGames(newScoreAllGames);
-            default -> userById.setTotalPointsAllGames(newScoreAllGames);
+            case BLITZ -> user.setTotalBlitzPointsAllGames(newScoreAllGames);
+            case RAPID -> user.setTotalRapidPointsAllGames(newScoreAllGames);
+            default -> user.setTotalPointsAllGames(newScoreAllGames);
         }
     }
 

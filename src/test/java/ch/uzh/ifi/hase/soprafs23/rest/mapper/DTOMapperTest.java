@@ -85,8 +85,11 @@ class DTOMapperTest {
         String answer2 = "Shutter Island";
         String answer3 = "Django Unchained";
         String answer4 = "Inception";
-
         Question question = new Question(questionText, questionLink, correctAnswer, answer1, answer2, answer3, answer4);
+
+        LocalDateTime questionDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(30);
+        Date questionTime = Date.from(questionDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        question.setCreationTime(questionTime);
 
         QuestionGetDTO questionGetDTO = DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
 
@@ -97,6 +100,7 @@ class DTOMapperTest {
         assertEquals(question.getAnswer2(), questionGetDTO.getAnswer2());
         assertEquals(question.getAnswer3(), questionGetDTO.getAnswer3());
         assertEquals(question.getAnswer4(), questionGetDTO.getAnswer4());
+        assertEquals(question.getCreationTime(), questionGetDTO.getCreationTime());
     }
 
 }

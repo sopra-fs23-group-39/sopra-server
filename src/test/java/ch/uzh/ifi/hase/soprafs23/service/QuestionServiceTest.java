@@ -165,4 +165,21 @@ class QuestionServiceTest {
         assertTrue(answers.contains(correctAnswer));
     }
 
+    @Test
+    void testRemoveCorrectAnswerFromWrongAnswers() {
+        List<String> list = Arrays.asList("Interstellar", "Shutter Island", "Django Unchained", "Inception");
+        String correctAnswer1 = "Interstellar";
+        List<String> expected1 = Arrays.asList("Shutter Island", "Django Unchained", "Inception");
+
+        List<String> actual1 = questionService.removeCorrectAnswerFromWrongAnswers(list, correctAnswer1);
+        assertEquals(expected1, actual1);
+
+        String correctAnswer2 = "Gangs of New York";
+        List<String> expected2 = Arrays.asList("Interstellar", "Shutter Island", "Django Unchained");
+
+        List<String> actual2 = questionService.removeCorrectAnswerFromWrongAnswers(list, correctAnswer2);
+        assertEquals(expected2, actual2);
+
+    }
+
 }

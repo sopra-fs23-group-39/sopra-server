@@ -38,22 +38,27 @@ public class GameService {
     }
 
     public Game createGame(Long hostId, GameMode gameMode, int questionAmount, int timer, GameFormat gameFormat) {
+        User host = userService.getUserById(hostId);
+        if (host == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("User with id %d was not found!", hostId));
+        }
+
         Game game = new Game();
         game.setHostId(hostId);
         game.setGameMode(gameMode);
         game.setQuestionAmount(questionAmount);
         game.setTimer(timer);
-        game.setHost(userService.getUserById(hostId));
+        game.setHost(host);
         game.setGameFormat(gameFormat);
         game.setIsStarted(false);
 
-        game.getPlayers().add(userService.getUserById(hostId));
-        userService.getUserById(hostId).setGame(game);
+        game.getPlayers().add(host);
+        host.setGame(game);
         game = gameRepository.save(game);
         gameRepository.flush();
-        //Host number of games increased
-        userService.getUserById(hostId).setNumberGames(userService.getUserById(hostId).getNumberGames() + 1);
-        userService.getUserById(hostId).setTotalPointsCurrentGame((long)0);
+        host.setNumberGames(host.getNumberGames() + 1);
+        host.setTotalPointsCurrentGame((long) 0);
         return game;
     }
 
@@ -75,18 +80,19 @@ public class GameService {
 
     public List<User> getHostAndPlayers(long gameId) {
         Game game = gameRepository.findByGameId(gameId);
-        String message = String.format("No games with id %d was found", gameId);
+        String message = String.format("No games with id %d was found!", gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
         return game.getPlayers();
     }
-    public void removeAllPlayers(Long gameId){
-        for(User player : gameRepository.findByGameId(gameId).getPlayers()){
-            player.setGame(null);
-            player.setTotalPointsCurrentGame((long) 0);
-        }
-    }
+
+//    public void removeAllPlayers(Long gameId){
+//        for(User player : gameRepository.findByGameId(gameId).getPlayers()){
+//            player.setGame(null);
+//            player.setTotalPointsCurrentGame((long) 0);
+//        }
+//    }
 
     public void removePlayer(Long playerId){
         userService.getUserById(playerId).setTotalPointsCurrentGame((long) 0);

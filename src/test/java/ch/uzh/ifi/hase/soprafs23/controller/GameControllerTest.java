@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,6 +92,21 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.timer", is(10)))
                 .andExpect(jsonPath("$.gameFormat", is("CUSTOM")));
     }
+
+//    @Test
+//    void gamePOST_createGame_invalidHostId() throws Exception {
+//        GamePostDTO gamePostDTO = new GamePostDTO();
+//
+//        when((gameService).createGame(Mockito.anyLong(), Mockito.any(GameMode.class), Mockito.anyInt(),
+//                Mockito.anyInt(), Mockito.any(GameFormat.class))).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        MockHttpServletRequestBuilder postRequest = post("/game")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(gamePostDTO));
+//
+//        mockMvc.perform(postRequest)
+//                .andExpect(status().isNotFound());
+//    }
 
     @Test
     void gameSettingsGET_getValidGameSettings() throws Exception {
@@ -310,7 +327,7 @@ class GameControllerTest {
     }
 
 //    @Test
-//    void getRankingByLobbyId_returnsCorrectUserList() throws Exception {
+//    void getTotalRankingCurrentGame_returnsCorrectUserList() throws Exception {
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        Long gameId = 1L;
 //        User user1 = new User();
@@ -322,7 +339,7 @@ class GameControllerTest {
 //        user2.setUsername("user2");
 //        user2.setTotalPointsCurrentGame(15L);
 //
-//        List<User> userList = Arrays.asList(user1, user2);
+//        List<User> userList = new ArrayList<>(Arrays.asList(user1, user2));
 //        given(userService.retrieveTotalRanking(gameId)).willReturn(userList);
 //
 //        UserGetDTO userGetDTO1 = new UserGetDTO();
@@ -350,6 +367,28 @@ class GameControllerTest {
 //        assertThat(returnedUsers.get(1).getId()).isEqualTo(user2.getId());
 //        assertThat(returnedUsers.get(1).getUsername()).isEqualTo(user2.getUsername());
 //        assertThat(returnedUsers.get(1).getTotalPointsCurrentGame()).isEqualTo(user2.getTotalPointsCurrentGame());
+//    }
+
+//    @Test
+//    void getTotalRankingCurrentGame_returnsCorrectUserList() throws Exception {
+//        Long gameId = 1L;
+//        User user1 = new User();
+//        user1.setId(1L);
+//        user1.setUsername("user1");
+//        user1.setTotalPointsCurrentGame(20L);
+//        User user2 = new User();
+//        user2.setId(2L);
+//        user2.setUsername("user2");
+//        user2.setTotalPointsCurrentGame(15L);
+//
+//        List<User> userList = new ArrayList<>(Arrays.asList(user1, user2));
+//        when(userService.retrieveTotalRanking(gameId)).thenReturn(userList);
+//
+//        MockHttpServletRequestBuilder getRequest = get("/game/1/totalRanking")
+//                .contentType(MediaType.APPLICATION_JSON);
+//
+//        mockMvc.perform(getRequest)
+//                .andExpect(status().isOk());
 //    }
 
     @Test

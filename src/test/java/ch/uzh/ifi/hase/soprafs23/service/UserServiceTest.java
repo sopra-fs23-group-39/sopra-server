@@ -602,39 +602,44 @@
          assertEquals(300L, prevScoreDefault);
      }
 
-//     @Test
-//     public void testUpdateAllGamesScore() {
-//         long userId = 1L;
-//
-//         AnswerPostDTO answerPostDTO = new AnswerPostDTO();
-//         answerPostDTO.setUserId(userId);
-//         answerPostDTO.setGameId(1L);
-//         answerPostDTO.setCorrectAnswer("Inception");
-//         answerPostDTO.setUsersAnswer("Inception");
-//
-//         LocalDateTime questionDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(30);
-//         Date questionTime = Date.from(questionDateTime.atZone(ZoneId.systemDefault()).toInstant());
-//         answerPostDTO.setQuestionTime(questionTime);
-//
-//         LocalDateTime answerDateTime = LocalDateTime.of(2023, 5, 13, 10, 30).plusSeconds(32);
-//         Date answerTime = Date.from(answerDateTime.atZone(ZoneId.systemDefault()).toInstant());
-//         answerPostDTO.setTime(answerTime);
-//
-//         GameFormat gameFormat = GameFormat.CUSTOM;
-//
-//         User user = new User();
-//         user.setId(userId);
-//         user.setTotalBlitzPointsAllGames(100L);
-//
-////         when(userService.getUserById(userId)).thenReturn(user);
-//         when(userRepository.findById(userId)).thenReturn(user);
-//         when(userService.returnScore(answerPostDTO, gameFormat)).thenReturn(209L);
-//         when(userService.getPrevScoreAllGames(gameFormat, user)).thenReturn(100L);
-//
-//         userService.updateAllGamesScore(answerPostDTO, gameFormat);
-//
-//         assertEquals(309L, user.getTotalPointsAllGames());
-//     }
+     @Test
+     void testUpdateAllGamesScoreAuxiliaryMethod() {
+         GameFormat gameFormat = GameFormat.BLITZ;
+         User user = Mockito.mock(User.class);
+         long newScoreAllGames = 100L;
+
+         userService.updateAllGamesScoreAuxiliaryMethod(gameFormat, newScoreAllGames, user);
+
+         switch (gameFormat) {
+             case BLITZ -> {
+                 verify(user).setTotalBlitzPointsAllGames(newScoreAllGames);
+                 verify(user, Mockito.never()).setTotalRapidPointsAllGames(Mockito.anyLong());
+                 verify(user, Mockito.never()).setTotalPointsAllGames(Mockito.anyLong());
+             }
+             case RAPID -> {
+                 verify(user).setTotalRapidPointsAllGames(newScoreAllGames);
+                 verify(user, Mockito.never()).setTotalBlitzPointsAllGames(Mockito.anyLong());
+                 verify(user, Mockito.never()).setTotalPointsAllGames(Mockito.anyLong());
+             }
+             default -> {
+                 verify(user).setTotalPointsAllGames(newScoreAllGames);
+                 verify(user, Mockito.never()).setTotalBlitzPointsAllGames(Mockito.anyLong());
+                 verify(user, Mockito.never()).setTotalRapidPointsAllGames(Mockito.anyLong());
+             }
+         }
+     }
+
+     @Test
+     void testSetGameAndSetHostedGame() {
+         User user = new User();
+         Game game = new Game();
+
+         user.setGame(game);
+         assertEquals(game, user.getGame());
+
+         user.setHostedGame(game);
+         assertEquals(game, user.getHostedGame());
+     }
 
  }
 

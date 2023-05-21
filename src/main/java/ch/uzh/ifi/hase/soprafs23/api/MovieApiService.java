@@ -64,14 +64,18 @@ public class MovieApiService extends ApiService {
         HashSet<String> hashSet = new HashSet<>(listOfSimilarMovies);
         List<String> listOfSimilarMoviesNoDuplicates = new ArrayList<>(hashSet);
 
-        int listSize = listOfSimilarMoviesNoDuplicates.size();
-        if (listSize < 4) {
-            listOfSimilarMoviesNoDuplicates.addAll(additionalItems);
-            HashSet<String> hashSet2 = new HashSet<>(listOfSimilarMoviesNoDuplicates);
-            listOfSimilarMoviesNoDuplicates = new ArrayList<>(hashSet2);
-        }
+        return getFourItems(checkIfFourItemsInList(listOfSimilarMoviesNoDuplicates, additionalItems));
+    }
 
-        return getFourItems(listOfSimilarMoviesNoDuplicates);
+    public List<String> checkIfFourItemsInList(List<String> listToCheck, List<String>additionalItems) {
+        List<String> listToCheck2 = listToCheck;
+        int listSize = listToCheck2.size();
+        if (listSize < 4) {
+            listToCheck2.addAll(additionalItems);
+            HashSet<String> hashSet = new HashSet<>(listToCheck2);
+            listToCheck2 = new ArrayList<>(hashSet);
+        }
+        return listToCheck2;
     }
 
 }
