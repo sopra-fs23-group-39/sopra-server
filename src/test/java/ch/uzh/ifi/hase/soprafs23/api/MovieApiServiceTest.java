@@ -11,10 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // This class contains only several additional tests, since most of the methods of the class are tested together with
 // QuestionService class's methods (in QuestionServiceTest)
-public class MovieApiServiceTest {
+class MovieApiServiceTest {
 
     private final MovieApiService movieApiService = new MovieApiService();
-
 
     @Test
     void testCheckIfFourItemsInList() {

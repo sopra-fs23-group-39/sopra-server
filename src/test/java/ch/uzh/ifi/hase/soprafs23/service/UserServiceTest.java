@@ -603,30 +603,42 @@
      }
 
      @Test
-     void testUpdateAllGamesScoreAuxiliaryMethod() {
+     void testUpdateAllGamesScoreAuxiliaryMethod_BLITZ() {
          GameFormat gameFormat = GameFormat.BLITZ;
          User user = Mockito.mock(User.class);
          long newScoreAllGames = 100L;
 
          userService.updateAllGamesScoreAuxiliaryMethod(gameFormat, newScoreAllGames, user);
 
-         switch (gameFormat) {
-             case BLITZ -> {
-                 verify(user).setTotalBlitzPointsAllGames(newScoreAllGames);
-                 verify(user, Mockito.never()).setTotalRapidPointsAllGames(Mockito.anyLong());
-                 verify(user, Mockito.never()).setTotalPointsAllGames(Mockito.anyLong());
-             }
-             case RAPID -> {
-                 verify(user).setTotalRapidPointsAllGames(newScoreAllGames);
-                 verify(user, Mockito.never()).setTotalBlitzPointsAllGames(Mockito.anyLong());
-                 verify(user, Mockito.never()).setTotalPointsAllGames(Mockito.anyLong());
-             }
-             default -> {
-                 verify(user).setTotalPointsAllGames(newScoreAllGames);
-                 verify(user, Mockito.never()).setTotalBlitzPointsAllGames(Mockito.anyLong());
-                 verify(user, Mockito.never()).setTotalRapidPointsAllGames(Mockito.anyLong());
-             }
-         }
+         verify(user).setTotalBlitzPointsAllGames(newScoreAllGames);
+         verify(user, Mockito.never()).setTotalRapidPointsAllGames(Mockito.anyLong());
+         verify(user, Mockito.never()).setTotalPointsAllGames(Mockito.anyLong());
+     }
+
+     @Test
+     void testUpdateAllGamesScoreAuxiliaryMethod_RAPID() {
+         GameFormat gameFormat = GameFormat.RAPID;
+         User user = Mockito.mock(User.class);
+         long newScoreAllGames = 100L;
+
+         userService.updateAllGamesScoreAuxiliaryMethod(gameFormat, newScoreAllGames, user);
+
+         verify(user).setTotalRapidPointsAllGames(newScoreAllGames);
+         verify(user, Mockito.never()).setTotalBlitzPointsAllGames(Mockito.anyLong());
+         verify(user, Mockito.never()).setTotalPointsAllGames(Mockito.anyLong());
+     }
+
+     @Test
+     void testUpdateAllGamesScoreAuxiliaryMethod_CUSTOM() {
+         GameFormat gameFormat = GameFormat.CUSTOM;
+         User user = Mockito.mock(User.class);
+         long newScoreAllGames = 100L;
+
+         userService.updateAllGamesScoreAuxiliaryMethod(gameFormat, newScoreAllGames, user);
+
+         verify(user).setTotalPointsAllGames(newScoreAllGames);
+         verify(user, Mockito.never()).setTotalBlitzPointsAllGames(Mockito.anyLong());
+         verify(user, Mockito.never()).setTotalRapidPointsAllGames(Mockito.anyLong());
      }
 
      @Test
