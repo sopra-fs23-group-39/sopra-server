@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,6 +65,8 @@ public class GameService {
         }
 
         game.getPlayers().add(user);
+        gameRepository.save(game);
+        gameRepository.flush();
         user.setGame(game);
         //Player number of games increased
         userService.getUserById(userId).setNumberGames(userService.getUserById(userId).getNumberGames() + 1);

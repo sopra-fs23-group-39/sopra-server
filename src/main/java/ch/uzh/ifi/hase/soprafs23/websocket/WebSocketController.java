@@ -49,10 +49,23 @@ public class WebSocketController {
         if (message.equals("SUBSCRIBE")){
             List<User> players = gameService.getHostAndPlayers(gameId);
             List<UserGetDTO> playerDTOs = new ArrayList<>();
+            //this is stupid and hacky, but the way we handle circular references in our database
+            //causes the player list to be sorted alphabetically, for whatever reason.
+            //this block removes the host from the players list we make here, then adds them back
+            //at index 0. This is necessary, because the frontend checks who the host is
+            //by looking at the first entry of the player list...
+            players.stream()
+                    .filter(player -> player.getId() == gameService.getGameById(gameId).getHostId())
+                    .findFirst()
+                    .ifPresent(player -> {
+                        players.remove(player);
+                        players.add(0, player);
+                    });
             for (User player: players){
                 player.setTotalPointsCurrentGame((long) 0);
                 playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
             }
+
             // topic/game/{gameId} - front-end
             this.messagingTemplate.convertAndSend("/topic/game/" + gameId, playerDTOs);
         }
