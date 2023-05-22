@@ -387,9 +387,18 @@ Markus Niemack:
 (tentative) wordle format: https://github.com/sopra-fs23-group-39/sopra-server/issues/83  
 https://github.com/sopra-fs23-group-39/sopra-client/issues/61  
 https://github.com/sopra-fs23-group-39/sopra-client/issues/61  
-we are probably not implementing these features, so I'm probably going to work on fixing the database conflict errors and bugfixing.
+we are probably not implementing these features, so I'm probably going to work on fixing the database conflict errors and bugfixing.  
+  
+Fixed host seemingly switching at random https://github.com/sopra-fs23-group-39/sopra-server/commit/2175e63bab3f9884bbf319085057262a1ebbee14  
+Handled players trying to join a game they're already in https://github.com/sopra-fs23-group-39/sopra-client/commit/daaaec75c33ecc78918015fc112743c3b77ac54f  
+Handled game desynchronizing when user refreshes the page during a game  https://github.com/sopra-fs23-group-39/sopra-client/commit/934bdd20233db7dbd847378954fd52cba9d2f609  
+Fixed Non-hosts being able to start a game https://github.com/sopra-fs23-group-39/sopra-client/commit/44db1669faec1bf5086b256b2599bc867c17066e
+
+
+
 
 
 Florence Hügi:
 Add custom styling to all pages: https://github.com/sopra-fs23-group-39/sopra-client/issues/70
-Adjust question and GameSelection pages accordingly: https://github.com/sopra-fs23-group-39/sopra-client/issues/62
+Adjust question and GameSelection pages accordingly: https://github.com/sopra-fs23-group-39/sopra-client/issues/62 
+
