@@ -377,8 +377,9 @@ Without a task: testing application from a user's point of view, finding bugs, f
 
 Damjan Kuzmanovic
 
--Redesign the Standings Page https://github.com/sopra-fs23-group-39/sopra-client/issues/78
+-Redesign the Questions Page (further improvements)
 -Add the scrollbar to the Standings Page https://github.com/sopra-fs23-group-39/sopra-client/issues/83
+-Minor balancing changes in the scoring function
 -Additional tasks regarding bug fixing, testing etc. overall polishing of the code 
 
 
