@@ -51,7 +51,7 @@ jobs:
         with:
           deliverables: app.yaml
           #needed updated version to deploy to app engine flex
-          version: v2
+          version: v3
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
 
       - name: Test
