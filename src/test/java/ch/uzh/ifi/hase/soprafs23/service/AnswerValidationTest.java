@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.AnswerPostDTO;
@@ -55,19 +54,19 @@ class AnswerValidationTest {
     @Test
     void correctScoreCalculation_rightAnswer() {
         answerPostDTO.setUsersAnswer(correctAnswer);
-        assertEquals(209, userService.returnScore(answerPostDTO, GameFormat.CUSTOM));
+        assertEquals(156, userService.returnScore(answerPostDTO, GameFormat.CUSTOM));
     }
 
     @Test
     void correctScoreCalculationRapid_wrongAnswer() {
         answerPostDTO.setUsersAnswer(wrongAnswer);
-        assertEquals(-30, userService.returnScore(answerPostDTO, GameFormat.RAPID));
+        assertEquals(-50, userService.returnScore(answerPostDTO, GameFormat.RAPID));
     }
 
     @Test
     void correctScoreCalculationRapid_rightAnswer() {
         answerPostDTO.setUsersAnswer(correctAnswer);
-        assertEquals(209, userService.returnScore(answerPostDTO, GameFormat.RAPID));
+        assertEquals(156, userService.returnScore(answerPostDTO, GameFormat.RAPID));
     }
 
     @Test
@@ -79,7 +78,7 @@ class AnswerValidationTest {
     @Test
     void correctScoreCalculationBlitz_rightAnswer() {
         answerPostDTO.setUsersAnswer(correctAnswer);
-        assertEquals(300, userService.returnScore(answerPostDTO, GameFormat.BLITZ));
+        assertEquals(156, userService.returnScore(answerPostDTO, GameFormat.BLITZ));
     }
 
 }

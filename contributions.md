@@ -369,11 +369,13 @@ Yannick Salzmann
 
 Natalia Shakirova
 
-Task #107 Create tests for back-end (part 2, up to 75% coverage) (https://github.com/sopra-fs23-group-39/sopra-server/issues/107)
+Task #107 Create tests for back-end (part 2, up to 75% coverage) (https://github.com/sopra-fs23-group-39/sopra-server/issues/107): test coverage increased from 50% to 81%, multiple commits
 
-Task #108: Add uniqueness check for all types of questions (all 4 answers should be unique) https://github.com/sopra-fs23-group-39/sopra-server/issues/108
+Task #108: Add uniqueness check for all types of questions (all 4 answers should be unique) https://github.com/sopra-fs23-group-39/sopra-server/issues/108, commits: https://github.com/sopra-fs23-group-39/sopra-server/commit/3b09562c5b2fffb27c53608901a7f64b2569827a, https://github.com/sopra-fs23-group-39/sopra-server/commit/63de781f1b52d44e78aa0b08223ed395ba3df5a4 
 
-Without a task: testing application from a user's point of view, finding bugs, fixing them
+Task #109: Fix bug when changing credentials (https://github.com/sopra-fs23-group-39/sopra-server/issues/109), commits: https://github.com/sopra-fs23-group-39/sopra-server/commit/4f72f26609320b9bdb87e20ea4fd469da9c49d01, https://github.com/sopra-fs23-group-39/sopra-server/commit/63de781f1b52d44e78aa0b08223ed395ba3df5a4
+
+Without a task: testing application from a user's point of view, finding bugs, informing teammates about them or fixing some of them myself
 
 Damjan Kuzmanovic
 
