@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Game;
 
 public class UserGetDTO {
     private Long id;
-    private String password;
     private String username;
     private UserStatus status;
     private Long userRank;
@@ -53,13 +52,6 @@ public class UserGetDTO {
     this.id = id;
     }
 
-    public String getPassword() {
-    return password;
-    }
-
-    public void setPassword(String password) {
-    this.password = password;
-    }
 
     public Long getUserRank() {
     return userRank;

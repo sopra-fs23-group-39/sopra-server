@@ -43,7 +43,6 @@ public interface DTOMapper {
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "password", target = "password")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "numberGames", target = "numberGames")
@@ -61,7 +60,6 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "status", target = "status")
     @Mapping(target = "token", ignore = true)
-    @Mapping(target = "password", source = "password")
     @Mapping(target = "userRank", ignore = true)
     @Mapping(target = "totalPointsCurrentGame", ignore = true)
     @Mapping(target = "totalPointsAllGames", ignore = true)

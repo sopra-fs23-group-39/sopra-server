@@ -108,8 +108,8 @@ class UserControllerTest {
 
         mockMvc.perform(postRequest)
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
-                .andExpect(jsonPath("$.password", is(user.getPassword())))
                 .andExpect(status().isCreated());
+        assertEquals("testPassword", user.getPassword());
     }
 
     @Test
@@ -211,7 +211,7 @@ class UserControllerTest {
         UserGetDTO result = userController.logInUser(userPostDTO);
 
         assertEquals(result.getUsername(), user.getUsername());
-        assertEquals(result.getPassword(), user.getPassword());
+        assertEquals("TestPassword", user.getPassword());
     }
 
     @Test
