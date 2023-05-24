@@ -1,86 +1,63 @@
-# SoPra RESTful Service Template FS23
+# The Movie Monster
 
-## Getting started with Spring Boot
--   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
--   Guides: http://spring.io/guides
-    -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
-    -   Building REST services with Spring: https://spring.io/guides/tutorials/rest/
+The Movie Monster is a movie trivia game offering multiple game modes to users wishing to play a movie quiz game. The modes include various prompts, like still frames from movies and tv shows, images of actors and trailer snippets. Additionally, the user can either create a custom game or choose from two preset game modes. The game is able to be played in multiplayer or alone and offers ranked leaderboards.
 
-## Setup this Template with your IDE of choice
-Download your IDE of choice (e.g., [IntelliJ](https://www.jetbrains.com/idea/download/), [Visual Studio Code](https://code.visualstudio.com/), or [Eclipse](http://www.eclipse.org/downloads/)). Make sure Java 17 is installed on your system (for Windows, please make sure your `JAVA_HOME` environment variable is set to the correct version of Java).
+## Technologies used  
 
-### IntelliJ
-1. File -> Open... -> SoPra server template
-2. Accept to import the project as a `gradle project`
-3. To build right click the `build.gradle` file and choose `Run Build`
+Written in [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html). Please make sure that the `JAVA_HOME` environment variable is set to the correct version of Java.
+  
+Built with:  
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Gradle](https://gradle.org/)
+- REST
+- [Hibernate](https://hibernate.org/)
+- [STOMP](https://stomp-js.github.io/stomp-websocket/)
+- [SockJS](https://github.com/sockjs/sockjs-client)
 
-### VS Code
-The following extensions can help you get started more easily:
--   `vmware.vscode-spring-boot`
--   `vscjava.vscode-spring-initializr`
--   `vscjava.vscode-spring-boot-dashboard`
--   `vscjava.vscode-java-pack`
+On top of this, we heavily rely on the https://imdb-api.com/ API.  
 
-**Note:** You'll need to build the project first with Gradle, just click on the `build` command in the _Gradle Tasks_ extension. Then check the _Spring Boot Dashboard_ extension if it already shows `soprafs23` and hit the play button to start the server. If it doesn't show up, restart VS Code and check again.
 
-## Building with Gradle
-You can use the local Gradle Wrapper to build the application.
--   macOS: `./gradlew`
--   Linux: `./gradlew`
--   Windows: `./gradlew.bat`
+## High-level components
 
-More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) and [Gradle](https://gradle.org/docs/).
+The most important part of the backend are:
+- Database Entities: [GAME](src/main/entity/Game.java), [USER](src/main/entity/User.java). These two entities form the two tables in the database, containing all important information about the Game and User respectively.
+- Entity Services : [GameService](src/main/service/GameService.java), [UserService](src/main/service/UserService.java). These services hold all logic affecting the above mentioned User and Game entities. They are responsible for creating and handling the Game/User entities respectively. 
+- REST controller: [GameController](src/main/controller/GameController.java), [UserController](src/main/controller/GameController.java). The Rest controllers for the two most important entities are responsible for handling asynchronous Backend/Frontend communication. These endpoints can be called from the frontend to manage the Games and Users.
+- Websocket config and controllers: [WebSocketConfig](src/main/websocket/WebSocketConfig.java), [WebSocketController](src/main/websocket/WebSocketController.java). The websockets handle all synchronous Backend/Frontend communication, like handling game sessions or delivering questions to the frontend.
 
-### Build
+## Launch & Deployment
+
+The project is built using gradle, all dependencies are listed in the `build.gradle` file.  
+To build and run the project locally within your IDE (we recommend IntelliJ IDEA), import the project as a gradle project, then follow these steps:
 
 ```bash
+# with tests:
 ./gradlew build
+./gradlew bootrun
+
+# to skip tests:
+./gradlew build -x tests
+./gradlew bootrun
 ```
+Additionally, in `application.properties`, define what database you want to use. The project is designed so it can be run locally using an in-memory database like h2, or alternatively, using a MySQL database on a server that you are running either locally or remotely. Please configure to fit your needs.  
+  
+Deployment uses GitHub workflows to deploy the project to google cloud. See `main.yaml` and `app.yaml`. Set up your google cloud project and create a service account with the editor role, download the keys and use github's secret manager to manage them. When done correctly, the code should be automatically deployed when pushing or merging with the main branch.
 
-### Run
+## Roadmap
 
-```bash
-./gradlew bootRun
-```
+Future features to implement include a centrally synchronized question timer, more game modes, including different ways to answer (like a text box, instead of predetermined buttons), a friend's list and more.
 
-You can verify that the server is running by visiting `localhost:8080` in your browser.
+Please make sure to update tests as appropriate.  
 
-### Test
+## Authors & Acknowledgement  
 
-```bash
-./gradlew test
-```
+### Authors  
+- Natalia Shakirova
+- Yannick Salzmann
+- Damjan Kuzmanovic
+- Florence Hügi
+- Markus Niemack
 
-### Development Mode
-You can start the backend in development mode, this will automatically trigger a new build and reload the application
-once the content of a file has been changed.
+## License
 
-Start two terminal windows and run:
-
-`./gradlew build --continuous`
-
-and in the other one:
-
-`./gradlew bootRun`
-
-If you want to avoid running all tests with every change, use the following command instead:
-
-`./gradlew build --continuous -xtest`
-
-## API Endpoint Testing with Postman
-We recommend using [Postman](https://www.getpostman.com) to test your API Endpoints.
-
-## Debugging
-If something is not working and/or you don't know what is going on. We recommend using a debugger and step-through the process step-by-step.
-
-To configure a debugger for SpringBoot's Tomcat servlet (i.e. the process you start with `./gradlew bootRun` command), do the following:
-
-1. Open Tab: **Run**/Edit Configurations
-2. Add a new Remote Configuration and name it properly
-3. Start the Server in Debug mode: `./gradlew bootRun --debug-jvm`
-4. Press `Shift + F9` or the use **Run**/Debug "Name of your task"
-5. Set breakpoints in the application where you need it
-6. Step through the process one step at a time
-
-## Testing
-Have a look here: https://www.baeldung.com/spring-boot-testing
+[MIT](https://choosealicense.com/licenses/mit/)
