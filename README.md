@@ -24,7 +24,7 @@ The most important part of the backend are:
 - Entity Services : [GameService](src/main/java\/ch\/uzh\/hase\/soprafs23/service/GameService.java), [UserService](src/main/java/ch/uzh/hase/soprafs23/service/UserService.java). These services hold all logic affecting the above mentioned User and Game entities. They are responsible for creating and handling the Game/User entities respectively. 
 - REST controller: [GameController](src/main/java/ch/uzh/hase/soprafs23/controller/GameController.java), [UserController](src/main/java/ch/uzh/hase/soprafs23/controller/GameController.java). The Rest controllers for the two most important entities are responsible for handling asynchronous Backend/Frontend communication. These endpoints can be called from the frontend to manage the Games and Users.
 - Websocket config and controllers: [WebSocketConfig](src/main/java/ch/uzh/hase/soprafs23/websocket/WebSocketConfig.java), [WebSocketController](src/main/java/ch/uzh/hase/soprafs23/websocket/WebSocketController.java). The websockets handle all synchronous Backend/Frontend communication, like handling game sessions or delivering questions to the frontend.
-- API service: [ApiService](src/main/java/ch/uzh/hase/soprafs23/api/ApiService.java). This service and its children are responsible for handling incoming information from the imdb-api API.
+- API service: [ApiService](src/main/java/ch/uzh/ifi/hase/soprafs23/api/ApiService.java). This service and its children are responsible for handling incoming information from the imdb-api API.
 
 ## Launch & Deployment
 
