@@ -87,7 +87,6 @@ public class WebSocketController {
     public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor) {
 
         String sessionId = headerAccessor.getSessionId();
-        System.out.println("New connection from " + sessionId);
         /*synchronized (connectedClients) {
             if(connectedClients.isEmpty()){
                 Question question = gameService.getQuestionToSend(gameId);
@@ -107,13 +106,10 @@ public class WebSocketController {
 
         //System.out.println(connectedClients.size());
         //System.out.println("clients connected: " + connectedClients.get(gameId));
-        System.out.println("Current multi conn: " + multiConnectedClients.get(gameId).size());
 
 
         synchronized (multiConnectedClients){
             if(multiConnectedClients.get(gameId).size() != gameService.getHostAndPlayers(gameId).size()-1){
-                System.out.println("currently multi size: " + multiConnectedClients.get(gameId).size());
-                System.out.println("game size: " + gameService.getHostAndPlayers(gameId).size());
             /*Question question = gameService.getQuestionToSend(gameId);
             Date creationTime = new Date();
             question.setCreationTime(creationTime);
@@ -125,7 +121,6 @@ public class WebSocketController {
 
                 //return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
             } else {
-                System.out.println("are we in here?");
                 Question question = gameService.getQuestionToSend(gameId);
                 Date creationTime = new Date();
                 question.setCreationTime(creationTime);
@@ -144,7 +139,6 @@ public class WebSocketController {
     public void handleQuestionDisconnect(SessionDisconnectEvent event){
         String sessionId = event.getSessionId();
         Long key = reverseConnectedClients.get(sessionId);
-        System.out.println("key: " + key + " Session: " + reverseConnectedClients.get(sessionId) );
         //connectedClients.values().removeIf(id -> id.equals(sessionId));
         multiConnectedClients.get(key).remove(sessionId);
         reverseConnectedClients.remove(sessionId);

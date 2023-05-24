@@ -188,15 +188,17 @@ public class UserService {
     }
 
     public long returnScore(AnswerPostDTO answer, GameFormat gameFormat) {
-        long score;
+        double score;
+        double doubleScore;
         String correctAnswer = answer.getCorrectAnswer();
         String userAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
         Date qTime = answer.getQuestionTime();
-        long diff = Math.abs(time.getTime() - qTime.getTime());
+        double diff = Math.abs(time.getTime() - qTime.getTime());
+        diff = diff/2.5;
 
         if (userAnswer.equals(correctAnswer)) {
-            score =  (long) (500 / ((double) diff/1000 * Math.log((diff / 1000)+1) + 1));
+            score =  (500d / ( diff/1000d * Math.log((diff / 1000d)+1d) + 1d));
             }
         else {
             score = switch (gameFormat) {
@@ -204,8 +206,8 @@ public class UserService {
                 default -> 0;
             };
         }
-
-        return score;
+        //score = (long) doubleScore;
+        return (long) score;
     }
 
     public void updateAllGamesScore(AnswerPostDTO answer, GameFormat gameFormat) {
