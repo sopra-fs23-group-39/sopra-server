@@ -20,10 +20,11 @@ On top of this, we heavily rely on the https://imdb-api.com/ API.
 ## High-level components
 
 The most important part of the backend are:
-- Database Entities: [GAME](src/main/entity/Game.java), [USER](src/main/entity/User.java). These two entities form the two tables in the database, containing all important information about the Game and User respectively.
-- Entity Services : [GameService](src/main/service/GameService.java), [UserService](src/main/service/UserService.java). These services hold all logic affecting the above mentioned User and Game entities. They are responsible for creating and handling the Game/User entities respectively. 
-- REST controller: [GameController](src/main/controller/GameController.java), [UserController](src/main/controller/GameController.java). The Rest controllers for the two most important entities are responsible for handling asynchronous Backend/Frontend communication. These endpoints can be called from the frontend to manage the Games and Users.
-- Websocket config and controllers: [WebSocketConfig](src/main/websocket/WebSocketConfig.java), [WebSocketController](src/main/websocket/WebSocketController.java). The websockets handle all synchronous Backend/Frontend communication, like handling game sessions or delivering questions to the frontend.
+- Database Entities: [GAME](src/main/java/ch/uzh/hase/soprafs23/entity/Game.java), [USER](src/main/java/ch/uzh/hase/soprafs23/entity/User.java). These two entities form the two tables in the database, containing all important information about the Game and User respectively.
+- Entity Services : [GameService](src/main/java/ch/uzh/hase/soprafs23/service/GameService.java), [UserService](src/main/java/ch/uzh/hase/soprafs23/service/UserService.java). These services hold all logic affecting the above mentioned User and Game entities. They are responsible for creating and handling the Game/User entities respectively. 
+- REST controller: [GameController](src/main/java/ch/uzh/hase/soprafs23/controller/GameController.java), [UserController](src/main/java/ch/uzh/hase/soprafs23/controller/GameController.java). The Rest controllers for the two most important entities are responsible for handling asynchronous Backend/Frontend communication. These endpoints can be called from the frontend to manage the Games and Users.
+- Websocket config and controllers: [WebSocketConfig](src/main/java/ch/uzh/hase/soprafs23/websocket/WebSocketConfig.java), [WebSocketController](src/main/java/ch/uzh/hase/soprafs23/websocket/WebSocketController.java). The websockets handle all synchronous Backend/Frontend communication, like handling game sessions or delivering questions to the frontend.
+- API service: [ApiService](src/main/java/ch/uzh/hase/soprafs23/api/ApiService.java). This service and its children are responsible for handling incoming information from the imdb-api API.
 
 ## Launch & Deployment
 
@@ -38,6 +39,9 @@ To build and run the project locally within your IDE (we recommend IntelliJ IDEA
 # to skip tests:
 ./gradlew build -x tests
 ./gradlew bootrun
+
+# to only run tests:
+./gradlew test
 ```
 Additionally, in `application.properties`, define what database you want to use. The project is designed so it can be run locally using an in-memory database like h2, or alternatively, using a MySQL database on a server that you are running either locally or remotely. Please configure to fit your needs.  
   
@@ -46,18 +50,18 @@ Deployment uses GitHub workflows to deploy the project to google cloud. See `mai
 ## Roadmap
 
 Future features to implement include a centrally synchronized question timer, more game modes, including different ways to answer (like a text box, instead of predetermined buttons), a friend's list and more.
-
-Please make sure to update tests as appropriate.  
+  
 
 ## Authors & Acknowledgement  
 
 ### Authors  
-- Natalia Shakirova
-- Yannick Salzmann
-- Damjan Kuzmanovic
-- Florence Hügi
-- Markus Niemack
+- [Natalia Shakirova](https://github.com/orgs/sopra-fs23-group-39/people/NattiShakira)
+- [Yannick Salzmann](https://github.com/orgs/sopra-fs23-group-39/people/yasalz)
+- [Damjan Kuzmanovic](https://github.com/orgs/sopra-fs23-group-39/people/dkuzma1)
+- [Florence Hügi](https://github.com/orgs/sopra-fs23-group-39/people/florencehuegi)
+- [Markus Niemack](https://github.com/orgs/sopra-fs23-group-39/people/NieMark)  
+Additionally, we would like to thank our teaching assistants [Sheena Lang](https://github.com/SheenaGit) and [Roy Rutishauser](https://github.com/royru) for helping with this project.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[GNU GPLv3]([https://choosealicense.com/licenses/mit/](https://choosealicense.com/licenses/gpl-3.0/))
