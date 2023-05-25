@@ -5,11 +5,8 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPutDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,19 +15,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.hamcrest.Matchers.is;
@@ -50,33 +38,6 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
-
-//    @Test
-//    public void testGetAllUsers() throws Exception {
-//        //given
-//        User user = new User();
-//        user.setId(1L);
-//        user.setUsername("Username");
-//        user.setPassword("Password");
-//        user.setStatus(UserStatus.ONLINE);
-//
-//        List<User> allUsers = Collections.singletonList(user);
-//
-//        // this mocks the UserService -> we define what the userService should
-//        // return when getUsers() is called
-//        given(userService.getUsers()).willReturn(allUsers);
-//
-//        // when
-//        MockHttpServletRequestBuilder getRequest = get("/users")
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        // then
-//        mockMvc.perform(getRequest).andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(1)))
-//                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
-//                .andExpect(jsonPath("$[0].password", is(user.getPassword())))
-//                .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
-//    }
 
     @Test
      void usersPOST_addValidUser() throws Exception {
@@ -99,7 +60,6 @@ class UserControllerTest {
         userPostDTO.setUsername("testUsername");
         userPostDTO.setPassword("testPassword");
 
-        // HttpStatus 201 Created
         given(userService.createUser(Mockito.any())).willReturn(user);
 
         MockHttpServletRequestBuilder postRequest = post("/users")
@@ -121,7 +81,6 @@ class UserControllerTest {
         userPostDTO.setPassword("testPassword");
         userPostDTO.setUsername("testUsername");
 
-        // HttpStatus 409 Conflict
         when(userService.createUser(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.CONFLICT));
 
         MockHttpServletRequestBuilder postRequest = post("/users")
@@ -138,7 +97,6 @@ class UserControllerTest {
         user.setUsername("testUsername");
         user.setId(1L);
 
-        // HttpStatus 200 OK
         given(userService.getUserById(1L)).willReturn(user);
 
         MockHttpServletRequestBuilder getRequest = get("/users/1")
@@ -150,7 +108,6 @@ class UserControllerTest {
 
     @Test
     void usersGET_getInvalidUser() throws Exception {
-        // HttpStatus 404 Not Found
         when(userService.getUserProfile(Mockito.anyLong())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         MockHttpServletRequestBuilder getRequest = get("/users/2")
@@ -168,7 +125,6 @@ class UserControllerTest {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setUsername("testUsername");
 
-        // HttpStatus 204 No Content
         Mockito.doNothing().when(userService).updateUserProfile(userPutDTO, 1L);
 
         MockHttpServletRequestBuilder putRequest = put("/users/1")
@@ -184,7 +140,6 @@ class UserControllerTest {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setUsername("testUsername");
 
-        // Use doThrow() to throw an exception when updateUserProfile() is called
         Mockito.doThrow(new ResponseStatusException(HttpStatus.NO_CONTENT)).when(userService).updateUserProfile(userPutDTO, 1);
 
         MockHttpServletRequestBuilder putRequest = put("/users/1")
@@ -223,7 +178,6 @@ class UserControllerTest {
         userPostDTO.setPassword("testPassword");
         userPostDTO.setUsername("testUsername");
 
-        // HttpStatus 404 Not found
         when(userService.logIn(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         MockHttpServletRequestBuilder postRequest = post("/login")
@@ -244,7 +198,6 @@ class UserControllerTest {
         userPostDTO.setPassword("testPassword");
         userPostDTO.setUsername("testUsername");
 
-        // HttpStatus Unauthorized
         when(userService.logIn(Mockito.any())).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
 
         MockHttpServletRequestBuilder postRequest = post("/login")
@@ -261,7 +214,6 @@ class UserControllerTest {
         Long userId = 1L;
         user.setId(userId);
 
-        // HttpStatus 204 No Content
         Mockito.doNothing().when(userService).logoutUser(userId);
 
         MockHttpServletRequestBuilder putRequest = put("/users/logout")
@@ -278,7 +230,6 @@ class UserControllerTest {
         Long userId = 1L;
         user.setId(userId);
 
-        // Use doThrow() to throw an exception when logoutUser() is called
         Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(userService).logoutUser(userId);
 
         MockHttpServletRequestBuilder putRequest = put("/users/logout")

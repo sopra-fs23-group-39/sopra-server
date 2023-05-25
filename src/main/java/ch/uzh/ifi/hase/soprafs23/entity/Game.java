@@ -91,9 +91,9 @@ public class Game implements Serializable {
         this.questionAmount = questionAmount;
     }
 
-    public void setTimer(int timer){this.timer = timer;}
+    public void setTimer(int timer) {this.timer = timer;}
 
-    public int getTimer(){return this.timer;}
+    public int getTimer() {return this.timer;}
 
     public Long getGameId() {
         return gameId;

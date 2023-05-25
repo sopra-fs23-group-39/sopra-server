@@ -38,9 +38,6 @@ class GameServiceTest {
     @Mock
     private UserService userService;
 
-    @Mock
-    private QuestionService questionService;
-
     private Game game;
 
     @BeforeEach
@@ -246,33 +243,5 @@ class GameServiceTest {
 
         assertEquals(isStarted, game.getIsStarted());
     }
-
-//    @Test
-//    void testGetWinner() {
-//        // Create a mock gameId
-//        long gameId = game.getGameId();
-//
-//        // Create mock User objects
-//        User user1 = Mockito.mock(User.class);
-//        User user2 = Mockito.mock(User.class);
-//        User user3 = Mockito.mock(User.class);
-//
-//        // Set up the total points for each user
-//        Mockito.when(user1.getTotalPointsCurrentGame()).thenReturn(10L);
-//        Mockito.when(user2.getTotalPointsCurrentGame()).thenReturn(20L);
-//        Mockito.when(user3.getTotalPointsCurrentGame()).thenReturn(15L);
-//
-//        // Create a list of mock User objects
-//        List<User> users = new ArrayList<>();
-//        users.add(user1);
-//        users.add(user2);
-//        users.add(user3);
-//
-//        // Invoke the method to be tested
-//        User winner = gameService.getWinner(gameId);
-//
-//        // Verify that the user with the highest total points is returned as the winner
-//        assertEquals(user2, winner);
-//    }
 
 }

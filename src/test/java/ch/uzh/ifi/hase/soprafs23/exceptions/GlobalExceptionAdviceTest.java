@@ -1,15 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.exceptions;
 
-import ch.uzh.ifi.hase.soprafs23.exceptions.GlobalExceptionAdvice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -53,7 +50,6 @@ class GlobalExceptionAdviceTest {
         assertEquals("This should be application specific", response.getBody());
     }
 
-
     @Test
     void testHandleException() {
         Exception ex = new Exception("test exception");
@@ -90,6 +86,5 @@ class GlobalExceptionAdviceTest {
             logger.error("Default Exception Handler -> caught:", ex);
             return new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
-
     }
 }

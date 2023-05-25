@@ -45,14 +45,11 @@
      void setup() {
          MockitoAnnotations.openMocks(this);
 
-         // given
          testUser = new User();
          testUser.setId(1L);
          testUser.setPassword("testPassword");
          testUser.setUsername("testUsername");
 
-         // when -> any object is being saved in the userRepository -> return the dummy
-         // testUser
          when(userRepository.save(Mockito.any())).thenReturn(testUser);
      }
 
@@ -93,70 +90,54 @@
 
      @Test
      void createUser_duplicateName_throwsException() {
-         // given -> a first user has already been created
          userService.createUser(testUser);
 
-         // when -> setup additional mocks for UserRepository
          when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
-         // then -> attempt to create second user with same user -> check that an error
-         // is thrown
          assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
      }
 
      @Test
      void loginUser_validInputs_success() {
-         // given -> an existing user
          User existingUser = new User();
          existingUser.setId(1L);
          existingUser.setPassword("testPassword");
          existingUser.setUsername("testUsername");
          existingUser.setStatus(UserStatus.OFFLINE);
 
-         // when -> the userRepository is queried for a user with a certain username -> return the dummy
-         // testUser
          when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
-         // when -> attempt to login with valid credentials
          User loggedInUser = userService.logIn(existingUser);
 
-         // then -> check that user status is set to online
          verify(userRepository, times(1)).flush();
          assertEquals(UserStatus.ONLINE, loggedInUser.getStatus());
      }
 
      @Test
      void loginUser_nonExistentUsername_throwsNotFoundException() {
-         // given -> a user with a non-existent username
          User user = new User();
          user.setPassword("testPassword");
          user.setUsername("nonExistentUsername");
 
-         // when -> userRepository is queried for a user with a certain username -> return null
          when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
 
-         // when -> attempt to log in with non-existent username
          assertThrows(ResponseStatusException.class, () -> userService.logIn(user));
      }
 
      @Test
      void loginUser_incorrectPassword_throwsUnauthorizedException() {
-         // given -> an existing user
          User existingUser = new User();
          existingUser.setId(1L);
          existingUser.setPassword("correctPassword");
          existingUser.setUsername("testUsername");
          existingUser.setStatus(UserStatus.OFFLINE);
 
-         // given -> a user with an incorrect password
          User user = new User();
          user.setPassword("incorrectPassword");
          user.setUsername("testUsername");
 
-         // when -> userRepository is queried for a user with a certain username -> return the existingUser
          when(userRepository.findByUsername(Mockito.any())).thenReturn(existingUser);
 
-         // when -> attempt to log in with incorrect password
          assertThrows(ResponseStatusException.class, () -> userService.logIn(user));
      }
 
@@ -168,7 +149,6 @@
 
          when(userRepository.findById(1L)).thenReturn(user);
 
-         // check that the fetched user matches the created user
          assertEquals(user, userService.getUserProfile(1L));
      }
 
@@ -211,7 +191,6 @@
 
          when(userRepository.findByUsername(Mockito.any())).thenReturn(existingUser);
 
-         // expect ResponseStatusException 409 Conflict
          assertThrows(ResponseStatusException.class, () -> userService.checkIfUserExists(existingUser));
      }
 
@@ -223,7 +202,6 @@
 
          when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
 
-         // expect no exception
          assertDoesNotThrow(() -> userService.checkIfUserExists(existingUser));
      }
 
@@ -243,9 +221,9 @@
         verify(userRepository, never()).save(any(User.class));
         verify(userRepository, never()).flush();
     }
+
      @Test
      void updateUserProfile_Conflict_userWithThisUsernameAlreadyExists() {
-         // Given
          long userId = 1L;
          String username = "Alice";
          UserPutDTO userPutDTO = new UserPutDTO();
@@ -256,11 +234,9 @@
          existingUser.setId(userId);
          existingUser.setUsername(username);
 
-         // When
          when(userRepository.findById(userId)).thenReturn(existingUser);
          when(userRepository.findByUsername(username)).thenReturn(existingUser);
 
-         // Then
          assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userPutDTO, userId));
 
          verify(userRepository, never()).save(any(User.class));
@@ -269,7 +245,6 @@
 
      @Test
      void updateUserProfile_WithExistingUser_ShouldUpdateUsernameAndPassword() {
-         // Arrange
          long userId = 1L;
          String newUsername = "newUsername";
          String newPassword = "newPassword";
@@ -287,10 +262,8 @@
          Mockito.when(userRepository.findById(userId)).thenReturn(existingUser);
          Mockito.when(userRepository.findByUsername(newUsername)).thenReturn(null);
 
-         // Act
          userService.updateUserProfile(userPutDTO, userId);
 
-         // Assert
          assertEquals(newUsername, existingUser.getUsername());
          assertEquals(newPassword, existingUser.getPassword());
          verify(userRepository, Mockito.times(1)).save(existingUser);
@@ -299,7 +272,6 @@
 
      @Test
      void updateUserProfile_WithExistingUserAndNullNewValues_ShouldNotUpdateUsernameAndPassword() {
-         // Arrange
          long userId = 1L;
          String newUsername = null;
          String newPassword = null;
@@ -317,10 +289,8 @@
          Mockito.when(userRepository.findById(userId)).thenReturn(existingUser);
          Mockito.when(userRepository.findByUsername(newUsername)).thenReturn(null);
 
-         // Act
          userService.updateUserProfile(userPutDTO, userId);
 
-         // Assert
          assertEquals("oldUsername", existingUser.getUsername());
          assertEquals("oldPassword", existingUser.getPassword());
          verify(userRepository, Mockito.times(1)).save(existingUser);
@@ -329,7 +299,6 @@
 
      @Test
      void updateUserProfile_WithExistingUserAndEmptyStrings_ShouldNotUpdateUsernameAndPassword() {
-         // Arrange
          long userId = 1L;
          String newUsername = "";
          String newPassword = "  ";
@@ -347,10 +316,8 @@
          Mockito.when(userRepository.findById(userId)).thenReturn(existingUser);
          Mockito.when(userRepository.findByUsername(newUsername)).thenReturn(null);
 
-         // Act
          userService.updateUserProfile(userPutDTO, userId);
 
-         // Assert
          assertEquals("oldUsername", existingUser.getUsername());
          assertEquals("oldPassword", existingUser.getPassword());
          verify(userRepository, Mockito.times(1)).save(existingUser);
@@ -365,7 +332,6 @@
 
          when(userRepository.findById(1L)).thenReturn(user);
 
-         // check that the fetched user matches the created user
          assertEquals(user, userService.getUserById(1L));
      }
 
@@ -410,7 +376,6 @@
 
         userService.score(answerPostDTO, gameFormat);
 
-        // Verify that the user's total points for the current game have been updated correctly
         assertEquals(298L, user.getTotalPointsCurrentGame());
     }
 
@@ -429,7 +394,6 @@
 
          userService.score(answerPostDTO, gameFormat);
 
-         // Verify that the user's total points for the current game have been updated correctly
          assertEquals(100L, user.getTotalPointsCurrentGame());
      }
 
@@ -448,7 +412,6 @@
 
          userService.score(answerPostDTO, gameFormat);
 
-         // Verify that the user's total points for the current game have been updated correctly
          assertEquals(298L, user.getTotalPointsCurrentGame());
      }
 
@@ -467,7 +430,6 @@
 
          userService.score(answerPostDTO, gameFormat);
 
-         // Verify that the user's total points for the current game have been updated correctly
          assertEquals(100L, user.getTotalPointsCurrentGame());
      }
 
@@ -486,7 +448,6 @@
 
          userService.score(answerPostDTO, gameFormat);
 
-         // Verify that the user's total points for the current game have been updated correctly
          assertEquals(298L, user.getTotalPointsCurrentGame());
      }
 
@@ -505,7 +466,6 @@
 
          userService.score(answerPostDTO, gameFormat);
 
-         // Verify that the user's total points for the current game have been updated correctly
          assertEquals(50L, user.getTotalPointsCurrentGame());
      }
 
@@ -526,7 +486,6 @@
 
          List<User> result = userService.retrieveCurrentRanking(gameId);
 
-         // Verify that the users list is sorted in descending order based on currentPoints
          List<User> expected = new ArrayList<>(users);
          expected.sort(Comparator.comparing(User::getCurrentPoints).reversed());
          assertEquals(expected, result);
@@ -549,7 +508,6 @@
 
          List<User> result = userService.retrieveTotalRanking(gameId);
 
-         // Verify that the users list is sorted in descending order based on totalPointsCurrentGame
          List<User> expected = new ArrayList<>(users);
          expected.sort(Comparator.comparing(User::getTotalPointsCurrentGame).reversed());
          assertEquals(expected, result);

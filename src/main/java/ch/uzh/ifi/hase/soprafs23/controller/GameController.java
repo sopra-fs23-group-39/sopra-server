@@ -11,17 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * User Controller
- * This class is responsible for handling all REST request that are related to
- * the user.
- * The controller will receive the request and delegate the execution to the
- * UserService and finally return the result.
- */
+
 @RestController
 public class GameController {
 
@@ -33,7 +26,6 @@ public class GameController {
         this.userService = userService;
     }
 
-    //Tested, only CREATED, another status is not tested
     @PostMapping("/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -42,7 +34,6 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGamePostDTO(game);
     }
 
-    // Tested, NO_CONTENT + NOT_FOUND
     @PutMapping("/game/{gameId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -50,7 +41,6 @@ public class GameController {
         gameService.findAndJoinGame(gameId, userId, userService.getUserById(userId));
     }
 
-    //Tested NOT_FOUND. OK gives an error
     @GetMapping("/game/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -63,7 +53,6 @@ public class GameController {
         return playerDTOs;
     }
 
-    //Tested NO_CONTENT + NOT_FOUND
     @PutMapping("/game/resetIfBackOnMain")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> resetUserPointsAndGame(@RequestBody long playerId) {
@@ -71,7 +60,6 @@ public class GameController {
         return ResponseEntity.noContent().build();
     }
 
-    // Tested, OK + NOT_FOUND
     @GetMapping("/game/{gameId}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -80,7 +68,6 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGamePostDTO(findByGameId);
     }
 
-    //Tested OK + NOT_FOUND
     @GetMapping("/game/{lobbyId}/currentRanking")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -93,7 +80,6 @@ public class GameController {
         return userGetDTOs;
     }
 
-    //Tested NOT_FOUND, OK gives an error
     @GetMapping("/game/{lobbyId}/totalRanking")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -106,7 +92,6 @@ public class GameController {
         return userGetDTOs;
     }
 
-    //Tested OK + NOT_FOUND
     @GetMapping("/game/{lobbyId}/winner")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -55,7 +55,7 @@ public class WebSocketController {
         if (message.equals("SUBSCRIBE")){
             List<User> players = gameService.getHostAndPlayers(gameId);
             List<UserGetDTO> playerDTOs = new ArrayList<>();
-            //this is stupid and hacky, but the way we handle circular references in our database
+            //this is hacky, but the way we handle circular references in our database
             //causes the player list to be sorted alphabetically, for whatever reason.
             //this block removes the host from the players list we make here, then adds them back
             //at index 0. This is necessary, because the frontend checks who the host is
@@ -160,8 +160,6 @@ public class WebSocketController {
         userService.score(answerPostDTO, gameFormat);
         userService.updateAllGamesScore(answerPostDTO, gameFormat);
         List<User> allUsersInDB = userService.getUsers();
-        //Looks like we do unnecessary job updating 2 rankings, although we get message only about one type of game
-        // Merge with Rapid? (delete that endpoint?)
         userService.updateAllUsersRank(allUsersInDB);
         userService.updateAllBlitzRanks(allUsersInDB);
     }
@@ -170,7 +168,6 @@ public class WebSocketController {
     @SendTo("/topic/gamerapid/{gameId}/question")
     public QuestionGetDTO sendQuestionRapid(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor, @Payload String message) {
 
-        String sessionId = headerAccessor.getSessionId();
         if(message.equals("NEWQUESTION")){
             Question question = gameService.getQuestionToSend(gameId);
             Date creationTime = new Date();

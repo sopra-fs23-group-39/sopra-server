@@ -46,5 +46,5 @@ public class Answer {
 
     public Date getQuestionTime() {return questionTime;}
 
-    public void setQuestionTime(Date qTime){this.questionTime = qTime;}
+    public void setQuestionTime(Date qTime) {this.questionTime = qTime;}
 }

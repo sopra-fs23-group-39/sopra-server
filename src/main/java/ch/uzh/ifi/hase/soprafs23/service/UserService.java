@@ -77,15 +77,6 @@ public class UserService {
         userRepository.flush();
     }
 
-    /**
-     * This is a helper method that will check the uniqueness criteria of the
-     * username defined in the User entity. The method will do nothing if the input is unique
-     * and throw an error otherwise.
-     *
-     * @param userToBeCreated
-     * @throws org.springframework.web.server.ResponseStatusException
-     * @see User
-     */
     public void checkIfUserExists(User userToBeCreated) {
         User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
 
@@ -189,7 +180,6 @@ public class UserService {
 
     public long returnScore(AnswerPostDTO answer, GameFormat gameFormat) {
         double score;
-        double doubleScore;
         String correctAnswer = answer.getCorrectAnswer();
         String userAnswer = answer.getUsersAnswer();
         Date time = answer.getTime();
@@ -199,14 +189,12 @@ public class UserService {
 
         if (userAnswer.equals(correctAnswer)) {
             score =  (500d / ( Math.sqrt(diff/3000) + 2d));
-            }
-        else {
+        } else {
             score = switch (gameFormat) {
                 case RAPID -> -50;
                 default -> 0;
             };
         }
-        //score = (long) doubleScore;
         return (long) score;
     }
 

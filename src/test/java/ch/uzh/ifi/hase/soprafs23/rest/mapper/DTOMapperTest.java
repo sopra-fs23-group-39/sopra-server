@@ -101,5 +101,4 @@ class DTOMapperTest {
         assertEquals(question.getAnswer4(), questionGetDTO.getAnswer4());
         assertEquals(question.getCreationTime(), questionGetDTO.getCreationTime());
     }
-
 }

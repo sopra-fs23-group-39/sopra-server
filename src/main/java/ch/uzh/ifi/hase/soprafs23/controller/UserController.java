@@ -33,39 +33,31 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getAllUsers() {
-        // fetch all users in the internal representation
         List<User> users = userService.getUsers();
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
-        // convert each user to the API representation
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
         return userGetDTOs;
     }
 
-    //Tested CREATED + CONFLICT
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-
-        // create user
         User createdUser = userService.createUser(userInput);
-        // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    // Tested NO_CONTENT, NOT_FOUND
     @PutMapping("/users/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> logOutUser(@RequestBody int userId) {
         userService.logoutUser(userId);
         return ResponseEntity.noContent().build();
     }
-    //Tested OK + NOT_FOUND
+
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -74,7 +66,6 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userById);
     }
 
-    //Tested NO_CONTENT, check "invalid situations" tests
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateUser(@PathVariable long id, @RequestBody UserPutDTO userPutDTO) {
@@ -82,7 +73,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    //Tested NOT_FOUND, UNAUTHORIZED. Check test for OK
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

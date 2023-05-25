@@ -86,13 +86,6 @@ public class GameService {
         return game.getPlayers();
     }
 
-//    public void removeAllPlayers(Long gameId){
-//        for(User player : gameRepository.findByGameId(gameId).getPlayers()){
-//            player.setGame(null);
-//            player.setTotalPointsCurrentGame((long) 0);
-//        }
-//    }
-
     public void removePlayer(Long playerId){
         userService.getUserById(playerId).setTotalPointsCurrentGame((long) 0);
         userService.getUserById(playerId).setGame(null);
