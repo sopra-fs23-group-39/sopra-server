@@ -411,7 +411,7 @@
         userService.score(answerPostDTO, gameFormat);
 
         // Verify that the user's total points for the current game have been updated correctly
-        assertEquals(256L, user.getTotalPointsCurrentGame());
+        assertEquals(298L, user.getTotalPointsCurrentGame());
     }
 
      @Test
@@ -449,7 +449,7 @@
          userService.score(answerPostDTO, gameFormat);
 
          // Verify that the user's total points for the current game have been updated correctly
-         assertEquals(256L, user.getTotalPointsCurrentGame());
+         assertEquals(298L, user.getTotalPointsCurrentGame());
      }
 
      @Test
@@ -487,7 +487,7 @@
          userService.score(answerPostDTO, gameFormat);
 
          // Verify that the user's total points for the current game have been updated correctly
-         assertEquals(256L, user.getTotalPointsCurrentGame());
+         assertEquals(298L, user.getTotalPointsCurrentGame());
      }
 
      @Test

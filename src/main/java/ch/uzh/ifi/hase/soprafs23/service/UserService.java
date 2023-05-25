@@ -198,7 +198,7 @@ public class UserService {
         diff = diff/2.5;
 
         if (userAnswer.equals(correctAnswer)) {
-            score =  (500d / ( diff/1000d * Math.log((diff / 1000d)+1d) + 1d));
+            score =  (500d / ( Math.sqrt(diff/3000) + 2d));
             }
         else {
             score = switch (gameFormat) {

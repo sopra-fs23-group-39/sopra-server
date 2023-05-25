@@ -54,7 +54,7 @@ class AnswerValidationTest {
     @Test
     void correctScoreCalculation_rightAnswer() {
         answerPostDTO.setUsersAnswer(correctAnswer);
-        assertEquals(156, userService.returnScore(answerPostDTO, GameFormat.CUSTOM));
+        assertEquals(198, userService.returnScore(answerPostDTO, GameFormat.CUSTOM));
     }
 
     @Test
@@ -66,7 +66,7 @@ class AnswerValidationTest {
     @Test
     void correctScoreCalculationRapid_rightAnswer() {
         answerPostDTO.setUsersAnswer(correctAnswer);
-        assertEquals(156, userService.returnScore(answerPostDTO, GameFormat.RAPID));
+        assertEquals(198, userService.returnScore(answerPostDTO, GameFormat.RAPID));
     }
 
     @Test
@@ -78,7 +78,7 @@ class AnswerValidationTest {
     @Test
     void correctScoreCalculationBlitz_rightAnswer() {
         answerPostDTO.setUsersAnswer(correctAnswer);
-        assertEquals(156, userService.returnScore(answerPostDTO, GameFormat.BLITZ));
+        assertEquals(198, userService.returnScore(answerPostDTO, GameFormat.BLITZ));
     }
 
 }
