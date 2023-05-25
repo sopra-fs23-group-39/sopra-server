@@ -234,7 +234,7 @@ class GameControllerTest {
     @Test
     void joinGamePUT_invalid() throws Exception {
         // HttpStatus 404 Not Found
-        Mockito.doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(gameService).findAndJoinGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.any());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(gameService).findAndJoinGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.any());
 
         MockHttpServletRequestBuilder putRequest = put("/game/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -243,6 +243,19 @@ class GameControllerTest {
         mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());
     }
+
+//    @Test
+//    void joinGamePUT_invalid_Rapid() throws Exception {
+//        // HttpStatus 401 Unauthorized
+//        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED)).when(gameService).findAndJoinGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.any());
+//
+//        MockHttpServletRequestBuilder putRequest = put("/game/1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(1));
+//
+//        mockMvc.perform(putRequest)
+//                .andExpect(status().isUnauthorized());
+//    }
 
     @Test
     void resetUserPointsAndGame_removesPlayerAndReturnsNoContent() throws Exception {

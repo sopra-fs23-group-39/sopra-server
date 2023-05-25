@@ -63,9 +63,10 @@ public class GameService {
 
     public void findAndJoinGame(Long gameId, Long userId, User user) {
         Game game = gameRepository.findByGameId(gameId);
-        String message = String.format("No games with id %d was found!", gameId);
         if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No games with id %d was found!", gameId));
+//        } else if (game.getGameFormat() == GameFormat.RAPID) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("You cannot join this game, as it is a single-player game! You can create you own game!"));
         }
 
         game.getPlayers().add(user);
@@ -83,15 +84,9 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
+
         return game.getPlayers();
     }
-
-//    public void removeAllPlayers(Long gameId){
-//        for(User player : gameRepository.findByGameId(gameId).getPlayers()){
-//            player.setGame(null);
-//            player.setTotalPointsCurrentGame((long) 0);
-//        }
-//    }
 
     public void removePlayer(Long playerId){
         userService.getUserById(playerId).setTotalPointsCurrentGame((long) 0);

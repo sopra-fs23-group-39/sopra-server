@@ -14,8 +14,6 @@ public class QuestionService {
     private final ActorApiService actorApiService = new ActorApiService();
     private static final String KEY = "k_3zhp2s2n";
 
-    private static final String LIST_NUMBER_ACTORS_TV = "ls568318482";
-    private static final String LIST_NUMBER_ACTRESSES_TV = "ls568318873";
     private static final String PREFIX_IMDBLIST = "IMDbList";
     private final String moviesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568317885", KEY);
     private final String tvSeriesListAsJSONObject = movieApiService.getJSONObject(PREFIX_IMDBLIST, "ls568316563", KEY);
@@ -59,12 +57,6 @@ public class QuestionService {
         List<String> listWithFourAnswers = movieApiService.getSimilarItems(movieAsJSONObject, addMovies);
         List<String> wrongAnswers = removeCorrectAnswerFromWrongAnswers(listWithFourAnswers, correctAnswer);
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
-
-//        String questionText = "What is the title of this movie?";
-//        String questionLink = "8hP9D6kZseM";
-//        String correctAnswer = "Inception";
-//        List<String> wrongAnswers = Arrays.asList("Interstellar", "Shutter Island", "Django Unchained");
-//        return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
     public Question getMovieQuestion(int category) throws JsonProcessingException {
@@ -89,12 +81,6 @@ public class QuestionService {
         List<String> listWithFourAnswers = movieApiService.getSimilarItems(movieAsJSONObject, additionalMovies);
         List<String> wrongAnswers = removeCorrectAnswerFromWrongAnswers(listWithFourAnswers, correctAnswer);
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
-
-//        String questionText = "What is the title of this movie?";
-//        String questionLink = "https://m.media-amazon.com/images/M/MV5BMjIyNjk1OTgzNV5BMl5BanBnXkFtZTcwOTU0OTk1Mw@@._V1_Ratio1.5000_AL_.jpg";
-//        String correctAnswer = "Inception";
-//        List<String> wrongAnswers = Arrays.asList("Interstellar", "Shutter Island", "Django Unchained");
-//        return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
     public Question getActorQuestion(Gender gender) throws JsonProcessingException {
@@ -117,12 +103,6 @@ public class QuestionService {
         List<String> wrongAnswers = removeCorrectAnswerFromWrongAnswers(listWithFourAnswers, correctAnswer);
 
         return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
-
-//        String questionText = "What is the name of this actor?";
-//        String questionLink = "https://www.teenidols4you.com/blink/Actors/leo/leonardo-dicaprio-1381527890.jpg";
-//        String correctAnswer = "Leonardo DiCaprio";
-//        List<String> wrongAnswers = Arrays.asList("Brad Pitt", "Johnny Depp", "Matthew McConaughey");
-//        return getQuestion(questionText, questionLink, correctAnswer, wrongAnswers);
     }
 
     public Question getQuestion(String questionText, String questionLink, String correctAnswer, List<String> wrongAnswers) {

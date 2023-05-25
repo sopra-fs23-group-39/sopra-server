@@ -124,6 +124,7 @@ class GameServiceTest {
         List<User> playerList = new ArrayList<>(List.of(user2));
 
         long gameId = game.getGameId();
+        game.setGameFormat(GameFormat.CUSTOM);
         game.setPlayers(playerList);
 
         Mockito.when(gameRepository.findByGameId(gameId)).thenReturn(game);
@@ -154,6 +155,33 @@ class GameServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("No games with id " + gameId + " was found!", exception.getReason());
     }
+
+//    @Test
+//    void testFindAndJoinGame_RapidGame_Unauthorized() {
+//        User user1 = new User();
+//        long userId = 1L;
+//        user1.setId(userId);
+//        user1.setTotalPointsCurrentGame(15L);
+//        user1.setNumberGames(5L);
+//
+//        User user2 = new User();
+//
+//        List<User> playerList = new ArrayList<>(List.of(user2));
+//
+//        long gameId = game.getGameId();
+//        game.setGameFormat(GameFormat.RAPID);
+//        game.setPlayers(playerList);
+//
+//        Mockito.when(gameRepository.findByGameId(gameId)).thenReturn(game);
+//        Mockito.when(userService.getUserById(userId)).thenReturn(user1);
+//
+//        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+//                () -> gameService.findAndJoinGame(gameId, userId, user1),
+//                "You cannot join this game, as it is a single-player game! You can create you own game!");
+//
+//        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
+//        assertEquals("You cannot join this game, as it is a single-player game! You can create you own game!", exception.getReason());
+//    }
 
     @Test
     void testGetHostAndPlayers_GameExists() {

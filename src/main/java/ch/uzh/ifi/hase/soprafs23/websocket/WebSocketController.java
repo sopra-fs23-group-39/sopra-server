@@ -28,7 +28,6 @@ public class WebSocketController {
     private final SimpMessagingTemplate messagingTemplate;
     private final GameService gameService;
     private final UserService userService;
-    //private final Map<Long, ArrayList<WebSocketSession>> hostSessions = new HashMap<>();
     private final Map<Long, Question> currentGameQuestions = new HashMap<>();
     private final Map<Long, String> connectedClients = new HashMap<>();
 
@@ -46,10 +45,10 @@ public class WebSocketController {
             gameService.removePlayer(Long.parseLong(playerId));
 
         }
-        if (message.equals("SUBSCRIBE")){
+        if (message.equals("SUBSCRIBE")) {
             List<User> players = gameService.getHostAndPlayers(gameId);
             List<UserGetDTO> playerDTOs = new ArrayList<>();
-            //this is stupid and hacky, but the way we handle circular references in our database
+            //this is hacky, but the way we handle circular references in our database
             //causes the player list to be sorted alphabetically, for whatever reason.
             //this block removes the host from the players list we make here, then adds them back
             //at index 0. This is necessary, because the frontend checks who the host is
@@ -61,7 +60,7 @@ public class WebSocketController {
                         players.remove(player);
                         players.add(0, player);
                     });
-            for (User player: players){
+            for (User player: players) {
                 player.setTotalPointsCurrentGame((long) 0);
                 playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
             }
@@ -69,7 +68,7 @@ public class WebSocketController {
             // topic/game/{gameId} - front-end
             this.messagingTemplate.convertAndSend("/topic/game/" + gameId, playerDTOs);
         }
-        if(message.equals("START")){
+        if (message.equals("START")) {
             String someString = "game started.";
             gameService.setGameIsStarted(gameId, true);
             this.messagingTemplate.convertAndSend("/topic/game/" + gameId, someString);
@@ -81,30 +80,11 @@ public class WebSocketController {
     public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor) {
 
         String sessionId = headerAccessor.getSessionId();
-        /*synchronized (connectedClients) {
-            if(connectedClients.isEmpty()){
-                Question question = gameService.getQuestionToSend(gameId);
-                Date creationTime = new Date();
-                question.setCreationTime(creationTime);
-                currentGameQuestions.put(gameId, question);
-                this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question/non-host", "HOSTREADY");
-                connectedClients.put(gameId, sessionId);
-                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
-            }else{
-                connectedClients.put(gameId, sessionId);
-                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(currentGameQuestions.get(gameId));
-            }
-        }*/
         synchronized (connectedClients) {
-            if(connectedClients.size() != gameService.getHostAndPlayers(gameId).size()-1){
-                /*Question question = gameService.getQuestionToSend(gameId);
-                Date creationTime = new Date();
-                question.setCreationTime(creationTime);
-                currentGameQuestions.put(gameId, question);*/
+            if (connectedClients.size() != gameService.getHostAndPlayers(gameId).size() - 1) {
                 this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question", "Waiting for players...");
                 connectedClients.put(gameId, sessionId);
-                //return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
-            }else{
+            } else {
                 Question question = gameService.getQuestionToSend(gameId);
                 Date creationTime = new Date();
                 question.setCreationTime(creationTime);
@@ -117,7 +97,7 @@ public class WebSocketController {
         return null;
     }
     @EventListener
-    public void handleQuestionDisconnect(SessionDisconnectEvent event){
+    public void handleQuestionDisconnect(SessionDisconnectEvent event) {
         String sessionId = event.getSessionId();
         connectedClients.values().removeIf(id -> id.equals(sessionId));
     }
@@ -125,10 +105,7 @@ public class WebSocketController {
     @MessageMapping("/game/{gameId}/question/non-host")
     @SendTo("/topic/game/{gameId}/question/non-host")
     public QuestionGetDTO sendQuestionToNonHost(@DestinationVariable Long gameId) {
-        System.out.println("connect?");
         Question question = currentGameQuestions.get(gameId);
-        /*Date creationTime = new Date();
-        question.setCreationTime(creationTime);*/
         return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
     }
 
@@ -138,7 +115,7 @@ public class WebSocketController {
         userService.score(answerPostDTO, gameFormat);
         userService.updateAllGamesScore(answerPostDTO, gameFormat);
         List<User> allUsersInDB = userService.getUsers();
-        //Looks like we do unnecessary job updating 2 rankings, although we get message only about one type of game
+        // Looks like we do unnecessary job updating 2 rankings, although we get message only about one type of game
         // Merge with Rapid? (delete that endpoint?)
         userService.updateAllUsersRank(allUsersInDB);
         userService.updateAllBlitzRanks(allUsersInDB);
@@ -148,8 +125,7 @@ public class WebSocketController {
     @SendTo("/topic/gamerapid/{gameId}/question")
     public QuestionGetDTO sendQuestionRapid(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor, @Payload String message) {
 
-        String sessionId = headerAccessor.getSessionId();
-        if(message.equals("NEWQUESTION")){
+        if (message.equals("NEWQUESTION")) {
             Question question = gameService.getQuestionToSend(gameId);
             Date creationTime = new Date();
             question.setCreationTime(creationTime);

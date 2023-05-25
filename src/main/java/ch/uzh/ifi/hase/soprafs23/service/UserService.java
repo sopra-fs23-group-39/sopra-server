@@ -196,7 +196,7 @@ public class UserService {
         long diff = Math.abs(time.getTime() - qTime.getTime());
 
         if (userAnswer.equals(correctAnswer)) {
-            score =  (long) (500 / ((double) diff/1000 * Math.log((diff / 1000)+1) + 1));
+            score =  (long) (500 / ((double) diff/1000 * Math.log((diff/1000) + 1) + 1));
             }
         else {
             score = switch (gameFormat) {
