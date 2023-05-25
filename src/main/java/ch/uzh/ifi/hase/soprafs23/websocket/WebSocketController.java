@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.websocket;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.entity.Question;
@@ -31,9 +30,7 @@ public class WebSocketController {
     private final SimpMessagingTemplate messagingTemplate;
     private final GameService gameService;
     private final UserService userService;
-    //private final Map<Long, ArrayList<WebSocketSession>> hostSessions = new HashMap<>();
     private final Map<Long, Question> currentGameQuestions = new HashMap<>();
-    //private final Map<Long, String> connectedClients = new ConcurrentHashMap<>();
     private final Multimap<Long, String> multiConnectedClients = ArrayListMultimap.create();
     private final Map<String, Long> reverseConnectedClients = new ConcurrentHashMap<>();
 
@@ -71,8 +68,6 @@ public class WebSocketController {
                 player.setTotalPointsCurrentGame((long) 0);
                 playerDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(player));
             }
-
-            // topic/game/{gameId} - front-end
             this.messagingTemplate.convertAndSend("/topic/game/" + gameId, playerDTOs);
         }
         if(message.equals("START")){
@@ -87,39 +82,13 @@ public class WebSocketController {
     public QuestionGetDTO sendQuestion(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor) {
 
         String sessionId = headerAccessor.getSessionId();
-        /*synchronized (connectedClients) {
-            if(connectedClients.isEmpty()){
-                Question question = gameService.getQuestionToSend(gameId);
-                Date creationTime = new Date();
-                question.setCreationTime(creationTime);
-                currentGameQuestions.put(gameId, question);
-                this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question/non-host", "HOSTREADY");
-                connectedClients.put(gameId, sessionId);
-                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
-            }else{
-                connectedClients.put(gameId, sessionId);
-                return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(currentGameQuestions.get(gameId));
-            }
-        }*/
-
-        //connectedClients.put(gameId, sessionId);
-
-        //System.out.println(connectedClients.size());
-        //System.out.println("clients connected: " + connectedClients.get(gameId));
-
-
         synchronized (multiConnectedClients){
             if(multiConnectedClients.get(gameId).size() != gameService.getHostAndPlayers(gameId).size()-1){
-            /*Question question = gameService.getQuestionToSend(gameId);
-            Date creationTime = new Date();
-            question.setCreationTime(creationTime);
-            currentGameQuestions.put(gameId, question);*/
-                //System.out.println("connected client size: " + connectedClients.size());
                 this.messagingTemplate.convertAndSend("/topic/game/" + gameId + "/question", "Waiting for players...");
                 multiConnectedClients.put(gameId, sessionId);
                 reverseConnectedClients.put(sessionId, gameId);
 
-                //return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
+
             } else {
                 Question question = gameService.getQuestionToSend(gameId);
                 Date creationTime = new Date();
@@ -140,7 +109,6 @@ public class WebSocketController {
     public void handleQuestionDisconnect(SessionDisconnectEvent event){
         String sessionId = event.getSessionId();
         Long key = reverseConnectedClients.get(sessionId);
-        //connectedClients.values().removeIf(id -> id.equals(sessionId));
         multiConnectedClients.get(key).remove(sessionId);
         reverseConnectedClients.remove(sessionId);
     }
@@ -158,15 +126,14 @@ public class WebSocketController {
 
     @MessageMapping("/gamerapid/{gameId}/question")
     @SendTo("/topic/gamerapid/{gameId}/question")
-    public QuestionGetDTO sendQuestionRapid(@DestinationVariable Long gameId, SimpMessageHeaderAccessor headerAccessor, @Payload String message) {
-
+    public QuestionGetDTO sendQuestionRapid(@DestinationVariable Long gameId, @Payload String message) {
         if(message.equals("NEWQUESTION")){
             Question question = gameService.getQuestionToSend(gameId);
             Date creationTime = new Date();
             question.setCreationTime(creationTime);
             return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
         }
-        //unhandled so far, but works since checks are done in the front end, will think about something for this.
+        //should be unreachable, if not, it shouldn't return anything anyway
         return null;
     }
 

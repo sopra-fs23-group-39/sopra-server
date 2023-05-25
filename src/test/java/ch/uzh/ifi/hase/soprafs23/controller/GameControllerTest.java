@@ -27,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.uzh.ifi.hase.soprafs23.constant.GameFormat.CUSTOM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,7 +64,7 @@ class GameControllerTest {
         game.setGameMode(GameMode.MIXED);
         game.setQuestionAmount(5);
         game.setTimer(10);
-        game.setGameFormat(GameFormat.CUSTOM);
+        game.setGameFormat(CUSTOM);
         game.setHost(host);
         game.setCurrentRound(0);
 
@@ -75,7 +76,7 @@ class GameControllerTest {
         gamePostDTO.setGameMode(GameMode.MIXED);
         gamePostDTO.setQuestionAmount(5);
         gamePostDTO.setTimer(10);
-        gamePostDTO.setGameFormat(GameFormat.CUSTOM);
+        gamePostDTO.setGameFormat(CUSTOM);
 
         MockHttpServletRequestBuilder request = post("/game")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +99,7 @@ class GameControllerTest {
         game.setGameId(1L);
         game.setHostId(host.getId());
         game.setHost(host);
-        game.setGameFormat(GameFormat.CUSTOM);
+        game.setGameFormat(CUSTOM);
         game.setGameMode(GameMode.MIXED);
         game.setQuestionAmount(5);
         game.setTimer(10);
@@ -272,9 +273,12 @@ class GameControllerTest {
         User winner = new User();
         winner.setId(1L);
         winner.setUsername("Winner");
+        Game game = new Game();
+        game.setGameFormat(CUSTOM);
 
         given(gameService.getWinner(gameId)).willReturn(winner);
-
+        given(gameService.getGameById(gameId)).willReturn(game);
+        
         UserGetDTO winnerGetDTO = new UserGetDTO();
         winnerGetDTO.setId(1L);
         winnerGetDTO.setUsername("Winner");
