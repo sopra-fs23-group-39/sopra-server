@@ -130,27 +130,35 @@ public class UserService {
         String newPassword = userPutDTO.getPassword();
         User userWithTheSameUsername = userRepository.findByUsername(newUsername);
 
+        String oldUsername;
+        String oldPassword;
+        boolean newUsernameIsSameAsOldUsername;
+
         if (userToUpdate == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %d does not exist!", id));
-        } else if (userWithTheSameUsername != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this username already exists, please choose another username!");
         } else {
-            String oldUsername = userToUpdate.getUsername();
-            String oldPassword = userToUpdate.getPassword();
-            if (newUsername == null) {
-                userToUpdate.setUsername(oldUsername);
-            } else if (newUsername.trim().isEmpty()) {
-                userToUpdate.setUsername(oldUsername);
+            oldUsername = userToUpdate.getUsername();
+            newUsernameIsSameAsOldUsername = oldUsername.equals(newUsername);
+            if (userWithTheSameUsername != null && !newUsernameIsSameAsOldUsername) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this username already exists, please choose another username!");
             } else {
-                userToUpdate.setUsername(newUsername);
-            }
+                oldUsername = userToUpdate.getUsername();
+                oldPassword = userToUpdate.getPassword();
+                if (newUsername == null) {
+                    userToUpdate.setUsername(oldUsername);
+                } else if (newUsername.trim().isEmpty()) {
+                    userToUpdate.setUsername(oldUsername);
+                } else {
+                    userToUpdate.setUsername(newUsername);
+                }
 
-            if (newPassword == null) {
-                userToUpdate.setPassword(oldPassword);
-            } else if (newPassword.trim().isEmpty()) {
-                userToUpdate.setPassword(oldPassword);
-            } else {
-                userToUpdate.setPassword(newPassword);
+                if (newPassword == null) {
+                    userToUpdate.setPassword(oldPassword);
+                } else if (newPassword.trim().isEmpty()) {
+                    userToUpdate.setPassword(oldPassword);
+                } else {
+                    userToUpdate.setPassword(newPassword);
+                }
             }
         }
 

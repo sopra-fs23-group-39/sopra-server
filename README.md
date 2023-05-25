@@ -37,7 +37,7 @@ To build and run the project locally within your IDE (we recommend IntelliJ IDEA
 ./gradlew bootrun
 
 # to skip tests:
-./gradlew build -x tests
+./gradlew build -x test
 ./gradlew bootrun
 
 # to only run tests:

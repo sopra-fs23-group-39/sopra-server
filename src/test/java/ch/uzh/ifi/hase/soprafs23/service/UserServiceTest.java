@@ -223,7 +223,7 @@
     }
 
      @Test
-     void updateUserProfile_Conflict_userWithThisUsernameAlreadyExists() {
+     void updateUserProfile_Conflict_userWithThisUsernameAlreadyExistsAndIsDifferentUser() {
          long userId = 1L;
          String username = "Alice";
          UserPutDTO userPutDTO = new UserPutDTO();
@@ -232,10 +232,13 @@
 
          User existingUser = new User();
          existingUser.setId(userId);
-         existingUser.setUsername(username);
+         existingUser.setUsername("Mary");
+
+         User thirdUser = new User();
+         thirdUser.setUsername(username);
 
          when(userRepository.findById(userId)).thenReturn(existingUser);
-         when(userRepository.findByUsername(username)).thenReturn(existingUser);
+         when(userRepository.findByUsername(username)).thenReturn(thirdUser);
 
          assertThrows(ResponseStatusException.class, () -> userService.updateUserProfile(userPutDTO, userId));
 
