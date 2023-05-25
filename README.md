@@ -47,6 +47,10 @@ Additionally, in `application.properties`, define what database you want to use.
   
 Deployment uses GitHub workflows to deploy the project to google cloud. See `main.yaml` and `app.yaml`. Set up your google cloud project and create a service account with the editor role, download the keys and use github's secret manager to manage them. When done correctly, the code should be automatically deployed when pushing or merging with the main branch.
 
+## Illustration  
+
+The user lands on the login page, where they can either log in, or register. After either of these, they switch to the main page, where they can navigate to game creation, game joining, the leaderboards, their profile, or they can log out again. When choosing to create a game, the user first has to select which game mode they would like to play, and depending on the choice, they navigate to the corresponding waiting room, or a further options page if choosing to create a custom game. They can also read the rules of each mode here. When choosing to create a custom game, they can select from various themes, like pictures from movies, trailer snippets, a mix between pictures of movies and actors, and so on. They are also able to choose how many questions the game should have, and how much time they are given to answer them. After clicking on create game, they will enter a waiting room, where they can wait for other players to join using the game's id, or start the game. After starting the game, every player in the lobby enters the game loop, where they are served question prompts, which they can answer using predetermined answer buttons. In between questions, they are shown the standings, and finally when the game ends, the winner is shown, and the users can navigate back to the main page.
+
 ## Roadmap
 
 Future features to implement include a centrally synchronized question timer, more game modes, including different ways to answer (like a text box, instead of predetermined buttons), a friend's list and more.
