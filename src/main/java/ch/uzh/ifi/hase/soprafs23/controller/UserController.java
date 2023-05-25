@@ -35,7 +35,6 @@ public class UserController {
     public List<UserGetDTO> getAllUsers() {
         List<User> users = userService.getUsers();
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
-
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }

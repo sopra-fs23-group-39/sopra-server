@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
@@ -54,6 +55,94 @@ class GameControllerTest {
     @MockBean
     private DTOMapper dtoMapper;
 
+    @Test
+    void getGamePlayers_returnsPlayers() throws Exception{
+        long gameId = 1;
+        User user1 = new User();
+        User user2 = new User();
+        user1.setUsername("test1");
+        user1.setPassword("testPassword");
+        user1.setId(1L);
+        user1.setStatus(UserStatus.ONLINE);
+        user1.setNumberGames(0L);
+        user1.setUserRank(1L);
+        user1.setCurrentPoints(0L);
+        user1.setTotalPointsAllGames(0L);
+        user1.setTotalPointsCurrentGame(0L);
+        user1.setRapidRank(1L);
+        user1.setTotalRapidPointsAllGames(0L);
+        user1.setBlitzRank(1L);
+        user1.setTotalBlitzPointsAllGames(0L);
+
+        user2.setUsername("test2");
+        user2.setPassword("testPassword");
+        user2.setId(2L);
+        user2.setStatus(UserStatus.ONLINE);
+        user2.setNumberGames(0L);
+        user2.setUserRank(1L);
+        user2.setCurrentPoints(0L);
+        user2.setTotalPointsAllGames(0L);
+        user2.setTotalPointsCurrentGame(0L);
+        user2.setRapidRank(1L);
+        user2.setTotalRapidPointsAllGames(0L);
+        user2.setBlitzRank(1L);
+        user2.setTotalBlitzPointsAllGames(0L);
+
+        List<User> allPlayers = Arrays.asList(user1, user2);
+
+        when(gameService.getHostAndPlayers(gameId)).thenReturn(allPlayers);
+
+        mockMvc.perform(get("/game/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].username", is(user1.getUsername())))
+                .andExpect(jsonPath("$[1].username", is(user2.getUsername())))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getGameTotalRanking_returnsValidRanking() throws Exception {
+        long gameId = 1;
+        User user1 = new User();
+        User user2 = new User();
+        user1.setUsername("test1");
+        user1.setPassword("testPassword");
+        user1.setId(1L);
+        user1.setStatus(UserStatus.ONLINE);
+        user1.setNumberGames(0L);
+        user1.setUserRank(1L);
+        user1.setCurrentPoints(0L);
+        user1.setTotalPointsAllGames(0L);
+        user1.setTotalPointsCurrentGame(0L);
+        user1.setRapidRank(1L);
+        user1.setTotalRapidPointsAllGames(0L);
+        user1.setBlitzRank(1L);
+        user1.setTotalBlitzPointsAllGames(0L);
+
+        user2.setUsername("test2");
+        user2.setPassword("testPassword");
+        user2.setId(2L);
+        user2.setStatus(UserStatus.ONLINE);
+        user2.setNumberGames(0L);
+        user2.setUserRank(1L);
+        user2.setCurrentPoints(0L);
+        user2.setTotalPointsAllGames(0L);
+        user2.setTotalPointsCurrentGame(50L);
+        user2.setRapidRank(1L);
+        user2.setTotalRapidPointsAllGames(0L);
+        user2.setBlitzRank(1L);
+        user2.setTotalBlitzPointsAllGames(0L);
+
+        List<User> allPlayers = Arrays.asList(user1, user2);
+        List<User> allPlayersRanked = Arrays.asList(user2, user1);
+
+        when(userService.retrieveTotalRanking(gameId)).thenReturn(allPlayersRanked);
+
+        mockMvc.perform(get("/game/1/totalRanking").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].username", is(user2.getUsername())))
+                .andExpect(jsonPath("$[1].username", is(user1.getUsername())))
+                .andExpect(status().isOk());
+
+
+    }
     @Test
     void gamePOST_createValidGame() throws Exception {
         User host = new User();
@@ -278,7 +367,7 @@ class GameControllerTest {
 
         given(gameService.getWinner(gameId)).willReturn(winner);
         given(gameService.getGameById(gameId)).willReturn(game);
-        
+
         UserGetDTO winnerGetDTO = new UserGetDTO();
         winnerGetDTO.setId(1L);
         winnerGetDTO.setUsername("Winner");

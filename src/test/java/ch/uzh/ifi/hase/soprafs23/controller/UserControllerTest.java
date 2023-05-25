@@ -19,6 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.hamcrest.Matchers.is;
@@ -38,6 +42,54 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+
+    @Test
+    void getAllUsersReturnsAllUsers() throws Exception {
+        User user1 = new User();
+        User user2 = new User();
+        user1.setUsername("test1");
+        user1.setPassword("testPassword");
+        user1.setId(1L);
+        user1.setStatus(UserStatus.ONLINE);
+        user1.setNumberGames(0L);
+        user1.setUserRank(1L);
+        user1.setCurrentPoints(0L);
+        user1.setTotalPointsAllGames(0L);
+        user1.setTotalPointsCurrentGame(0L);
+        user1.setRapidRank(1L);
+        user1.setTotalRapidPointsAllGames(0L);
+        user1.setBlitzRank(1L);
+        user1.setTotalBlitzPointsAllGames(0L);
+
+        user2.setUsername("test2");
+        user2.setPassword("testPassword");
+        user2.setId(2L);
+        user2.setStatus(UserStatus.ONLINE);
+        user2.setNumberGames(0L);
+        user2.setUserRank(1L);
+        user2.setCurrentPoints(0L);
+        user2.setTotalPointsAllGames(0L);
+        user2.setTotalPointsCurrentGame(0L);
+        user2.setRapidRank(1L);
+        user2.setTotalRapidPointsAllGames(0L);
+        user2.setBlitzRank(1L);
+        user2.setTotalBlitzPointsAllGames(0L);
+
+        List<User> allUsers = Arrays.asList(user1, user2);
+        for(User user: allUsers){
+            System.out.println(user.getUsername());
+        }
+        when(userService.getUsers()).thenReturn(allUsers);
+        List<User> someList = userService.getUsers();
+
+
+        mockMvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].username", is(user1.getUsername())))
+                .andExpect(jsonPath("$[1].username", is(user2.getUsername())))
+                .andExpect(status().isOk());
+
+    }
 
     @Test
      void usersPOST_addValidUser() throws Exception {
