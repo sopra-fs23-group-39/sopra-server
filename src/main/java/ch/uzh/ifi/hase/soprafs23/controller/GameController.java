@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameFormat;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GamePostDTO;
@@ -68,11 +69,14 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGamePostDTO(findByGameId);
     }
 
-    @GetMapping("/game/{lobbyId}/currentRanking")
+
+    //Tested OK + NOT_FOUND
+    @GetMapping("/game/{gameId}/currentRanking")
+
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> getByLobbyId(@PathVariable Long lobbyId) {
-        List<User> users = userService.retrieveCurrentRanking(lobbyId);
+    public List<UserGetDTO> getByLobbyId(@PathVariable Long gameId) {
+        List<User> users = userService.retrieveCurrentRanking(gameId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
@@ -80,11 +84,14 @@ public class GameController {
         return userGetDTOs;
     }
 
-    @GetMapping("/game/{lobbyId}/totalRanking")
+
+
+    //Tested NOT_FOUND, OK gives an error
+    @GetMapping("/game/{gameId}/totalRanking")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> getRankingByLobbyId(@PathVariable Long lobbyId) {
-        List<User> users = userService.retrieveTotalRanking(lobbyId);
+    public List<UserGetDTO> getRankingByLobbyId(@PathVariable Long gameId) {
+        List<User> users = userService.retrieveTotalRanking(gameId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
         for (User user : users) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
@@ -92,11 +99,18 @@ public class GameController {
         return userGetDTOs;
     }
 
-    @GetMapping("/game/{lobbyId}/winner")
+    //Tested OK + NOT_FOUND
+    @GetMapping("/game/{gameId}/winner")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO winner(@PathVariable long lobbyId){
-        User user = gameService.getWinner(lobbyId);
+    public UserGetDTO winner(@PathVariable long gameId){
+        User user = gameService.getWinner(gameId);
+        GameFormat format = gameService.getGameById(gameId).getGameFormat();
+        switch(format) {
+            case BLITZ -> userService.updateAllBlitzRanks(userService.getUsers());
+            case RAPID -> userService.updateAllRapidRanks(userService.getUsers());
+            case CUSTOM -> userService.updateAllUsersRank(userService.getUsers());
+        }
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 

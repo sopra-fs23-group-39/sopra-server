@@ -133,6 +133,7 @@ public class WebSocketController {
 
 
         //unhandled so far, but works since checks are done in the front end, will think about something for this.
+        //this is pretty much unreachable anyway
         return null;
     }
     @EventListener
@@ -144,15 +145,6 @@ public class WebSocketController {
         reverseConnectedClients.remove(sessionId);
     }
 
-    @MessageMapping("/game/{gameId}/question/non-host")
-    @SendTo("/topic/game/{gameId}/question/non-host")
-    public QuestionGetDTO sendQuestionToNonHost(@DestinationVariable Long gameId) {
-        System.out.println("connect?");
-        Question question = currentGameQuestions.get(gameId);
-        /*Date creationTime = new Date();
-        question.setCreationTime(creationTime);*/
-        return DTOMapper.INSTANCE.convertEntityToQuestionGetDTO(question);
-    }
 
     @MessageMapping("/game/{gameId}/answer")
     public void getAnswer(@DestinationVariable Long gameId, @Payload AnswerPostDTO answerPostDTO) {

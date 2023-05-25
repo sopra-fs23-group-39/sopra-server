@@ -88,7 +88,9 @@ public class GameService {
 
     public void removePlayer(Long playerId){
         userService.getUserById(playerId).setTotalPointsCurrentGame((long) 0);
-        userService.getUserById(playerId).setGame(null);
+        if(userService.getUserById(playerId).getGame()!=null){
+            userService.getUserById(playerId).setGame(null);
+        }
     }
 
     public Game getGameById(Long gameId) {
